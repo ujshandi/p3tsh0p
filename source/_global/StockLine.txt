@@ -1,0 +1,470 @@
+CREATE TABLE Mst_Code(
+  Code_ID autoincrement,
+  Code_Name varchar,
+  Parent_ID integer,
+  Parent_Name varchar,
+  Level integer,
+  Urut integer,
+  Kode varchar,
+  PRIMARY KEY (Code_ID) 
+);
+
+CREATE TABLE Mst_Merk(
+  Merk_ID autoincrement,
+  Merk varchar,
+  PRIMARY KEY (Mst_Merk) 
+);
+
+CREATE TABLE Point_Maping(
+  Code_ID integer,
+  Root_ID integer
+);
+
+CREATE TABLE Mst_Master (
+  Mst_ID autoincrement,
+  Mst_Tipe integer,
+  Mst_Code varchar,
+  Mst_Name varchar,
+  Alamat varchar,
+  phone varchar,
+  PRIMARY KEY  (Mst_ID)
+);
+
+CREATE TABLE Mst_Akun (
+  Akun_ID autoincrement,
+  Tipe integer,
+  Kode varchar,
+  Nama varchar,
+  CONSTRAINT PK_ITEM PRIMARY KEY (Akun_ID),
+);
+
+CREATE TABLE Mst_Item (
+  Item_ID autoincrement,
+  Item_Code varchar,
+  Barcode varchar,
+  Item_Name varchar,
+  Struk_Name varchar,
+  Merk varchar,
+  Specification integer,
+  Vendor_ID integer,
+  Current_Stock double,
+  Avg_Price double,
+  Disabled_Date Date,
+  Produsen_ID integer,
+  Kemasan_ID integer,
+  BKP integer,
+  Konsinyasi integer,
+  Dosis double,
+  Expire_Date date,
+  Kategori integer,
+  Item_Type integer,
+  CONSTRAINT PK_ITEM PRIMARY KEY (Item_ID),
+  CONSTRAINT FK_ITEM FOREIGN KEY (Specification) REFERENCES Mst_Code(Code_ID)
+);
+
+CREATE TABLE Mst_Item_Conversion (
+  Conv_ID autoincrement,
+  Item_ID integer,
+  Unit_ID integer,
+  Conversion double,
+  Purchase_Price double,
+  Sales_Price double,
+  Sales_Price2 double,
+  Sales_Price3 double,
+  Cost_Price double,
+  Item_Tax double,
+  Item_Discount double,
+  Disc_Tipe integer,
+  Net_Price double,
+  CONSTRAINT PK_CONV PRIMARY KEY(Conv_ID),
+  CONSTRAINT FK_CONV FOREIGN KEY(Unit_ID) REFERENCES Mst_Master(Mst_ID)
+);
+  
+CREATE TABLE Mst_Paket (
+  Paket_ID autoincrement,
+  Kode varchar,
+  Barcode varchar,
+  Nama varchar,
+  Nama_Struk varchar,
+  Unit_ID integer,
+  Harga_Dasar double,
+  Harga_Jual double,
+  Gudang_ID integer,
+  Disabled_Date Date,
+  CONSTRAINT PK_ITEM PRIMARY KEY (Paket_ID)  
+);
+
+CREATE TABLE Mst_Paket_Item (
+  Paket_Item_ID autoincrement,
+  Paket_ID integer,
+  Item_ID integer,
+  Conv_ID integer,
+  Qty double,
+  Conversion double,
+  Harga double,
+  Discount double,
+  Hrg_Dasar double,
+  CONSTRAINT PK_CONV PRIMARY KEY(Paket_Item_ID)
+);  
+  
+CREATE TABLE Mst_Item_Setting (
+  Sett_ID autoincrement,
+  Jenis_ID integer,
+  Item_ID integer,
+  Conv_ID integer,
+  Batas_Bawah double,
+  Batas_Atas double,
+  Nilai double,
+  Faktor integer,
+  Aktif integer,
+  CONSTRAINT PK_CONV PRIMARY KEY(Sett_ID)
+);  
+
+CREATE TABLE Mst_Relation (
+  Relation_ID autoincrement,
+  Relation_Type integer,
+  Relation_Code varchar,
+  Relation_Name varchar,
+  Address1 varchar,
+  Address2 varchar,
+  City varchar,
+  PostCode varchar,
+  Phone1 varchar,
+  Phone2 varchar,
+  Contact_Person varchar,
+  Due_Date integer,
+  Current_Debt double,
+  Disabled_Date Date,
+  Current_Point double,
+  Fax varchar,
+  NPWP varchar,
+  PRIMARY KEY  (Relation_ID)
+);
+
+CREATE TABLE Mst_Pasien (
+  Pasien_ID autoincrement,
+  Kode varchar,
+  Nama varchar,
+  Alamat varchar,
+  Kota varchar,
+  Phone varchar,
+  Sex integer,
+  Tgl_Lahir Date,
+  Card_ID varchar,
+  PRIMARY KEY  (Pasien_ID)
+);
+
+CREATE TABLE Mst_Dokter (
+  Dokter_ID autoincrement,
+  Kode varchar,
+  Nama varchar,
+  Alamat varchar,
+  klinik varchar,
+  Kontak varchar,
+  Email varchar,
+  Last_Transfer Date,
+  item_id integer,
+  spesialis varchar,
+  PRIMARY KEY (Dokter_ID)
+);
+
+CREATE TABLE Inv_Item_Balance (
+  Item_Balance_ID autoincrement,
+  Item_ID integer,
+  Balance_Date date,
+  Storage_ID integer,
+  Balance double,
+  PRIMARY KEY (Item_Balance_ID)
+);
+
+CREATE TABLE Inv_Cashier_Balance (
+  Cashier_Balance_ID autoincrement,
+  Cashier_ID integer,
+  Shift_ID integer,
+  User_ID varchar,
+  Balance_Date date,
+  Balance double,
+  PRIMARY KEY (Cashier_Balance_ID)
+);
+
+CREATE TABLE Trs_Shipment_Mst (
+  Ship_ID autoincrement,
+  Tipe integer,
+  Trans_Num varchar,
+  Trans_Date date,
+  Gudang_Asal integer,
+  Gudang_Tujuan integer,
+  Notes varchar,
+  User_ID varchar,
+  PRIMARY KEY (Shipment_ID)
+);
+
+CREATE TABLE Trs_Shipment_Detail (
+  Ship_Detail_ID autoincrement,
+  Ship_ID integer,
+  Item_ID integer,
+  Conv_ID integer,
+  Quantity double,
+  Price_Sales double,
+  Price_Purchase double,
+  Price_Cost double,
+  Conversion double,
+  DbCrType varchar,
+  Hrg_Beli double,
+  CONSTRAINT PK_SHIP PRIMARY KEY(Ship_Detail_ID),
+  CONSTRAINT FK_ITEM FOREIGN KEY(Item_ID) REFERENCES Mst_Item(Item_ID),
+  CONSTRAINT FK_CONV FOREIGN KEY(Conv_ID) REFERENCES Mst_Item_Conversion(Conv_ID)
+);
+
+CREATE TABLE Trs_Sales_Mst (
+  Sales_ID autoincrement,
+  Trans_Num varchar,
+  Trans_Type integer,
+  Trans_Date date,
+  Cashier_ID integer,
+  Gudang_ID integer,
+  Subtotal double,
+  Disc_Mst double,
+  Disc_Val_Mst double,
+  Tax double,
+  Total double,
+  Cash double,
+  User_ID varchar,
+  profit double,
+  Pasien_ID integer,
+  Points integer,
+  Disc_Detail double,
+  Real_Amount double,
+  Dokter_ID integer,
+  No_Resep varchar,
+  Cara_Bayar integer,
+  Card_ID varchar,
+  Bank varchar,
+  Embalase double,
+  PRIMARY KEY (Sales_ID)
+);
+
+CREATE TABLE Trs_Sales_Detail (
+  Sales_Detail_ID autoincrement,
+  Sales_ID integer,
+  Item_ID integer,
+  Conv_ID integer,
+  Quantity double,
+  Price double,
+  Disc double,
+  Disc_Val double,
+  Amount double,
+  Conversion double,
+  Price_Purchase double,
+  Amount_Profit double,
+  Points integer,
+  Paket_ID integer,
+  Conv_Bonus_ID integer,
+  Qty_Bonus double,
+  Conv_Bonus double,
+  Hrg_Beli double,
+  CONSTRAINT PK_Sales_Detail PRIMARY KEY  (Sales_Detail_ID),
+  CONSTRAINT FK_ITEM_Sales FOREIGN KEY(Item_ID) REFERENCES Mst_Item(Item_ID),
+  CONSTRAINT FK_CONV_Sales FOREIGN KEY(Conv_ID) REFERENCES Mst_Item_Conversion(Conv_ID)
+);
+
+CREATE TABLE Trs_Order_Mst (
+  Order_ID autoincrement,
+  Trans_Num varchar,
+  Trans_Type integer,
+  Trans_Date date,
+  Delivery_Date date,
+  Expr_Date date,
+  Relation_ID integer,
+  Subtotal double,
+  Disc_Detail double,
+  Disc_Mst double,
+  Tax double,
+  Total double,
+  Notes varchar,
+  User_ID varchar,
+  Status_ID integer,
+  Dpp_Disc2 integer,
+  Pay_Term integer,
+  CONSTRAINT PK_Order PRIMARY KEY  (Order_ID),
+  CONSTRAINT FK_ITEM_Order FOREIGN KEY(Relation_ID) REFERENCES Mst_Relation(Relation_ID)
+);
+
+CREATE TABLE Trs_Order_Detail (
+  Order_Detail_ID autoincrement,
+  Order_ID integer,
+  Item_ID integer,
+  Conv_ID integer,
+  Quantity double,
+  Price double,
+  Disc double,
+  Amount double,
+  Conversion double,
+  Tax double,
+  Disc_Is_Prc integer,
+  CONSTRAINT PK_Order_Detail PRIMARY KEY  (Order_Detail_ID),
+  CONSTRAINT FK_ITEM_Order FOREIGN KEY(Item_ID) REFERENCES Mst_Item(Item_ID),
+  CONSTRAINT FK_CONV_Order FOREIGN KEY(Conv_ID) REFERENCES Mst_Item_Conversion(Conv_ID)
+);
+
+CREATE TABLE Trs_Receipt_Mst (
+  Receipt_ID autoincrement,
+  Trans_Num varchar,
+  Tipe integer,
+  Trans_Date date,
+  Expr_Date date,
+  Relation_ID integer,
+  Order_ID integer,
+  Inv_ID integer,
+  Gudang_ID integer,
+  Subtotal double,
+  Disc_Detail double,
+  Disc_Mst double,
+  Tax double,
+  Biaya double,
+  Materai double,
+  Total double,
+  Notes varchar,
+  User_ID varchar,
+  Status_ID integer,
+  Dpp_Disc2 integer,
+  CONSTRAINT PK_Order PRIMARY KEY (Receipt_ID)
+);
+
+CREATE TABLE Trs_Receipt_Detail (
+  Receipt_Detail_ID autoincrement,
+  Receipt_ID integer,
+  Item_ID integer,
+  Conv_ID integer,
+  Conv_Bonus_ID double,
+  Quantity double,
+  Qty_Bonus double,
+  Price double,
+  Amount double,
+  Disc1 double,
+  Disc2 double,
+  Disc3 double,
+  Conversion double,
+  Conv_Bonus double,
+  Tax double,
+  Disc1_Is_Prc integer,
+  Disc2_Is_Prc integer,
+  Disc3_Is_Prc integer,
+  CONSTRAINT PK_Order_Detail PRIMARY KEY (Receipt_Detail_ID)
+);
+
+CREATE TABLE Trs_Retur_Mst (
+  Retur_ID autoincrement,
+  Trans_Num varchar,
+  Tipe integer,
+  Trans_Date date,
+  Relation_ID integer,
+  Inv_ID integer,
+  Gudang_ID integer,
+  Subtotal double,
+  Discount double,
+  Tax double,
+  Biaya double,
+  Materai double,
+  Total double,
+  Notes varchar,
+  User_ID varchar,
+  Status_ID integer,
+  CONSTRAINT PK_Order PRIMARY KEY (Retur_ID)
+);
+
+CREATE TABLE Trs_Retur_Detail (
+  Retur_Detail_ID autoincrement,
+  Retur_ID integer,
+  Faktur_ID integer,
+  Item_ID integer,
+  Conv_ID integer,
+  Quantity double,
+  Price double,
+  Amount double,
+  Conversion double,
+  Tax double,
+  Disc double,
+  Disc_Is_Prc integer,
+  CONSTRAINT PK_Order_Detail PRIMARY KEY (Retur_Detail_ID)
+);
+
+CREATE TABLE Trs_Payment_Mst (
+  Payment_ID autoincrement,
+  Trans_Num varchar,
+  Tipe integer,
+  Trans_Date date,
+  Relation_ID integer,
+  Inv_ID integer,
+  
+  Subtotal double,
+  Discount double,
+  Biaya double,
+  Total double,
+  Notes varchar,
+  User_ID varchar,
+  Status_ID integer,
+  CONSTRAINT PK_Order PRIMARY KEY (Payment_ID)
+);
+
+CREATE TABLE Trs_Payment_Detail (
+  Pay_Detail_ID autoincrement,
+  Payment_ID integer,
+  Jenis_Bayar integer,
+  Amount double,
+  Bank varchar,
+  Dok_Num varchar,
+  Tgl_Cair date,
+  CONSTRAINT PK_Order_Detail PRIMARY KEY (Pay_Detail_ID)
+);
+
+CREATE TABLE Trs_Payment_Akun (
+  Pay_Akun_ID autoincrement,
+  Payment_ID integer,
+  Akun_ID integer,
+  Amount double,
+  CONSTRAINT PK_Order_Detail PRIMARY KEY (Pay_Akun_ID)
+);
+
+CREATE TABLE Trs_Debt_Adjustment (
+  Adj_ID autoincrement,
+  Trans_Date date,
+  Relation_ID integer,
+  Amount double,
+  User_ID varchar,
+  CONSTRAINT PK_Order PRIMARY KEY (Adj_ID)
+);
+
+CREATE TABLE Mst_Produk (
+  Produk_ID autoincrement,
+  Jns_Produk integer,
+  Berlaku integer,
+  Periode_Awal date,
+  Periode_Akhir date,
+  Faktor integer,
+  Aktif integer,
+  CONSTRAINT PK_Order PRIMARY KEY (Produk_ID)
+);
+
+CREATE TABLE Mst_Produk_Rule (
+  Rule_ID autoincrement,
+  Produk_ID integer,
+  Faktor_ID integer,
+  Batas_Minimal double,
+  Nilai double,
+  Disc_Prc double,
+  
+  CONSTRAINT PK_Order PRIMARY KEY (Rule_ID)
+);
+
+CREATE TABLE Mst_Produk_Item (
+  Prod_Item_ID autoincrement,
+  Rule_ID integer,
+  Item_ID integer,
+  CONSTRAINT PK_Order PRIMARY KEY (Prod_Item_ID)
+);
+
+CREATE TABLE Mst_Rak_Item (
+  Rak_ID integer,
+  Item_ID integer
+);

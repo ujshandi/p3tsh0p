@@ -1,0 +1,396 @@
+<TableName=Mst_Code>
+  <FieldName=Code_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Code_Name><DataType=String(0)>
+  <FieldName=Parent_ID><DataType=Integer>
+  <FieldName=Parent_Name><DataType=String(0)>
+  <FieldName=Level><DataType=Integer>
+  <FieldName=Urut><DataType=Integer>
+  <FieldName=Kode><DataType=String(0)>
+
+<TableName=Mst_Merk>
+  <FieldName=Merk_ID><DataType=Sequence>
+  <FieldName=Merk><DataType=String(0)>
+
+<TableName=Point_Maping>
+  <FieldName=Code_ID><DataType=Integer>
+  <FieldName=Root_ID><DataType=Integer>
+
+<TableName=Mst_Master>
+  <FieldName=Mst_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Mst_Tipe><DataType=Integer>
+  <FieldName=Mst_Code><DataType=String(0)>
+  <FieldName=Mst_Name><DataType=String(0)>
+  <FieldName=Alamat><DataType=String(0)>
+  <FieldName=phone><DataType=String(0)>
+
+<TableName=Mst_Akun>
+  <FieldName=Akun_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Tipe><DataType=Integer>
+  <FieldName=Kode><DataType=String(0)>
+  <FieldName=Nama><DataType=String(0)>
+
+<TableName=Mst_Item>
+  <FieldName=Item_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Item_Code><DataType=String(0)>
+  <FieldName=Barcode><DataType=String(0)>
+  <FieldName=Item_Name><DataType=String(0)>
+  <FieldName=Struk_Name><DataType=String(0)>
+  <FieldName=Merk><DataType=String(0)>
+  <FieldName=Specification><DataType=Integer><Reference=Code_ID(0)>
+  <FieldName=Vendor_ID><DataType=Integer>
+  <FieldName=Current_Stock><DataType=Float>
+  <FieldName=Avg_Price><DataType=Float>
+  <FieldName=Disabled_Date><DataType=Date>
+  <FieldName=Produsen_ID><DataType=Integer>
+  <FieldName=Kemasan_ID><DataType=Integer>
+  <FieldName=BKP><DataType=Integer>
+  <FieldName=Konsinyasi><DataType=Integer>
+  <FieldName=Dosis><DataType=Float>
+  <FieldName=Expire_Date><DataType=Date>
+  <FieldName=Kategori><DataType=Integer>
+  <FieldName=Item_Type><DataType=Integer>
+
+<TableName=Mst_Item_Conversion>
+  <FieldName=Conv_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Item_ID><DataType=Integer>
+  <FieldName=Unit_ID><DataType=Integer><Reference=Mst_ID(0)>
+  <FieldName=Conversion><DataType=Float>
+  <FieldName=Purchase_Price><DataType=Float>
+  <FieldName=Sales_Price><DataType=Float>
+  <FieldName=Sales_Price2><DataType=Float>
+  <FieldName=Sales_Price3><DataType=Float>
+  <FieldName=Cost_Price><DataType=Float>
+  <FieldName=Item_Tax><DataType=Float>
+  <FieldName=Item_Discount><DataType=Float>
+  <FieldName=Disc_Tipe><DataType=Integer>
+  <FieldName=Net_Price><DataType=Float>
+
+<TableName=Mst_Paket>
+  <FieldName=Paket_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Kode><DataType=String(0)>
+  <FieldName=Barcode><DataType=String(0)>
+  <FieldName=Nama><DataType=String(0)>
+  <FieldName=Nama_Struk><DataType=String(0)>
+  <FieldName=Unit_ID><DataType=Integer>
+  <FieldName=Harga_Dasar><DataType=Float>
+  <FieldName=Harga_Jual><DataType=Float>
+  <FieldName=Gudang_ID><DataType=Integer>
+  <FieldName=Disabled_Date><DataType=Date>
+
+<TableName=Mst_Paket_Item>
+  <FieldName=Paket_Item_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Paket_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer>
+  <FieldName=Conv_ID><DataType=Integer>
+  <FieldName=Qty><DataType=Float>
+  <FieldName=Conversion><DataType=Float>
+  <FieldName=Harga><DataType=Float>
+  <FieldName=Discount><DataType=Float>
+  <FieldName=Hrg_Dasar><DataType=Float>
+
+<TableName=Mst_Item_Setting>
+  <FieldName=Sett_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Jenis_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer>
+  <FieldName=Conv_ID><DataType=Integer>
+  <FieldName=Batas_Bawah><DataType=Float>
+  <FieldName=Batas_Atas><DataType=Float>
+  <FieldName=Nilai><DataType=Float>
+  <FieldName=Faktor><DataType=Integer>
+  <FieldName=Aktif><DataType=Integer>
+
+<TableName=Mst_Relation>
+  <FieldName=Relation_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Relation_Type><DataType=Integer>
+  <FieldName=Relation_Code><DataType=String(0)>
+  <FieldName=Relation_Name><DataType=String(0)>
+  <FieldName=Address1><DataType=String(0)>
+  <FieldName=Address2><DataType=String(0)>
+  <FieldName=City><DataType=String(0)>
+  <FieldName=PostCode><DataType=String(0)>
+  <FieldName=Phone1><DataType=String(0)>
+  <FieldName=Phone2><DataType=String(0)>
+  <FieldName=Contact_Person><DataType=String(0)>
+  <FieldName=Due_Date><DataType=Integer>
+  <FieldName=Current_Debt><DataType=Float>
+  <FieldName=Disabled_Date><DataType=Date>
+  <FieldName=Current_Point><DataType=Float>
+  <FieldName=Fax><DataType=String(0)>
+  <FieldName=NPWP><DataType=String(0)>
+
+<TableName=Mst_Pasien>
+  <FieldName=Pasien_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Kode><DataType=String(0)>
+  <FieldName=Nama><DataType=String(0)>
+  <FieldName=Alamat><DataType=String(0)>
+  <FieldName=Kota><DataType=String(0)>
+  <FieldName=Phone><DataType=String(0)>
+  <FieldName=Sex><DataType=Integer>
+  <FieldName=Tgl_Lahir><DataType=Date>
+  <FieldName=Card_ID><DataType=String(0)>
+
+<TableName=Mst_Dokter>
+  <FieldName=Dokter_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Kode><DataType=String(0)>
+  <FieldName=Nama><DataType=String(0)>
+  <FieldName=Alamat><DataType=String(0)>
+  <FieldName=klinik><DataType=String(0)>
+  <FieldName=Kontak><DataType=String(0)>
+  <FieldName=Email><DataType=String(0)>
+  <FieldName=Last_Transfer><DataType=Date>
+  <FieldName=item_id><DataType=Integer>
+  <FieldName=spesialis><DataType=String(0)>
+
+<TableName=Inv_Item_Balance>
+  <FieldName=Item_Balance_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Item_ID><DataType=Integer>
+  <FieldName=Balance_Date><DataType=Date>
+  <FieldName=Storage_ID><DataType=Integer>
+  <FieldName=Balance><DataType=Float>
+
+<TableName=Inv_Cashier_Balance>
+  <FieldName=Cashier_Balance_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Cashier_ID><DataType=Integer>
+  <FieldName=Shift_ID><DataType=Integer>
+  <FieldName=User_ID><DataType=String(0)>
+  <FieldName=Balance_Date><DataType=Date>
+  <FieldName=Balance><DataType=Float>
+
+<TableName=Trs_Shipment_Mst>
+  <FieldName=Ship_ID><DataType=Sequence>
+  <FieldName=Tipe><DataType=Integer>
+  <FieldName=Trans_Num><DataType=String(0)>
+  <FieldName=Trans_Date><DataType=Date>
+  <FieldName=Gudang_Asal><DataType=Integer>
+  <FieldName=Gudang_Tujuan><DataType=Integer>
+  <FieldName=Notes><DataType=String(0)>
+  <FieldName=User_ID><DataType=String(0)>
+
+<TableName=Trs_Shipment_Detail>
+  <FieldName=Ship_Detail_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Ship_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer><Reference=Item_ID(0)>
+  <FieldName=Conv_ID><DataType=Integer><Reference=Conv_ID(1)>
+  <FieldName=Quantity><DataType=Float>
+  <FieldName=Price_Sales><DataType=Float>
+  <FieldName=Price_Purchase><DataType=Float>
+  <FieldName=Price_Cost><DataType=Float>
+  <FieldName=Conversion><DataType=Float>
+  <FieldName=DbCrType><DataType=String(0)>
+  <FieldName=Hrg_Beli><DataType=Float>
+
+<TableName=Trs_Sales_Mst>
+  <FieldName=Sales_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Trans_Num><DataType=String(0)>
+  <FieldName=Trans_Type><DataType=Integer>
+  <FieldName=Trans_Date><DataType=Date>
+  <FieldName=Cashier_ID><DataType=Integer>
+  <FieldName=Gudang_ID><DataType=Integer>
+  <FieldName=Subtotal><DataType=Float>
+  <FieldName=Disc_Mst><DataType=Float>
+  <FieldName=Disc_Val_Mst><DataType=Float>
+  <FieldName=Tax><DataType=Float>
+  <FieldName=Total><DataType=Float>
+  <FieldName=Cash><DataType=Float>
+  <FieldName=User_ID><DataType=String(0)>
+  <FieldName=profit><DataType=Float>
+  <FieldName=Pasien_ID><DataType=Integer>
+  <FieldName=Points><DataType=Integer>
+  <FieldName=Disc_Detail><DataType=Float>
+  <FieldName=Real_Amount><DataType=Float>
+  <FieldName=Dokter_ID><DataType=Integer>
+  <FieldName=No_Resep><DataType=String(0)>
+  <FieldName=Cara_Bayar><DataType=Integer>
+  <FieldName=Card_ID><DataType=String(0)>
+  <FieldName=Bank><DataType=String(0)>
+  <FieldName=Embalase><DataType=Float>
+
+<TableName=Trs_Sales_Detail>
+  <FieldName=Sales_Detail_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Sales_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer><Reference=Item_ID(0)>
+  <FieldName=Conv_ID><DataType=Integer><Reference=Conv_ID(1)>
+  <FieldName=Quantity><DataType=Float>
+  <FieldName=Price><DataType=Float>
+  <FieldName=Disc><DataType=Float>
+  <FieldName=Disc_Val><DataType=Float>
+  <FieldName=Amount><DataType=Float>
+  <FieldName=Conversion><DataType=Float>
+  <FieldName=Price_Purchase><DataType=Float>
+  <FieldName=Amount_Profit><DataType=Float>
+  <FieldName=Points><DataType=Integer>
+  <FieldName=Paket_ID><DataType=Integer>
+  <FieldName=Conv_Bonus_ID><DataType=Integer>
+  <FieldName=Qty_Bonus><DataType=Float>
+  <FieldName=Conv_Bonus><DataType=Float>
+  <FieldName=Hrg_Beli><DataType=Float>
+
+<TableName=Trs_Order_Mst>
+  <FieldName=Order_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Trans_Num><DataType=String(0)>
+  <FieldName=Trans_Type><DataType=Integer>
+  <FieldName=Trans_Date><DataType=Date>
+  <FieldName=Delivery_Date><DataType=Date>
+  <FieldName=Expr_Date><DataType=Date>
+  <FieldName=Relation_ID><DataType=Integer><Reference=Relation_ID(0)>
+  <FieldName=Subtotal><DataType=Float>
+  <FieldName=Disc_Detail><DataType=Float>
+  <FieldName=Disc_Mst><DataType=Float>
+  <FieldName=Tax><DataType=Float>
+  <FieldName=Total><DataType=Float>
+  <FieldName=Notes><DataType=String(0)>
+  <FieldName=User_ID><DataType=String(0)>
+  <FieldName=Status_ID><DataType=Integer>
+  <FieldName=Dpp_Disc2><DataType=Integer>
+  <FieldName=Pay_Term><DataType=Integer>
+
+<TableName=Trs_Order_Detail>
+  <FieldName=Order_Detail_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Order_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer><Reference=Item_ID(0)>
+  <FieldName=Conv_ID><DataType=Integer><Reference=Conv_ID(1)>
+  <FieldName=Quantity><DataType=Float>
+  <FieldName=Price><DataType=Float>
+  <FieldName=Disc><DataType=Float>
+  <FieldName=Amount><DataType=Float>
+  <FieldName=Conversion><DataType=Float>
+  <FieldName=Tax><DataType=Float>
+  <FieldName=Disc_Is_Prc><DataType=Integer>
+
+<TableName=Trs_Receipt_Mst>
+  <FieldName=Receipt_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Trans_Num><DataType=String(0)>
+  <FieldName=Tipe><DataType=Integer>
+  <FieldName=Trans_Date><DataType=Date>
+  <FieldName=Expr_Date><DataType=Date>
+  <FieldName=Relation_ID><DataType=Integer>
+  <FieldName=Order_ID><DataType=Integer>
+  <FieldName=Inv_ID><DataType=Integer>
+  <FieldName=Gudang_ID><DataType=Integer>
+  <FieldName=Subtotal><DataType=Float>
+  <FieldName=Disc_Detail><DataType=Float>
+  <FieldName=Disc_Mst><DataType=Float>
+  <FieldName=Tax><DataType=Float>
+  <FieldName=Biaya><DataType=Float>
+  <FieldName=Materai><DataType=Float>
+  <FieldName=Total><DataType=Float>
+  <FieldName=Notes><DataType=String(0)>
+  <FieldName=User_ID><DataType=String(0)>
+  <FieldName=Status_ID><DataType=Integer>
+  <FieldName=Dpp_Disc2><DataType=Integer>
+
+<TableName=Trs_Receipt_Detail>
+  <FieldName=Receipt_Detail_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Receipt_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer>
+  <FieldName=Conv_ID><DataType=Integer>
+  <FieldName=Conv_Bonus_ID><DataType=Float>
+  <FieldName=Quantity><DataType=Float>
+  <FieldName=Qty_Bonus><DataType=Float>
+  <FieldName=Price><DataType=Float>
+  <FieldName=Amount><DataType=Float>
+  <FieldName=Disc1><DataType=Float>
+  <FieldName=Disc2><DataType=Float>
+  <FieldName=Disc3><DataType=Float>
+  <FieldName=Conversion><DataType=Float>
+  <FieldName=Conv_Bonus><DataType=Float>
+  <FieldName=Tax><DataType=Float>
+  <FieldName=Disc1_Is_Prc><DataType=Integer>
+  <FieldName=Disc2_Is_Prc><DataType=Integer>
+  <FieldName=Disc3_Is_Prc><DataType=Integer>
+
+<TableName=Trs_Retur_Mst>
+  <FieldName=Retur_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Trans_Num><DataType=String(0)>
+  <FieldName=Tipe><DataType=Integer>
+  <FieldName=Trans_Date><DataType=Date>
+  <FieldName=Relation_ID><DataType=Integer>
+  <FieldName=Inv_ID><DataType=Integer>
+  <FieldName=Gudang_ID><DataType=Integer>
+  <FieldName=Subtotal><DataType=Float>
+  <FieldName=Discount><DataType=Float>
+  <FieldName=Tax><DataType=Float>
+  <FieldName=Biaya><DataType=Float>
+  <FieldName=Materai><DataType=Float>
+  <FieldName=Total><DataType=Float>
+  <FieldName=Notes><DataType=String(0)>
+  <FieldName=User_ID><DataType=String(0)>
+  <FieldName=Status_ID><DataType=Integer>
+
+<TableName=Trs_Retur_Detail>
+  <FieldName=Retur_Detail_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Retur_ID><DataType=Integer>
+  <FieldName=Faktur_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer>
+  <FieldName=Conv_ID><DataType=Integer>
+  <FieldName=Quantity><DataType=Float>
+  <FieldName=Price><DataType=Float>
+  <FieldName=Amount><DataType=Float>
+  <FieldName=Conversion><DataType=Float>
+  <FieldName=Tax><DataType=Float>
+  <FieldName=Disc><DataType=Float>
+  <FieldName=Disc_Is_Prc><DataType=Integer>
+
+<TableName=Trs_Payment_Mst>
+  <FieldName=Payment_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Trans_Num><DataType=String(0)>
+  <FieldName=Tipe><DataType=Integer>
+  <FieldName=Trans_Date><DataType=Date>
+  <FieldName=Relation_ID><DataType=Integer>
+  <FieldName=Inv_ID><DataType=Integer>
+  <FieldName=Subtotal><DataType=Float>
+  <FieldName=Discount><DataType=Float>
+  <FieldName=Biaya><DataType=Float>
+  <FieldName=Total><DataType=Float>
+  <FieldName=Notes><DataType=String(0)>
+  <FieldName=User_ID><DataType=String(0)>
+  <FieldName=Status_ID><DataType=Integer>
+
+<TableName=Trs_Payment_Detail>
+  <FieldName=Pay_Detail_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Payment_ID><DataType=Integer>
+  <FieldName=Jenis_Bayar><DataType=Integer>
+  <FieldName=Amount><DataType=Float>
+  <FieldName=Bank><DataType=String(0)>
+  <FieldName=Dok_Num><DataType=String(0)>
+  <FieldName=Tgl_Cair><DataType=Date>
+
+<TableName=Trs_Payment_Akun>
+  <FieldName=Pay_Akun_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Payment_ID><DataType=Integer>
+  <FieldName=Akun_ID><DataType=Integer>
+  <FieldName=Amount><DataType=Float>
+
+<TableName=Trs_Debt_Adjustment>
+  <FieldName=Adj_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Trans_Date><DataType=Date>
+  <FieldName=Relation_ID><DataType=Integer>
+  <FieldName=Amount><DataType=Float>
+  <FieldName=User_ID><DataType=String(0)>
+
+<TableName=Mst_Produk>
+  <FieldName=Produk_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Jns_Produk><DataType=Integer>
+  <FieldName=Berlaku><DataType=Integer>
+  <FieldName=Periode_Awal><DataType=Date>
+  <FieldName=Periode_Akhir><DataType=Date>
+  <FieldName=Faktor><DataType=Integer>
+  <FieldName=Aktif><DataType=Integer>
+
+<TableName=Mst_Produk_Rule>
+  <FieldName=Rule_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Produk_ID><DataType=Integer>
+  <FieldName=Faktor_ID><DataType=Integer>
+  <FieldName=Batas_Minimal><DataType=Float>
+  <FieldName=Nilai><DataType=Float>
+  <FieldName=Disc_Prc><DataType=Float>
+
+<TableName=Mst_Produk_Item>
+  <FieldName=Prod_Item_ID><DataType=Sequence><PrimaryKey>
+  <FieldName=Rule_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer>
+
+<TableName=Mst_Rak_Item>
+  <FieldName=Rak_ID><DataType=Integer>
+  <FieldName=Item_ID><DataType=Integer>
+
