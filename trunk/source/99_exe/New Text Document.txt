@@ -1,0 +1,32 @@
+Error Report
+APOTEK Ela FARMA
+
+~ Cashier ~
+1. [DONE] Dosis tidak masuk ke FORM Cashier
+2. [DONE] Kapsul unit_id error
+
+~ Resep Plus ~
+~ Data
+Item
+1. [DONE] jika di form utama di clik ctrl + S, keluar informasi "Barcode belum dipilih", setelah di OK, keluar error "Cannot focus a disabled or invisible window" dan jika input baru dgn ctrl + N keluar error "Cannot focus a disabled or invisible window" di Daftar Obat (210)
+2. [DONE] jika di form utama di clik ctrl + S, keluar informasi "Barcode belum dipilih", setelah di OK, keluar error "Cannot focus a disabled or invisible window" dan jika input baru dgn ctrl + N keluar error "Cannot focus a disabled or invisible window" di Daftar Racikan (211)
+
+Relasi
+1. [DONE] form input/edit masih bisa resize
+2. [DONE] Update Data Gagal di RELASI (pasien & dokter)
+3. [DONE] Kodenya berubah ketika data di edit di RELASI (pasien & dokter)
+4. [DONE] jika input baru dgn ctrl + N keluar error "Cannot focus a disabled or invisible window" di Daftar Dokter (222)
+5. [DONE] jika di form utama di clik ctrl + S, keluar informasi "Nama belum dipilih", setelah di OK, keluar error "Cannot focus a disabled or invisible window" di Daftar Pasien (221)
+
+~ Laporan
+Report
+1. [DONE] di Laporan Penjualan 2 (502) untuk obat yang akan di tampilkan pada grid tidak tampil, setelah di Reload keluar warning SQL ERROR
+
+
+
+RECOMAND
+1. [DONE] Form2 lookUp harusnya jika data blm di load, captions di headernya tetap tampil..
+2. Icon2 sesuaikan dgn topik aplikasi
+3. [DONE] format tanggal (INA Format) -> hrs di ganti dari Reg. Settings
+4. [DONE] Tombol2 di cashier yang tdk terpakai mohon di hilangkan..
+5. ganti banner

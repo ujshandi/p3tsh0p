@@ -1,0 +1,72 @@
+object frmLookup: TfrmLookup
+  Left = 240
+  Top = 181
+  BorderStyle = bsDialog
+  Caption = 'Lookup Data'
+  ClientHeight = 372
+  ClientWidth = 523
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnShow = FormShow
+  DesignSize = (
+    523
+    372)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object AdvEdit1: TAdvEdit
+    Left = 8
+    Top = 4
+    Width = 509
+    Height = 21
+    AutoFocus = False
+    EditAlign = eaLeft
+    EditType = etString
+    ErrorColor = clRed
+    ErrorFontColor = clWhite
+    ExcelStyleDecimalSeparator = False
+    Flat = False
+    FlatLineColor = clBlack
+    FlatParentColor = True
+    FocusAlign = eaDefault
+    FocusBorder = False
+    FocusColor = clWindow
+    FocusFontColor = clWindowText
+    FocusLabel = False
+    FocusWidthInc = 0
+    ModifiedColor = clHighlight
+    DisabledColor = clSilver
+    URLColor = clBlue
+    ReturnIsTab = False
+    LengthLimit = 0
+    TabOnFullLength = False
+    Precision = 0
+    LabelPosition = lpLeftTop
+    LabelMargin = 4
+    LabelTransparent = False
+    LabelAlwaysEnabled = False
+    LabelFont.Charset = DEFAULT_CHARSET
+    LabelFont.Color = clWindowText
+    LabelFont.Height = -11
+    LabelFont.Name = 'MS Sans Serif'
+    LabelFont.Style = []
+    Persistence.Enable = False
+    Persistence.Location = plInifile
+    Anchors = [akLeft, akTop, akRight]
+    Color = clWindow
+    Enabled = True
+    HintShowLargeText = False
+    OleDropTarget = False
+    OleDropSource = False
+    Signed = False
+    TabOrder = 0
+    Transparent = False
+    Visible = True
+    OnKeyDown = AdvEdit1KeyDown
+  end
+end
