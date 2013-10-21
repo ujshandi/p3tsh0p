@@ -18,9 +18,9 @@ object frmMstKaryawanList: TfrmMstKaryawanList
   TextHeight = 13
   object suiPanel1: TsuiPanel
     Left = 768
-    Top = 145
+    Top = 120
     Width = 0
-    Height = 302
+    Height = 327
     UIStyle = DeepBlue
     BorderColor = clBlack
     Font.Charset = ANSI_CHARSET
@@ -38,7 +38,7 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       Left = 4
       Top = 24
       Width = 241
-      Height = 274
+      Height = 299
       Cursor = crDefault
       Align = alClient
       ColCount = 1
@@ -215,7 +215,7 @@ object frmMstKaryawanList: TfrmMstKaryawanList
     Left = 0
     Top = 41
     Width = 768
-    Height = 104
+    Height = 79
     UIStyle = DeepBlue
     BorderColor = clBlack
     Font.Charset = ANSI_CHARSET
@@ -229,11 +229,10 @@ object frmMstKaryawanList: TfrmMstKaryawanList
     Align = alTop
     TabOrder = 1
     Color = clWhite
-    Visible = False
     PopupMenu = frmMainMenu.MenuShortCut
     object Label1: TLabel
-      Left = 474
-      Top = 34
+      Left = 250
+      Top = 30
       Width = 38
       Height = 13
       Caption = 'Status :'
@@ -246,6 +245,7 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       AutoFocus = False
       EditAlign = eaLeft
       EditType = etString
+      EmptyText = 'Semua Jabatan'
       ErrorColor = clRed
       ErrorFontColor = clWhite
       ExcelStyleDecimalSeparator = False
@@ -265,7 +265,7 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       LengthLimit = 0
       TabOnFullLength = False
       Precision = 0
-      LabelCaption = 'Spec Obat :'
+      LabelCaption = 'Jabatan :'
       LabelPosition = lpLeftTop
       LabelMargin = 2
       LabelTransparent = False
@@ -304,14 +304,14 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       OnClick = Button1Click
     end
     object cmbStatus: TComboBox
-      Left = 522
-      Top = 34
-      Width = 63
+      Left = 290
+      Top = 28
+      Width = 77
       Height = 21
       Style = csDropDownList
       ItemHeight = 13
       ItemIndex = 2
-      TabOrder = 6
+      TabOrder = 3
       Text = 'Tdk Aktif'
       Items.Strings = (
         'Semua'
@@ -319,13 +319,14 @@ object frmMstKaryawanList: TfrmMstKaryawanList
         'Tdk Aktif')
     end
     object txtNama: TAdvEdit
-      Left = 66
+      Left = 70
       Top = 50
       Width = 160
       Height = 21
       AutoFocus = False
       EditAlign = eaLeft
       EditType = etString
+      EmptyText = 'Semua Karyawan'
       ErrorColor = clRed
       ErrorFontColor = clWhite
       ExcelStyleDecimalSeparator = False
@@ -368,226 +369,12 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       Transparent = False
       Visible = True
     end
-    object txtMerk: TAdvEdit
-      Left = 66
-      Top = 74
-      Width = 160
-      Height = 21
-      AutoFocus = False
-      EditAlign = eaLeft
-      EditType = etString
-      ErrorColor = clRed
-      ErrorFontColor = clWhite
-      ExcelStyleDecimalSeparator = False
-      Flat = False
-      FlatLineColor = clBlack
-      FlatParentColor = True
-      FocusAlign = eaDefault
-      FocusBorder = False
-      FocusColor = clWindow
-      FocusFontColor = clWindowText
-      FocusLabel = False
-      FocusWidthInc = 0
-      ModifiedColor = clHighlight
-      DisabledColor = clSilver
-      URLColor = clBlue
-      ReturnIsTab = False
-      LengthLimit = 0
-      TabOnFullLength = False
-      Precision = 0
-      LabelCaption = 'Merk :'
-      LabelPosition = lpLeftTop
-      LabelMargin = 2
-      LabelTransparent = False
-      LabelAlwaysEnabled = False
-      LabelFont.Charset = ANSI_CHARSET
-      LabelFont.Color = clWindowText
-      LabelFont.Height = -11
-      LabelFont.Name = 'Tahoma'
-      LabelFont.Style = []
-      Persistence.Enable = False
-      Persistence.Location = plInifile
-      Color = clWindow
-      Enabled = True
-      HintShowLargeText = False
-      OleDropTarget = False
-      OleDropSource = False
-      Signed = False
-      TabOrder = 3
-      Text = 'txtMerk'
-      Transparent = False
-      Visible = True
-    end
-    object txtCode: TAdvEdit
-      Left = 298
-      Top = 50
-      Width = 160
-      Height = 21
-      AutoFocus = False
-      EditAlign = eaLeft
-      EditType = etString
-      ErrorColor = clRed
-      ErrorFontColor = clWhite
-      ExcelStyleDecimalSeparator = False
-      Flat = False
-      FlatLineColor = clBlack
-      FlatParentColor = True
-      FocusAlign = eaDefault
-      FocusBorder = False
-      FocusColor = clWindow
-      FocusFontColor = clWindowText
-      FocusLabel = False
-      FocusWidthInc = 0
-      ModifiedColor = clHighlight
-      DisabledColor = clSilver
-      URLColor = clBlue
-      ReturnIsTab = False
-      LengthLimit = 0
-      TabOnFullLength = False
-      Precision = 0
-      LabelCaption = 'Kode :'
-      LabelPosition = lpLeftTop
-      LabelMargin = 2
-      LabelTransparent = False
-      LabelAlwaysEnabled = False
-      LabelFont.Charset = ANSI_CHARSET
-      LabelFont.Color = clWindowText
-      LabelFont.Height = -11
-      LabelFont.Name = 'Tahoma'
-      LabelFont.Style = []
-      Persistence.Enable = False
-      Persistence.Location = plInifile
-      Color = clWindow
-      Enabled = True
-      HintShowLargeText = False
-      OleDropTarget = False
-      OleDropSource = False
-      Signed = False
-      TabOrder = 4
-      Text = 'txtNama'
-      Transparent = False
-      Visible = True
-    end
-    object txtBarcode: TAdvEdit
-      Left = 298
-      Top = 74
-      Width = 160
-      Height = 21
-      AutoFocus = False
-      EditAlign = eaLeft
-      EditType = etString
-      ErrorColor = clRed
-      ErrorFontColor = clWhite
-      ExcelStyleDecimalSeparator = False
-      Flat = False
-      FlatLineColor = clBlack
-      FlatParentColor = True
-      FocusAlign = eaDefault
-      FocusBorder = False
-      FocusColor = clWindow
-      FocusFontColor = clWindowText
-      FocusLabel = False
-      FocusWidthInc = 0
-      ModifiedColor = clHighlight
-      DisabledColor = clSilver
-      URLColor = clBlue
-      ReturnIsTab = False
-      LengthLimit = 0
-      TabOnFullLength = False
-      Precision = 0
-      LabelCaption = 'Barcode :'
-      LabelPosition = lpLeftTop
-      LabelMargin = 2
-      LabelTransparent = False
-      LabelAlwaysEnabled = False
-      LabelFont.Charset = ANSI_CHARSET
-      LabelFont.Color = clWindowText
-      LabelFont.Height = -11
-      LabelFont.Name = 'Tahoma'
-      LabelFont.Style = []
-      Persistence.Enable = False
-      Persistence.Location = plInifile
-      Color = clWindow
-      Enabled = True
-      HintShowLargeText = False
-      OleDropTarget = False
-      OleDropSource = False
-      Signed = False
-      TabOrder = 5
-      Text = 'txtMerk'
-      Transparent = False
-      Visible = True
-    end
-    object txtKategori: TAdvEdit
-      Left = 290
-      Top = 26
-      Width = 160
-      Height = 21
-      AutoFocus = False
-      EditAlign = eaLeft
-      EditType = etString
-      ErrorColor = clRed
-      ErrorFontColor = clWhite
-      ExcelStyleDecimalSeparator = False
-      Flat = False
-      FlatLineColor = clBlack
-      FlatParentColor = True
-      FocusAlign = eaDefault
-      FocusBorder = False
-      FocusColor = clWindow
-      FocusFontColor = clWindowText
-      FocusLabel = False
-      FocusWidthInc = 0
-      ModifiedColor = clHighlight
-      DisabledColor = clSilver
-      URLColor = clBlue
-      ReturnIsTab = False
-      LengthLimit = 0
-      TabOnFullLength = False
-      Precision = 0
-      LabelCaption = 'Jenis :'
-      LabelPosition = lpLeftTop
-      LabelMargin = 2
-      LabelTransparent = False
-      LabelAlwaysEnabled = False
-      LabelFont.Charset = ANSI_CHARSET
-      LabelFont.Color = clWindowText
-      LabelFont.Height = -11
-      LabelFont.Name = 'Tahoma'
-      LabelFont.Style = []
-      Persistence.Enable = False
-      Persistence.Location = plInifile
-      Color = clWindow
-      Enabled = True
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      HintShowLargeText = False
-      ParentFont = False
-      OleDropTarget = False
-      OleDropSource = False
-      Signed = False
-      TabOrder = 7
-      Text = 'txtSpec'
-      Transparent = False
-      Visible = True
-    end
-    object Button6: TButton
-      Left = 432
-      Top = 28
-      Width = 16
-      Height = 17
-      Caption = '...'
-      TabOrder = 8
-    end
   end
   object suiPanel2: TsuiPanel
     Left = 0
-    Top = 145
+    Top = 120
     Width = 768
-    Height = 302
+    Height = 327
     UIStyle = DeepBlue
     BorderColor = clBlack
     Font.Charset = ANSI_CHARSET
@@ -595,7 +382,7 @@ object frmMstKaryawanList: TfrmMstKaryawanList
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    Caption = 'Daftar Hewan'
+    Caption = 'Daftar Karyawan'
     ShowButton = False
     CaptionFontColor = clWhite
     Align = alClient
@@ -606,7 +393,7 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       Left = 4
       Top = 24
       Width = 760
-      Height = 274
+      Height = 299
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
@@ -773,9 +560,14 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       WordWrap = False
       ColumnHeaders.Strings = (
         'No'
-        'Kode'
+        'NIK'
         'Nama'
-        'Keterangan')
+        'Alamat'
+        'Jabatan'
+        'Tgl.Lahir'
+        'Telp1'
+        'Telp2'
+        'Status')
       Lookup = False
       LookupCaseSensitive = False
       LookupHistory = False

@@ -65,7 +65,7 @@ uses
   UPetshop in '..\_global\UPetshop.pas',
   MstServicePrice in '..\_master\MstServicePrice.pas' {frmMstServicePrice},
   MstService in '..\_master\MstService.pas' {frmMstService},
-  MstRelation in '..\_master\MstRelation.pas' {frmMstRelation},
+  MstKaryawan in '..\_master\MstKaryawan.pas' {frmMstKaryawan},
   MstServiceList in '..\_master\MstServiceList.pas' {frmMstServiceList},
   MstItemList in '..\_master\MstItemList.pas' {frmMstItemList},
   MstBranchListPrint in '..\_master\MstBranchListPrint.pas' {qrpMstBranchList: TQuickRep},
@@ -90,7 +90,8 @@ uses
   trsPembayaranListPrint in '..\_transaction\Finance\trsPembayaranListPrint.pas' {qrpPembayaranListPrint: TQuickRep},
   trsPurchaseOrderListPrint in '..\_transaction\Purchase\trsPurchaseOrderListPrint.pas' {qrpPurchaseOrderListPrint: TQuickRep},
   ReportItemMovement in '..\_report\ReportItemMovement.pas' {frmReportItemMovement},
-  MstAnimalList in '..\_master\MstAnimalList.pas' {frmMstAnimalList};
+  MstAnimalList in '..\_master\MstAnimalList.pas' {frmMstAnimalList},
+  MstRelation in '..\_master\MstRelation.pas' {frmMstRelation};
 
 {$R *.res}
 
@@ -104,11 +105,11 @@ begin
   Application.CreateForm(TfrmLookupTrx, frmLookupTrx);
   Application.CreateForm(TfrmMstAnimal, frmMstAnimal);
   Application.CreateForm(TfrmMstService, frmMstService);
-  Application.CreateForm(TfrmMstRelation, frmMstRelation);
+  Application.CreateForm(TfrmMstKaryawan, frmMstKaryawan);
   Application.CreateForm(TfrmMstBranch, frmMstBranch);
   Application.CreateForm(TfrmMoneyTransaction, frmMoneyTransaction);
   Application.CreateForm(TfrmReportItemMovement, frmReportItemMovement);
- // Application.CreateForm(TfrmMstAnimalList, frmMstAnimalList);
+  Application.CreateForm(TfrmMstRelation, frmMstRelation);
   frmLogin.Status('Prepare Application...');
   frmLogin.Status('Connecting database...');
   Application.CreateForm(TfrmBackupRestore, frmBackupRestore);

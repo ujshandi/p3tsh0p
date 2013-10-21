@@ -1,5 +1,5 @@
 unit frmDockForm;
- {DEFINE TABPAGE}
+ {$DEFINE TABPAGE}
 interface
 
 uses
