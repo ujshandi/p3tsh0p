@@ -115,6 +115,7 @@ type
 
   TMstKaryawan = class (TObject)
     FKaryawanId : integer;
+    FNik : string;
     FNama : string;
     FAlamat : string;
     FJabatan : integer;
@@ -130,6 +131,7 @@ type
       function SelectInDB: boolean;
       procedure Reset;
       function isExistInDb(id: string): boolean;
+      function GetNextCode(vJabatan: integer): string;
 
       class function deleteOnDb(id: integer): boolean;
       class function GetName(vId: integer): string;
@@ -138,6 +140,7 @@ type
       class procedure getListCombo(AList:TStringList;forFilter:boolean=false);
 
       property KaryawanId:integer read FKaryawanId write  FKaryawanId;
+      property Nik:string read FNik write FNik;
       property Nama:string read FNama write FNama;
       property Alamat:string read FAlamat write FAlamat;
       property Jabatan:integer read FJabatan write FJabatan;
@@ -867,6 +870,14 @@ begin
 
 end;
 
+function TMstKaryawan.GetNextCode(vJabatan: integer): string;
+var prefix: string;
+begin
+   prefix := getStringFromSQL('select mst_code from mst_master where mst_id = '+FormatSQLNumber(vJabatan));
+  Result:= getNextIDNum('nik','mst_karyawan',' and jabatan ='+FormatSQLNumber(vJabatan),prefix,'',3);
+
+end;
+
 function TMstKaryawan.InsertOnDB: boolean;
 begin
       try
@@ -874,8 +885,9 @@ begin
 //    FServiceCode:= GetNextCode;
 
     ExecSQL(
-    'insert into mst_karyawan (nama,alamat,jabatan,tgl_lahir,tlp1,tlp2) '+
+    'insert into mst_karyawan (nik,nama,alamat,jabatan,tgl_lahir,tlp1,tlp2) '+
     'values ('+
+      FormatSQLString(FNik)+','+
       FormatSQLString(FNama)+','+
       FormatSQLString(FAlamat)+','+
       FormatSQLNumber(FJabatan)+','+
@@ -896,6 +908,8 @@ end;
 
 function TMstKaryawan.isExistInDb(id: string): boolean;
 begin
+    Result:= getIntegerFromSQL(
+  'select count(*) from mst_karyawan where nik = '+FormatSQLString(id)) > 0;
 
 end;
 
@@ -903,8 +917,8 @@ class function TMstKaryawan.LoadFromDB: TMysqlResult;
 var sqL: string;
 begin
   sqL:=
-  'select karyawan_id, nama,alamat,jabatan,tgl_lahir,telp1,telp2,disabled_date '+
-  'from mst_karyawan ';
+  'select karyawan_id,nik, nama,k.alamat,jabatan,tgl_lahir,tlp1,tlp2,disabled_date,mst_name '+
+  'from mst_karyawan k left join mst_master m on k.jabatan = m.mst_id';
 
 //  if GlobalFilter.StatusID = 1 then sqL:= sqL + ' where disabled_date is null '
 //  else if GlobalFilter.StatusID = 2 then sqL:= sqL + ' where disabled_date is not null ';
@@ -928,6 +942,7 @@ begin
     FTglLahir := Now;
     FTelp1 := '';
     FTelp2 := '';
+    FNik := '';
     FDisabledDate := 0;
 end;
 
@@ -935,7 +950,7 @@ function TMstKaryawan.SelectInDB: boolean;
 var buffer: TMysqlResult;
 begin
   buffer:= OpenSQL(
-  'select karyawan_id,nama,alamat,jabatan,tgl_lahir,telp1,telp2,disabled_date '+
+  'select karyawan_id,nama,alamat,jabatan,tgl_lahir,tlp1,tlp2,disabled_date,nik '+
   'from mst_karyawan '+
     'where karyawan_id = '+FormatSQLNumber(FKaryawanId));
 
@@ -951,6 +966,7 @@ begin
       FTelp1     := BufferToString(FieldValue(5));
       FTelp2     := BufferToString(FieldValue(6));
       FTglLahir   := BufferToDateTime(FieldValue(7));
+      FNik := BufferToString(FieldValue(8));
 
     end;
   buffer.Destroy;
@@ -966,12 +982,13 @@ begin
 
     ExecSQL(
     'update mst_karyawan set '+
+    ' nik= '+FormatSQLString(FNik)+','+
     ' nama= '+FormatSQLString(FNama)+','+
     ' alamat= '+FormatSQLString(FAlamat)+','+
     ' jabatan= '+FormatSQLNumber(FJabatan)+','+
     ' tgl_lahir= '+FormatSQLDate(FTglLahir)+','+
-    ' telp1= '+FormatSQLString(FTelp1)+','+
-    ' telp2= '+FormatSQLString(FTelp2)+
+    ' tlp1= '+FormatSQLString(FTelp1)+','+
+    ' tlp2= '+FormatSQLString(FTelp2)+
     ' where karyawan_id= '+FormatSQLNumber(FKaryawanId));
 
     EndSQL;

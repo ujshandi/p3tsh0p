@@ -1,5 +1,5 @@
 unit Login;
-  {$DEFINE DEBUG}
+  {DEFINE DEBUG}
     {DeFINE SHIFT_ENABLED}
 interface
 

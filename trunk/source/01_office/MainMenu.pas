@@ -1221,7 +1221,7 @@ begin
         101, 102,103,104,
         201, 202,203,204,205, 206, 207,
          211, 212, 213,    216,
-        220, 221, 222, 223,234,
+        220, 221, 222, 223,224,
          503, 504, 510,
         520, 530, 330: Form.Execute;
         501 : Form.Execute(0); //buat karyawan tanpa profit
@@ -1533,7 +1533,7 @@ begin
       Application.CreateForm(TfrmMstRelationList, frmMstRelationList);
       temp:= frmMstRelationList;
     end;
-    234: begin
+    224: begin
       Application.CreateForm(TfrmMstKaryawanList, frmMstKaryawanList);
       temp:= frmMstKaryawanList;
     end;

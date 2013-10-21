@@ -30,14 +30,9 @@ type
     cmbStatus: TComboBox;
     Label1: TLabel;
     txtNama: TAdvEdit;
-    txtMerk: TAdvEdit;
     PopupMenu1: TPopupMenu;
     Aktivasi1: TMenuItem;
-    txtCode: TAdvEdit;
-    txtBarcode: TAdvEdit;
     ToolButton3: TToolButton;
-    txtKategori: TAdvEdit;
-    Button6: TButton;
 
     procedure gridGetAlignment(Sender: TObject; ARow, ACol: Integer;
       var HAlign: TAlignment; var VAlign: TVAlignment);
@@ -74,18 +69,19 @@ implementation
 uses UConstTool, MainMenu, Subroutines,
   MstCodeList, MstItem, UConst,
   mstItemListPrint, LookupData, uMysqlClient, MySQLConnector, MstService,
-  MstAnimal;
+  MstKaryawan;
 
 const
   colNo      = 0;
-  colName    = 1;
-  colAlamat = 2;
-  colJabatan = 3;
-  colTglLahir = 4;
-  colTelp1 = 5;
-  colTelp2 = 6;
-  colDisabled   = 7;
-  colId      = 8;
+  colNik = 1;
+  colName    = 2;
+  colAlamat = 3;
+  colJabatan = 4;
+  colTglLahir = 5;
+  colTelp1 = 6;
+  colTelp2 = 7;
+  colDisabled   = 8;
+  colId      = 9;
 
 
 {$R *.dfm}
@@ -107,15 +103,10 @@ end;
 procedure TfrmMstKaryawanList.InitFilter;
 begin
   GlobalPeriode.Reset;
-  txtSpec.Text:= 'SEMUA SPEC';
+
   txtSpec.Tag:= 1;
-  txtKategori.Text:= 'SEMUA JENIS';
-  txtKategori.Tag:= 0;
   cmbStatus.ItemIndex:= 1;
   txtNama.Clear;
-  txtMerk.Clear;
-  txtCode.Clear;
-  txtBarcode.Clear;
 end;
 
 procedure TfrmMstKaryawanList.InitForm;
@@ -148,10 +139,15 @@ begin
 
 
       grid.Ints[colId, i]:= BufferToInteger(item.FieldValue(0));
-      grid.Cells[colName,   i]:= BufferToString(item.FieldValue(1));
-      grid.Cells[colAlamat,i]:= BufferToString(item.FieldValue(2));
+      grid.Cells[colNik,   i]:= BufferToString(item.FieldValue(1));
+      grid.Cells[colName,   i]:= BufferToString(item.FieldValue(2));
+      grid.Cells[colAlamat,i]:= BufferToString(item.FieldValue(3));
 //      grid.Cells[colJabatan,i]:= BufferTo(item.FieldValue(3));
-
+      grid.Cells[colTglLahir,i]:= BufferToString(item.FieldValue(5));
+      grid.Cells[colTelp1,i]:= BufferToString(item.FieldValue(6));
+      grid.Cells[colTelp2,i]:= BufferToString(item.FieldValue(7));
+      grid.Cells[colDisabled,i]:= IfThen(BufferToString(item.FieldValue(7))='','Aktif','Tidak Aktif');
+      grid.Cells[colJabatan,i]:= BufferToString(item.FieldValue(9));
 
       item.MoveNext;
     end;
@@ -170,30 +166,26 @@ begin
   GlobalFilter.SpecID  := txtSpec.Tag;
   GlobalFilter.StatusID:= cmbStatus.ItemIndex;
   GlobalFilter.Name:= txtNama.Text;
-  GlobalFilter.TipeID:= txtMerk.Text;
-  GlobalFilter.FString1:= txtCode.Text;
-  GlobalFilter.FString2:= txtBarcode.Text;
 
-  GlobalFilter.Numeric3:= txtKategori.Tag;
 end;
 
 procedure TfrmMstKaryawanList.gridGetAlignment(Sender: TObject; ARow,
   ACol: Integer; var HAlign: TAlignment; var VAlign: TVAlignment);
 begin
-  if (ACol in[colName]) then HAlign:= taLeftJustify
-  else HAlign:= taRightJustify
+//  if (ACol in[colName]) then HAlign:= taLeftJustify
+  //else HAlign:= taRightJustify
 end;
 
 procedure TfrmMstKaryawanList.tbtNewClick(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_ADD,AktiveControl.Tag) then exit;
-  frmMstAnimal.Execute(0);
+  frmMstKaryawan.Execute(0);
 end;
 
 procedure TfrmMstKaryawanList.tbtDetailClick(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_EDIT,AktiveControl.Tag) then exit;
-  frmMstAnimal.Execute(StrToIntDef(grid.Cells[colId, grid.Row],0));
+  frmMstKaryawan.Execute(StrToIntDef(grid.Cells[colId, grid.Row],0));
 end;
 
 procedure TfrmMstKaryawanList.FormClose(Sender: TObject;
