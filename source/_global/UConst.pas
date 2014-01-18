@@ -83,6 +83,7 @@ const
   MST_TYPE_KEMASAN   = 6;
   MST_TYPE_SERVICE   = 7;
   MST_TYPE_JABATAN   = 8;
+  MST_TYPE_ABSEN     = 9;
 
   JNS_MULTIPLY    = 1;
   JNS_DISCOUNT    = 2;

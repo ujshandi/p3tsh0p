@@ -128,6 +128,13 @@ begin
       IfThen(AdvEdit1.Text <> '', ' and mst_name like '+FormatSQLString('%'+AdvEdit1.Text+'%'))+
       ' order by mst_name ')
 
+   else if NamaTable = 'KARYAWAN' then
+      MySQLResult:= OpenSQL(
+      'select karyawan_id, nik as ''NIK'', nama as ''Nama'' '+
+      'from mst_karyawan '+
+      IfThen(AdvEdit1.Text <> '', ' where nama like '+FormatSQLString('%'+AdvEdit1.Text+'%'))+
+      ' order by nama ')
+
     else if NamaTable = 'JNS_OBAT' then
       MySQLResult:= OpenSQL(
       'select id, Kode, Nama '+

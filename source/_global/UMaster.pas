@@ -67,7 +67,7 @@ type
   end;
   TMstMaster_Arr = class(_MstMaster_Arr)
     procedure LoadFromDb(tipe: integer);
-    class procedure GetList(vList: TStringList; vTipe: integer);
+    class procedure GetList(vList: TStringList; vTipe: integer;withAll:boolean=false);
   end;
 
   TMstCode = class(_MstCode)
@@ -2892,8 +2892,13 @@ end;
 
 { TMstMaster_Arr }
 
-class procedure TMstMaster_Arr.GetList(vList: TStringList; vTipe: integer);
+class procedure TMstMaster_Arr.GetList(vList: TStringList; vTipe: integer;withAll:boolean);
 begin
+  if withAll then
+  SQLToNameValueList2(vList,
+   ('select mst_id, mst_name from mst_master '+
+   'where mst_tipe = '+FormatSQLNumber(vTipe)+' order by mst_name'))
+  else
   SQLToNameValueList(vList,
    ('select mst_id, mst_name from mst_master '+
    'where mst_tipe = '+FormatSQLNumber(vTipe)+' order by mst_name'));

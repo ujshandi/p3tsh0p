@@ -1,4 +1,4 @@
-unit MstKaryawanList;
+unit trsAbsensiList;
 
 interface
 
@@ -10,7 +10,7 @@ uses
   frmDockForm, Buttons, SUIButton;
 
 type
-  TfrmMstKaryawanList = class(TDockForm)
+  TfrmTrsAbsensiList = class(TDockForm)
     ToolBar1: TToolBar;
     tbtNew: TToolButton;
     tbtDetail: TToolButton;
@@ -25,8 +25,6 @@ type
     suiPanel3: TsuiPanel;
     grid: TAdvStringGrid;
     asgvc: TAdvStringGrid;
-    cmbStatus: TComboBox;
-    Label1: TLabel;
     txtNama: TAdvEdit;
     PopupMenu1: TPopupMenu;
     Aktivasi1: TMenuItem;
@@ -51,7 +49,7 @@ type
     procedure ToolButton3Click(Sender: TObject);
 
   private
-    lsJabatan:TStringList;
+    lsStatusAbsen:TStringList;
     procedure InitGrid;
     procedure InitForm;
     procedure SetFilter;
@@ -62,136 +60,198 @@ type
   end;
 
 var
-  frmMstKaryawanList: TfrmMstKaryawanList;
+  frmTrsAbsensiList: TfrmTrsAbsensiList;
 
 implementation
 
 uses UConstTool, MainMenu, Subroutines,
   MstCodeList, MstItem, UConst,
   mstItemListPrint, LookupData, uMysqlClient, MySQLConnector, MstService,
-  MstKaryawan;
+  MstKaryawan, TrsAbsensi;
 
 const
   colNo      = 0;
-  colNik = 1;
-  colName    = 2;
-  colAlamat = 3;
-  colJabatan = 4;
-  colTglLahir = 5;
-  colTelp1 = 6;
-  colTelp2 = 7;
-  colDisabled   = 8;
-  colId      = 9;
+  colName    = 1;
+  colJabatan = 2;
+  colTgl = 3;
+  colStatus = 4;
+  colKeterangan = 5;
+  colId   = 6;
 
 
 {$R *.dfm}
 
 { TfrmMstItemList }
 
-procedure TfrmMstKaryawanList.Execute(id: integer);
+procedure TfrmTrsAbsensiList.Execute(id: integer);
 begin
   inherited;
-  
+
   ToolBar1.ParentColor:= false;
   ToolBar1.Color:= clWhite;
-  lsJabatan := TStringList.Create;
-  TMstMaster_Arr.GetList(lsJabatan,MST_TYPE_JABATAN,True);
-  NameValueListToValueList(lsJabatan,cmbJabatan.Items);
+  lsStatusAbsen := TStringList.Create;
+  TMstMaster_Arr.GetList(lsStatusAbsen,MST_TYPE_ABSEN,True);
+  NameValueListToValueList(lsStatusAbsen,cmbJabatan.Items);
   InitForm;
 //  SetFilter;
   LoadData;
   Run(Self);
 end;
 
-procedure TfrmMstKaryawanList.InitFilter;
+procedure TfrmTrsAbsensiList.InitFilter;
 begin
   GlobalPeriode.Reset;
-
+  GlobalFilter.Reset;
   cmbJabatan.ItemIndex:=0;
-  cmbStatus.ItemIndex:= 1;
   txtNama.Clear;
 end;
 
-procedure TfrmMstKaryawanList.InitForm;
+procedure TfrmTrsAbsensiList.InitForm;
 begin
   InitGrid;
   InitFilter;
 end;
 
-procedure TfrmMstKaryawanList.InitGrid;
+procedure TfrmTrsAbsensiList.InitGrid;
 begin
+  grid.ExpandAll;
+  grid.Clear;
   ResetGrid(grid, 2, colId+2, 1, 1,-1);
+  grid.Cells[colNo,0] :='No';
+  grid.Cells[colName,0] :='Nama Karyawan';
+  grid.Cells[colJabatan,0] :='Jabatan';
   grid.AutoSizeColumns(True, 4);
   grid.ColWidths[colId]:= 0;
+
   grid.RowHeights[1]:= grid.DefaultRowHeight;
 end;
 
-procedure TfrmMstKaryawanList.LoadData;
-var i: integer; item: TMysqlResult;
+procedure TfrmTrsAbsensiList.LoadData;
+var i,j,row,tmp,idx: integer; item: TMysqlResult;
+  absen : TMysqlResult;tmpStr: string;
+   summary : TStringList;
+
+   procedure resetListValue(var aList : TStringList);
+   var z : integer;
+   begin
+      for z:=0 to aList.Count-1 do
+         aList.Values[aList.Names[z]]:= '0';
+   end;
 begin
   try
     StartProgress;
     InitGrid;
     SetFilter;
     item:= TMstKaryawan.LoadFromDB;
-    grid.RowCount:= IfThen(item.RecordCount > 0, item.RecordCount + 1, 2);
+   // grid.RowCount:= IfThen(item.RecordCount > 0, item.RecordCount + 1, 2);
+    summary := TStringList.Create;
+    TMstMaster_Arr.GetList(summary,MST_TYPE_ABSEN,false);
+    //ganti value list dengan 0;
 
     for i:= 1 to item.RecordCount do begin
       ProsesProgress(i,item.RecordCount);
-      grid.Ints[colNo, i]:= i;//+txtLimit.Tag;
+      row := grid.RowCount-1;
+      grid.Ints[colNo, row]:= i;//+txtLimit.Tag;
+
+   //   grid.Ints[colId, i]:= BufferToInteger(item.FieldValue(0));
+      grid.Cells[colName,   row]:= BufferToString(item.FieldValue(2));
+      grid.Cells[colJabatan,row]:= BufferToString(item.FieldValue(9));
+
+   //0a.absen_id,1a.karyawan_id,2a.tanggal,3a.status_absen,4a.keterangan,5k.nama ,6m.mst_name
+      GlobalFilter.RelasiID := BufferToInteger(item.FieldValue(0));
+      absen := TTrsAbsensi.LoadFromDB;
+      resetListValue(summary);
+      for j:= 0 to absen.RecordCount-1 do begin
 
 
-      grid.Ints[colId, i]:= BufferToInteger(item.FieldValue(0));
-      grid.Cells[colNik,   i]:= BufferToString(item.FieldValue(1));
-      grid.Cells[colName,   i]:= BufferToString(item.FieldValue(2));
-      grid.Cells[colAlamat,i]:= BufferToString(item.FieldValue(3));
-//      grid.Cells[colJabatan,i]:= BufferTo(item.FieldValue(3));
-      grid.Cells[colTglLahir,i]:= BufferToString(item.FieldValue(5));
-      grid.Cells[colTelp1,i]:= BufferToString(item.FieldValue(6));
-      grid.Cells[colTelp2,i]:= BufferToString(item.FieldValue(7));
-      grid.Cells[colDisabled,i]:= IfThen(BufferToString(item.FieldValue(8))='','Aktif','Tidak Aktif');
-      grid.Cells[colJabatan,i]:= BufferToString(item.FieldValue(9));
+            grid.AddRow;
+            row := grid.RowCount-1;
+        //    summary.Clear;
+            tmp := 0;
+            if j=0 then begin
+               grid.Cells[colTgl,row] := 'Tanggal';
+               grid.Cells[colStatus,row] := 'Status';
+               grid.Cells[colKeterangan,row] := 'Keterangan';
 
+               grid.Colors[colTgl,row]:= clSkyBlue;
+               grid.Colors[colStatus,row]:= clSkyBlue;
+               grid.Colors[colKeterangan,row]:= clSkyBlue;
+               grid.AddRow;
+               row := grid.RowCount-1;
+            end;
+              
+              grid.Cells[colTgl,row] := FormatDateTime(ShortDateFormat,BufferToDateTime(absen.FieldValue(2)));
+              grid.Cells[colStatus,row] :=BufferToString(absen.FieldValue(6));
+              grid.Cells[colKeterangan,row] :=BufferToString(absen.FieldValue(4));
+              idx := summary.IndexOfName(BufferToString(absen.FieldValue(3)));
+              tmp := StrToIntDef(summary.Values[summary.Names[idx]],0)+1;
+              summary.Values[summary.Names[idx]] := IntToStr(tmp);
+              {if (summary.IndexOfName(IntToStr(grid.Cells[colStatus,row]))=0)then begin
+                summary.Add(grid.Cells[colStatus,row]+'=1');
+              end
+              else begin
+                tmp := summary[]. summary.IndexOfName(grid.Cells[colStatus,row]);
+              end;
+               }
+
+            grid.Colors[colTgl,row]:= clSilver;
+            grid.Colors[colStatus,row]:= clSilver;
+            grid.Colors[colKeterangan,row]:= clSilver;
+            absen.MoveNext;
+         end;
+        tmpStr := 'Total : ';
+        for j:=0 to summary.Count-1 do begin
+          tmpStr := tmpStr+ lsStatusAbsen.Values[lsStatusAbsen.Names[j+1]]+'= '+summary.Values[summary.Names[j]]+'; '
+        end;
+        grid.MergeCells(colTgl,row-absen.RecordCount-1,3,1);
+        grid.Cells[colTgl,row-absen.RecordCount-1] := tmpStr;
+        if absen.RecordCount>0 then
+           grid.AddNode(row-absen.RecordCount-1,absen.RecordCount+2);
+
+
+
+      grid.AddRow;
       item.MoveNext;
     end;
 
     item.destroy;
     grid.AutoSizeColumns(true, 2);
     grid.ColWidths[colID]:= 0;
+    grid.ColWidths[colNo]:= 50;
+     grid.ColWidths[colKeterangan]:= 300;
 
   finally
     EndProgress;
   end;
 end;
 
-procedure TfrmMstKaryawanList.SetFilter;
+procedure TfrmTrsAbsensiList.SetFilter;
 begin
-  GlobalFilter.SpecID  := StrToInt(lsJabatan.Names[cmbJabatan.itemIndex]);
-  GlobalFilter.StatusID:= cmbStatus.ItemIndex;
+//  GlobalFilter.SpecID  := StrToInt(lsStatusAbsen.Names[cmbJabatan.itemIndex]);
   GlobalFilter.Name:= txtNama.Text;
 
 end;
 
-procedure TfrmMstKaryawanList.gridGetAlignment(Sender: TObject; ARow,
+procedure TfrmTrsAbsensiList.gridGetAlignment(Sender: TObject; ARow,
   ACol: Integer; var HAlign: TAlignment; var VAlign: TVAlignment);
 begin
 //  if (ACol in[colName]) then HAlign:= taLeftJustify
   //else HAlign:= taRightJustify
 end;
 
-procedure TfrmMstKaryawanList.tbtNewClick(Sender: TObject);
+procedure TfrmTrsAbsensiList.tbtNewClick(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_ADD,AktiveControl.Tag) then exit;
-  frmMstKaryawan.Execute(0);
+  frmTrsAbsensi.Execute(0);
 end;
 
-procedure TfrmMstKaryawanList.tbtDetailClick(Sender: TObject);
+procedure TfrmTrsAbsensiList.tbtDetailClick(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_EDIT,AktiveControl.Tag) then exit;
-  frmMstKaryawan.Execute(StrToIntDef(grid.Cells[colId, grid.Row],0));
+  frmTrsAbsensi.Execute(StrToIntDef(grid.Cells[colId, grid.Row],0));
 end;
 
-procedure TfrmMstKaryawanList.FormClose(Sender: TObject;
+procedure TfrmTrsAbsensiList.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   inherited;
@@ -199,17 +259,17 @@ begin
   //MstItem:= nil;
 end;
 
-procedure TfrmMstKaryawanList.ToolButton5Click(Sender: TObject);
+procedure TfrmTrsAbsensiList.ToolButton5Click(Sender: TObject);
 begin
   InitFilter
 end;
 
-procedure TfrmMstKaryawanList.tbtRefreshClick(Sender: TObject);
+procedure TfrmTrsAbsensiList.tbtRefreshClick(Sender: TObject);
 begin
   LoadData;
 end;
 
-procedure TfrmMstKaryawanList.tbtPrintClick(Sender: TObject);
+procedure TfrmTrsAbsensiList.tbtPrintClick(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_PRINT,AktiveControl.Tag) then exit;
   if MustRegister then exit;
@@ -295,13 +355,13 @@ begin
   listChild.Free;
 end;
 }
-procedure TfrmMstKaryawanList.Aktivasi1Click(Sender: TObject);
+procedure TfrmTrsAbsensiList.Aktivasi1Click(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_DELETE,AktiveControl.Tag) then exit;
   TMstKaryawan.activasi(grid.Ints[colId, grid.Row])
 end;
 
-procedure TfrmMstKaryawanList.gridRowChanging(Sender: TObject; OldRow,
+procedure TfrmTrsAbsensiList.gridRowChanging(Sender: TObject; OldRow,
   NewRow: Integer; var Allow: Boolean);
 begin
   if OldRow <= grid.RowCount-1 then
@@ -311,7 +371,7 @@ begin
     grid.RowHeights[NewRow]:= grid.DefaultRowHeight;
 end;
 
-procedure TfrmMstKaryawanList.gridGetCellColor(Sender: TObject; ARow,
+procedure TfrmTrsAbsensiList.gridGetCellColor(Sender: TObject; ARow,
   ACol: Integer; AState: TGridDrawState; ABrush: TBrush; AFont: TFont);
 begin
 //  if (ACol < colHBeli) and (ARow > 0) then begin
@@ -320,13 +380,13 @@ begin
 //  end;
 end;
 
-procedure TfrmMstKaryawanList.gridDblClickCell(Sender: TObject; ARow,
+procedure TfrmTrsAbsensiList.gridDblClickCell(Sender: TObject; ARow,
   ACol: Integer);
 begin
   tbtDetail.Click
 end;
 
-procedure TfrmMstKaryawanList.ToolButton3Click(Sender: TObject);
+procedure TfrmTrsAbsensiList.ToolButton3Click(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_DELETE,AktiveControl.Tag) then exit;
   if Confirmed('Hapus Hewan ?') then

@@ -150,6 +150,32 @@ type
       property DisabledDate :TDate read FDisabledDate write FDisabledDate;
   end;
 
+  TTrsAbsensi = class(TObject)
+    FAbsenId : Int64;
+    FKaryawan : TMstKaryawan;
+    FTanggal : TDate;
+    FStatusAbsen : Smallint;
+    FKeterangan : string;
+  private
+  public
+      constructor create;
+      destructor destroy;
+      function InsertOnDB: boolean;
+      function UpdateOnDB: boolean;
+      function SelectInDB: boolean;
+      function isExistInDb(karyawanId: integer;Tanggal:Tdate): boolean;
+      procedure Reset;
+
+      class function deleteOnDb(id: Int64): boolean;
+      class function LoadFromDB(): TMysqlResult;
+
+      property AbsenId:Int64 read FAbsenId write FAbsenId;
+      property Karyawan:TMstKaryawan read FKaryawan write FKaryawan;
+      property Tanggal : TDate read FTanggal write FTanggal;
+      property StatusAbsen : Smallint  read FStatusAbsen write FStatusAbsen;
+      property Keterangan : string read FKeterangan write FKeterangan;
+
+  end;
 
   TMstServicePrice = class(_MstServicePrice)
   protected
@@ -835,7 +861,19 @@ end;
 
 class function TMstKaryawan.activasi(id: integer): boolean;
 begin
-
+     try
+    BeginSQL;
+    ExecSQL(
+    'update mst_karyawan set disabled_date = if(disabled_date is null, curdate(), null) '+
+    'where karyawan_id = '+FormatSQLNumber(id));
+    EndSQL;
+    Result:= True;
+    Inform(MSG_SUCCESS_UPDATE);
+  except raise;
+    Inform(MSG_UNSUCCESS_UPDATE);
+    UndoSQL;
+    Result:= False;
+  end;
 end;
 
 class function TMstKaryawan.deleteOnDb(id: integer): boolean;
@@ -867,14 +905,14 @@ end;
 
 class function TMstKaryawan.GetName(vId: integer): string;
 begin
-
+   Result := getStringFromSQL('select nama from mst_karyawan where karyawan_id='+FormatSQLNumber(vId));
 end;
 
 function TMstKaryawan.GetNextCode(vJabatan: integer): string;
 var prefix: string;
 begin
-   prefix := getStringFromSQL('select mst_code from mst_master where mst_id = '+FormatSQLNumber(vJabatan));
-  Result:= getNextIDNum('nik','mst_karyawan',' and jabatan ='+FormatSQLNumber(vJabatan),prefix,'',3);
+   prefix := '';//getStringFromSQL('select mst_code from mst_master where mst_id = '+FormatSQLNumber(vJabatan));
+  Result:= getNextIDNum('nik','mst_karyawan',''{' and jabatan ='+FormatSQLNumber(vJabatan)},prefix,'',3);
 
 end;
 
@@ -914,21 +952,23 @@ begin
 end;
 
 class function TMstKaryawan.LoadFromDB: TMysqlResult;
-var sqL: string;
+var sqL,where: string;
 begin
   sqL:=
   'select karyawan_id,nik, nama,k.alamat,jabatan,tgl_lahir,tlp1,tlp2,disabled_date,mst_name '+
   'from mst_karyawan k left join mst_master m on k.jabatan = m.mst_id';
-
-//  if GlobalFilter.StatusID = 1 then sqL:= sqL + ' where disabled_date is null '
-//  else if GlobalFilter.StatusID = 2 then sqL:= sqL + ' where disabled_date is not null ';
+  where := '';
+  if GlobalFilter.StatusID = 1 then where:= where + ' and disabled_date is null '
+  else if GlobalFilter.StatusID = 2 then where:= where + ' and disabled_date is not null ';
 
   if GlobalFilter.Name <> '' then
-    sqL:= sqL + ' and nama like '+FormatSQLString('%'+GlobalFilter.Name+'%');
-//  if GlobalFilter.FString1 <> '' then
-  //  sqL:= sqL + ' and alamat like '+FormatSQLString('%'+GlobalFilter.FString1+'%');
+    where:= where + ' and nama like '+FormatSQLString('%'+GlobalFilter.Name+'%');
+  if GlobalFilter.SpecID <> 0 then
+    where:= where + ' and jabatan = '+FormatSQLNumber(GlobalFilter.SpecID);
 
-  Result:= OpenSQL(sqL + ' order by nama');
+  if where <> '' then  where:= ' where ' + copy(where, 5, length(where));
+
+  Result:= OpenSQL(sqL +where+ ' order by nama');
 
 
 end;
@@ -990,6 +1030,150 @@ begin
     ' tlp1= '+FormatSQLString(FTelp1)+','+
     ' tlp2= '+FormatSQLString(FTelp2)+
     ' where karyawan_id= '+FormatSQLNumber(FKaryawanId));
+
+    EndSQL;
+    Result:= True;
+  except
+    UndoSQL;
+    Result:= False;
+    Alert(MSG_UNSUCCESS_UPDATE);
+  end;
+
+end;
+
+{ TTrsAbsensi }
+
+constructor TTrsAbsensi.create;
+begin
+  FKaryawan := TMstKaryawan.Create;
+end;
+
+class function TTrsAbsensi.deleteOnDb(id: Int64): boolean;
+begin
+      try
+    BeginSQL;
+    ExecSQL(
+    'delete from trs_absen where absen_id = '+FormatSQLNumber(id));
+    EndSQL;
+    Result:= True;
+  except raise;
+    Inform(MSG_UNSUCCESS_DELETE);
+    UndoSQL;
+    Result:= False;
+  end;
+
+end;
+
+destructor TTrsAbsensi.destroy;
+begin
+   FKaryawan.Destroy;
+end;
+
+function TTrsAbsensi.InsertOnDB: boolean;
+begin
+    try
+    BeginSQL;
+//    FServiceCode:= GetNextCode;
+
+    ExecSQL(
+    'insert into trs_absen(karyawan_id,tanggal, status_absen,keterangan) '+
+    'values ('+
+      FormatSQLNumber(FKaryawan.FKaryawanId)+','+
+      FormatSQLDate(FTanggal)+','+
+      FormatSQLNumber(FStatusAbsen)+','+
+      FormatSQLString(FKeterangan)+')');
+
+    FAbsenId:= getIntegerFromSQL('select max(absen_id) from trs_absen');
+    EndSQL;
+    Result:= True;
+  except
+    UndoSQL;
+    Result:= False;
+    Alert(MSG_UNSUCCESS_SAVING);
+  end;
+
+end;
+
+function TTrsAbsensi.isExistInDb(karyawanId: integer;
+  Tanggal: Tdate): boolean;
+begin
+    Result:= getIntegerFromSQL(
+  'select count(*) from trs_absen where karyawan_id = '+FormatSQLNumber(karyawanId)+
+    ' and tanggal = '+FormatSQLDate(Tanggal)) > 0;
+end;
+
+class function TTrsAbsensi.LoadFromDB: TMysqlResult;
+var sqL,where: string;
+begin
+  sqL:=
+  'select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama ,m.mst_name '+//
+  'from trs_absen a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id '+
+  ' inner join mst_master m on m.mst_id = a.status_absen ';
+  where := '';
+
+  if GlobalFilter.Name <> '' then
+    where:= where + ' and k.nama like '+FormatSQLString('%'+GlobalFilter.Name+'%');
+  if GlobalFilter.RelasiID <> 0 then
+    where:= where + ' and a.karyawan_id = '+FormatSQLNumber(GlobalFilter.RelasiID);
+  
+  if GlobalFilter.SpecID <> 0 then
+    where:= where + ' and a.status_absen = '+FormatSQLNumber(GlobalFilter.SpecID);
+
+  if where <> '' then  where:= ' where ' + copy(where, 5, length(where));
+
+  Result:= OpenSQL(sqL +where+ ' order by a.tanggal');
+
+
+end;
+
+procedure TTrsAbsensi.Reset;
+begin
+  FAbsenId := 0;
+  FTanggal := ServerNow;
+  FStatusAbsen := 0;
+  FKaryawan.Reset;
+  FKeterangan := '';
+
+end;
+
+function TTrsAbsensi.SelectInDB: boolean;
+var buffer: TMysqlResult;
+begin
+  buffer:= OpenSQL(
+  'select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama '+//,m.mst_name
+  'from trs_absen a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id '+
+//  ' inner join mst_master m on m.mst_id = a.mst_id '+
+    ' where a.absen_id = '+FormatSQLNumber(FAbsenId));
+
+  result:= buffer.RecordCount > 0;
+  Self.Reset;
+  if Result then
+    with buffer do begin
+      FAbsenId := BufferToInt64(FieldValue(0));
+      FKaryawan.KaryawanId   := BufferToInteger(FieldValue(1));
+      FTanggal     := BufferToDateTime(FieldValue(2));
+      FStatusAbsen := BufferToInteger(FieldValue(3));
+      FKeterangan   := BufferToString(FieldValue(4));
+      FKaryawan.FNama     := BufferToString(FieldValue(5));
+    end;
+  buffer.Destroy;
+
+
+end;
+
+function TTrsAbsensi.UpdateOnDB: boolean;
+begin
+  try
+    BeginSQL;
+   // FKode:= GetNextCode;
+
+    ExecSQL(
+    'update trs_absen set '+
+    ' karyawan_id= '+FormatSQLNumber(FKaryawan.FKaryawanId)+','+
+    ' tanggal= '+FormatSQLDate(FTanggal)+','+
+    ' status_absen= '+FormatSQLNumber(FStatusAbsen)+','+
+    ' keterangan= '+FormatSQLString(FKeterangan)+
+    ' where absen_id= '+FormatSQLNumber(FAbsenId));
 
     EndSQL;
     Result:= True;

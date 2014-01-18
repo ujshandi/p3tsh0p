@@ -283,7 +283,7 @@ uses About, ChangePassword, HtmlHlp, Login,
   MstServiceList, MstAnimalList, MstServicePrice, MstBranchList,
   TrsItemShipment, Bonus, MstItemPriceList, trsPembayaranList, ReportKas,
   MstAkun, TrsItemUsetList, TrsItemUse, ReportProfit, ReportItemMovement,
-  MstKaryawanList;
+  MstKaryawanList, trsAbsensiList;
 
 const
   MIN_MENU_HEIGHT = 23;
@@ -1239,6 +1239,7 @@ begin
         322: Form.Execute(ITEM_TYPE_MUTASI_MASUK); //frmTrsItemShipmentList
         323: Form.Execute(ITEM_TYPE_OPNAME); //frmTrsItemShipmentList
         401: Form.Execute; //TRANS_TYPE_PEMBAYARAN
+        402: Form.Execute;
 
       end;
       Form.Caption := SystemMenu.MenuName + ' - '+ IntToStr( SystemMenu.MenuId);
@@ -1602,6 +1603,10 @@ begin
       temp:=frmTrsPembayaranList;
    end;
 
+   402 : begin
+      Application.CreateForm(TfrmTrsAbsensiList, frmTrsAbsensiList);
+      temp:=frmTrsAbsensiList;
+   end;
     501:
     begin
       Application.CreateForm(TfrmReportPenjualan, frmReportPenjualan);

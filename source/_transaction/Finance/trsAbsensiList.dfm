@@ -1,9 +1,9 @@
-object frmMstKaryawanList: TfrmMstKaryawanList
+object frmTrsAbsensiList: TfrmTrsAbsensiList
   Left = 90
   Top = 153
   Width = 776
   Height = 481
-  Caption = 'frmMstKaryawanList'
+  Caption = 'frmTrsAbsensiList'
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -230,37 +230,16 @@ object frmMstKaryawanList: TfrmMstKaryawanList
     TabOrder = 1
     Color = clWhite
     PopupMenu = frmMainMenu.MenuShortCut
-    object Label1: TLabel
-      Left = 256
-      Top = 28
-      Width = 38
-      Height = 13
-      Caption = 'Status :'
-    end
     object Label2: TLabel
-      Left = 22
+      Left = 7
       Top = 29
-      Width = 46
+      Width = 71
       Height = 13
-      Caption = 'Jabatan :'
-    end
-    object cmbStatus: TComboBox
-      Left = 297
-      Top = 26
-      Width = 77
-      Height = 21
-      Style = csDropDownList
-      ItemHeight = 13
-      ItemIndex = 2
-      TabOrder = 1
-      Text = 'Tdk Aktif'
-      Items.Strings = (
-        'Semua'
-        'Aktif'
-        'Tdk Aktif')
+      Alignment = taRightJustify
+      Caption = 'Status Absen :'
     end
     object txtNama: TAdvEdit
-      Left = 70
+      Left = 80
       Top = 50
       Width = 160
       Height = 21
@@ -311,13 +290,13 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       Visible = True
     end
     object cmbJabatan: TComboBox
-      Left = 70
+      Left = 80
       Top = 26
       Width = 161
       Height = 21
       Style = csDropDownList
       ItemHeight = 13
-      TabOrder = 2
+      TabOrder = 1
     end
   end
   object suiPanel2: TsuiPanel
@@ -392,7 +371,7 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       DragDropSettings.OleAcceptText = True
       SortSettings.AutoColumnMerge = False
       SortSettings.Column = 1
-      SortSettings.Show = True
+      SortSettings.Show = False
       SortSettings.IndexShow = False
       SortSettings.Full = True
       SortSettings.SingleColumn = False

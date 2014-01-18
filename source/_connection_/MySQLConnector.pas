@@ -132,6 +132,7 @@ const
   function BufferToBoolean(ABuffer: PChar; ADefault: Boolean=false): boolean;
   function BufferToString(ABuffer: PChar; ADefault: string=''): string;
   function BufferToInteger(ABuffer: PChar; ADefault: integer=0): integer;
+  function BufferToInt64(ABuffer: PChar; ADefault: integer=0): int64;
   function BufferToFloat(ABuffer: PChar; ADefault: double=0): real;
   function BufferToDateTime(ABuffer: PChar; ADefault: Tdatetime=0): TDateTime;
   function BufferToTime(ABuffer: PChar; ADefault: TTime=0): TTime;
@@ -601,6 +602,18 @@ uses uMysqlCT, DatabaseConnection, UConstTool, UConst;
      }
     s:= StrPas(ABuffer);
     Result:= StrToIntDef(s, ADefault);
+  end;
+
+  function BufferToInt64(ABuffer: PChar; ADefault: integer): int64;
+ // var tmp: variant;
+  var s: string;
+  begin
+    {tmp:= StrPas(ABuffer);
+    if VarIsNull(tmp) then
+       Result := ADefault else Result := tmp
+     }
+    s:= StrPas(ABuffer);
+    Result:= StrToInt64Def(s, ADefault);
   end;
 
   function BufferToFloat(ABuffer: PChar; ADefault: double): real;
