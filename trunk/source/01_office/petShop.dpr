@@ -59,13 +59,13 @@ uses
   PurchaseOrderPrint in '..\_transaction\Purchase\PurchaseOrderPrint.pas' {qrpPurchaseOrder: TQuickRep},
   trsReturPrint in '..\_transaction\Purchase\trsReturPrint.pas' {qrpRetur: TQuickRep},
   TrsItemUse in '..\_transaction\Shipment\TrsItemUse.pas' {frmTrsItemUse},
-  MstKaryawanList in '..\_master\MstKaryawanList.pas' {frmMstKaryawanList},
+  trsAbsensiList in '..\_transaction\Finance\trsAbsensiList.pas' {frmTrsAbsensiList},
   MstAnimal in '..\_master\MstAnimal.pas' {frmMstAnimal},
   UMaster in '..\_global\UMaster.pas',
   UPetshop in '..\_global\UPetshop.pas',
   MstServicePrice in '..\_master\MstServicePrice.pas' {frmMstServicePrice},
   MstService in '..\_master\MstService.pas' {frmMstService},
-  MstKaryawan in '..\_master\MstKaryawan.pas' {frmMstKaryawan},
+  TrsAbsensi in '..\_transaction\Finance\TrsAbsensi.pas' {frmTrsAbsensi},
   MstServiceList in '..\_master\MstServiceList.pas' {frmMstServiceList},
   MstItemList in '..\_master\MstItemList.pas' {frmMstItemList},
   MstBranchListPrint in '..\_master\MstBranchListPrint.pas' {qrpMstBranchList: TQuickRep},
@@ -91,7 +91,9 @@ uses
   trsPurchaseOrderListPrint in '..\_transaction\Purchase\trsPurchaseOrderListPrint.pas' {qrpPurchaseOrderListPrint: TQuickRep},
   ReportItemMovement in '..\_report\ReportItemMovement.pas' {frmReportItemMovement},
   MstAnimalList in '..\_master\MstAnimalList.pas' {frmMstAnimalList},
-  MstRelation in '..\_master\MstRelation.pas' {frmMstRelation};
+  MstRelation in '..\_master\MstRelation.pas' {frmMstRelation},
+  MstKaryawanList in '..\_master\MstKaryawanList.pas' {frmMstKaryawanList},
+  MstKaryawan in '..\_master\MstKaryawan.pas' {frmMstKaryawan};
 
 {$R *.res}
 
@@ -101,15 +103,7 @@ begin
 
   Application.CreateForm(TfrmMainMenu, frmMainMenu);
   Application.CreateForm(TfrmLogin, frmLogin);
-  Application.CreateForm(TfrmMstRelationAnimal, frmMstRelationAnimal);
-  Application.CreateForm(TfrmLookupTrx, frmLookupTrx);
-  Application.CreateForm(TfrmMstAnimal, frmMstAnimal);
-  Application.CreateForm(TfrmMstService, frmMstService);
-  Application.CreateForm(TfrmMstKaryawan, frmMstKaryawan);
-  Application.CreateForm(TfrmMstBranch, frmMstBranch);
-  Application.CreateForm(TfrmMoneyTransaction, frmMoneyTransaction);
-  Application.CreateForm(TfrmReportItemMovement, frmReportItemMovement);
-  Application.CreateForm(TfrmMstRelation, frmMstRelation);
+
   frmLogin.Status('Prepare Application...');
   frmLogin.Status('Connecting database...');
   Application.CreateForm(TfrmBackupRestore, frmBackupRestore);
@@ -127,6 +121,17 @@ begin
   //Application.CreateForm(TfrmLookupTrx, frmLookupTrx);
   Application.CreateForm(TfrmMstCodeList, frmMstCodeList);
   Application.CreateForm(TfrmMstItem, frmMstItem);
+  Application.CreateForm(TfrmMstRelationAnimal, frmMstRelationAnimal);
+  Application.CreateForm(TfrmLookupTrx, frmLookupTrx);
+  Application.CreateForm(TfrmMstAnimal, frmMstAnimal);
+  Application.CreateForm(TfrmMstService, frmMstService);
+  Application.CreateForm(TfrmMstKaryawan, frmMstKaryawan);
+  Application.CreateForm(TfrmTrsAbsensi, frmTrsAbsensi);
+  Application.CreateForm(TfrmMstBranch, frmMstBranch);
+  Application.CreateForm(TfrmMoneyTransaction, frmMoneyTransaction);
+  Application.CreateForm(TfrmReportItemMovement, frmReportItemMovement);
+  Application.CreateForm(TfrmMstRelation, frmMstRelation);
+
 
   frmLogin.Status('dumping dockable module(s)...');
   frmLogin.Status('Loading sales module(s)...');

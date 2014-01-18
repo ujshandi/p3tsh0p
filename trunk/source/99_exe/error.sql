@@ -838,3 +838,47 @@
 13/09/23 14:53:25 - petShop
 >Message: Table 'petshop.mst_item_conversion' doesn't exist
 >Dump: select mst_code from mst_item_conversion c, mst_master u where c.unit_id = u.mst_id and c.conversion = 1 and c.item_id = 486
+
+14/01/18 14:02:39 - petShop
+>Message: Unknown column 'nik' in 'field list'
+>Dump: select karyawan_id,nik, nama,k.alamat,jabatan,tgl_lahir,tlp1,tlp2,disabled_date,mst_name from mst_karyawan k left join mst_master m on k.jabatan = m.mst_id order by nama
+
+14/01/18 14:17:54 - petShop
+>Message: Unknown column 'nik' in 'field list'
+>Dump: SELECT MAX(nik) FROM mst_karyawan WHERE  jabatan =0
+
+14/01/18 14:50:37 - petShop
+>Message: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2013-10-04 'as date),'asfd','asfd')' at line 1
+>Dump: insert into mst_karyawan (nik,nama,alamat,jabatan,tgl_lahir,tlp1,tlp2) values ('002','larasa','asdf\',32,cast('2013-10-04 'as date),'asfd','asfd')
+
+14/01/18 14:50:49 - petShop
+>Message: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2013-10-04 'as date),'asfd','asfd')' at line 1
+>Dump: insert into mst_karyawan (nik,nama,alamat,jabatan,tgl_lahir,tlp1,tlp2) values ('002','larasa','asdf\',32,cast('2013-10-04 'as date),'asfd','asfd')
+
+14/01/18 17:42:09 - petShop
+>Message: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id  in
+>Dump: select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama ,m.mst_namefrom trs_absensi a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id  inner join mst_master m on m.mst_id = a.mst_id  order by k.nama
+
+14/01/18 17:43:04 - petShop
+>Message: Table 'petshop.trs_absensi' doesn't exist
+>Dump: select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama ,m.mst_name from trs_absensi a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id  inner join mst_master m on m.mst_id = a.mst_id  order by k.nama
+
+14/01/18 17:43:56 - petShop
+>Message: Unknown column 'a.mst_id' in 'on clause'
+>Dump: select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama ,m.mst_name from trs_absen a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id  inner join mst_master m on m.mst_id = a.mst_id  order by k.nama
+
+14/01/18 17:47:22 - petShop
+>Message: Cannot add or update a child row: a foreign key constraint fails (`petshop`.`trs_absen`, CONSTRAINT `fk_absen_karyawan` FOREIGN KEY (`karyawan_id`) REFERENCES `mst_karyawan` (`karyawan_id`) ON DELETE
+>Dump: insert into trs_absen(karyawan_id,tanggal, status_absen,keterangan) values (0,cast('2014-01-18 'as date),36,'')
+
+14/01/18 17:47:28 - petShop
+>Message: Cannot add or update a child row: a foreign key constraint fails (`petshop`.`trs_absen`, CONSTRAINT `fk_absen_karyawan` FOREIGN KEY (`karyawan_id`) REFERENCES `mst_karyawan` (`karyawan_id`) ON DELETE
+>Dump: insert into trs_absen(karyawan_id,tanggal, status_absen,keterangan) values (0,cast('2014-01-18 'as date),36,'')
+
+14/01/18 17:54:26 - petShop
+>Message: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'when karyawan_id=2' at line 1
+>Dump: select nama from mst_karyawan when karyawan_id=2
+
+14/01/18 18:00:28 - petShop
+>Message: Unknown column 'k.status_absen' in 'where clause'
+>Dump: select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama ,m.mst_name from trs_absen a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id  inner join mst_master m on m.mst_id = a.status_absen  where  k.status_absen = 37 order by k.nama
