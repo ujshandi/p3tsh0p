@@ -102,6 +102,7 @@ begin
   txtName.Tag:= 0;
   tbtSave.Enabled:= True;
   dtpTglAbsen.Date := Now;
+  cmbStatusAbsen.ItemIndex := -1;
 end;
 
 procedure TfrmTrsAbsensi.tbtNewClick(Sender: TObject);

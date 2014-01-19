@@ -42,6 +42,8 @@ type
     gridService: TAdvStringGrid;
     txtDiscount: TAdvEdit;
     chkWajibDisc: TCheckBox;
+    Label4: TLabel;
+    cmbJenisMember: TComboBox;
     procedure tbtNewClick(Sender: TObject);
     procedure tbtSaveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -150,7 +152,7 @@ begin
   Relation.ContactPerson:= txtCotact.Text;
   Relation.Discount := StrFmtToFloatDef(txtDiscount.Text,0);
   Relation.WajibDiscount := IfThen(chkWajibDisc.Checked,1,0);
-
+  Relation.JenisMember := cmbJenisMember.ItemIndex+1;
   if txtCode.Tag <> 0 then
     Result:= Relation.UpdateOnDB
   else Result:= Relation.InsertOnDB;
@@ -184,6 +186,7 @@ begin
   txtCotact.Text:=      Relation.ContactPerson;
   chkWajibDisc.Checked := Relation.WajibDiscount = 1;
   txtDiscount.Text := FloatToStrFmt(Relation.Discount);
+  cmbJenisMember.ItemIndex := Relation.JenisMember-1;
   LoadDataAnimal;
   LoadDataService;
   setEnableDisabled;
@@ -192,6 +195,7 @@ end;
 procedure TfrmMstRelationAnimal.ResetData;
 begin
   TMstAnimal.getListCombo(lsJenisHewan);
+  cmbJenisMember.ItemIndex := 0;
   PageControl1.ActivePageIndex := 0;
   txtCode.Clear;
   txtName.Clear;

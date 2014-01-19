@@ -2413,7 +2413,7 @@ begin
         BufferToInteger(detail.FieldValue(0)),
         BufferToDateTime(detail.FieldValue(3)),
         BufferToFloat(detail.FieldValue(1)),0, DB_CR_TYPE_DEBIT);
-        TMstItem.updatePriceHistory(1,BufferToInteger(detail.FieldValue(0)),BufferToFloat(detail.FieldValue(7)),TMstRelation.GetName(5));
+        TMstItem.updatePriceHistory(1,BufferToInteger(detail.FieldValue(0)),BufferToFloat(detail.FieldValue(7)),TMstRelation.GetName(5),0,0);
       detail.MoveNext;
     end;
 

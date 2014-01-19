@@ -36,6 +36,12 @@ type
     qrlHJual: TQRLabel;
     qrlDisc: TQRLabel;
     QRShape3: TQRShape;
+    QRLabel2: TQRLabel;
+    qrlHeadPetshop: TQRLabel;
+    qrlJenis: TQRLabel;
+    qrlHeadBreeder: TQRLabel;
+    qrlHPetshop: TQRLabel;
+    qrlHBreeder: TQRLabel;
     procedure QuickRepNeedData(Sender: TObject; var MoreData: Boolean);
     procedure QuickRepBeforePrint(Sender: TCustomQuickRep;
       var PrintReport: Boolean);
@@ -68,7 +74,8 @@ const
   colHargaBeli = 8; //show wne input h.jual & discount
   colHargaJual = 9; //show when input disc
   colHarga    = 10;//utk input
-
+  colHargaPetshop = 11; //utk hjual sesama petshop
+  colHargaBreeder = 12; 
 
 
 {$R *.DFM}
@@ -88,6 +95,8 @@ begin
   qrlCompanyContact.Caption:= CompanyProfile.FTelp1;
   qrlHeadHBeli.Enabled := (Purpose in [2,3]);
   qrlHeadHJual.Enabled := (Purpose in [3]);
+  qrlHeadPetshop.Enabled := (Purpose in [2]);
+  qrlHeadBreeder.Enabled := (Purpose in [2]);
   spc:= TMstCode.getName(GlobalFilter.SpecID);
   vendor:= TMstRelation.GetName(GlobalFilter.RelasiID);
 
@@ -109,12 +118,19 @@ begin
      qrlHJual.Caption:= '';
      qrlDisc.Caption:= '';
      qrlNo.Caption:= '';
+     qrlJenis.Caption := '';
+     qrlHPetshop.Caption := '';
+     qrlHBreeder.Caption := '';
+
    //  QRRichText1.Lines.Clear;
     // QRRichText1.Lines.Text:= Grid.Cells[colName, i];
      qrlNo.Caption :=  grid.Cells[colNo,i]; //IntToStrFmt(i);
      qrlCode.Caption := Grid.Cells[colCode, i];
+     qrlJenis.Caption := Grid.Cells[colJenis,i];
      qrlMerk.Caption := Grid.Cells[colmerk, i];
      qrlHBeli.Enabled := false;//(Purpose in [2,3]);
+     qrlHPetshop.Enabled := false;
+     qrlHBreeder.Enabled := false;
 //     qrlHJual.Enabled := (Purpose in [3]);
      case Purpose of
      1 : begin //harga beli
@@ -131,7 +147,11 @@ begin
          qrlDisc.Caption := Grid.Cells[colHarga, i];
          qrlHBeli.Enabled := True;
          qrlHJual.Enabled  := HistoryMode;
+         qrlHPetshop.Enabled := true;
+         qrlHBreeder.Enabled := true;
          qrlHJual.Caption := IfThen(HistoryMode and (not Grid.IsNode(i)),Grid.Cells[colStruk,i],'');
+         qrlHPetshop.Caption :=  Grid.Cells[colHargaPetshop, i];
+         qrlHBreeder.Caption :=  Grid.Cells[colHargaBreeder, i];
      end;
      3 : begin //discount
          qrlHBeli.Caption := Grid.Cells[colHargaBeli, i];

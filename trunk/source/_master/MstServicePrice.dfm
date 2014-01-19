@@ -17,17 +17,17 @@ object frmMstServicePrice: TfrmMstServicePrice
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
-    Left = 173
+    Left = 165
     Top = 0
     Width = 11
-    Height = 447
+    Height = 443
     Cursor = crHSplit
     Align = alRight
     Color = clMaroon
     ParentColor = False
   end
   object suiPanel1: TsuiPanel
-    Left = 173
+    Left = 165
     Top = 0
     Width = 0
     Height = 447
@@ -48,7 +48,7 @@ object frmMstServicePrice: TfrmMstServicePrice
       Left = 4
       Top = 24
       Width = 241
-      Height = 419
+      Height = 415
       Cursor = crDefault
       Align = alClient
       ColCount = 1
@@ -222,7 +222,7 @@ object frmMstServicePrice: TfrmMstServicePrice
     end
   end
   object pnlTarif: TsuiPanel
-    Left = 184
+    Left = 176
     Top = 0
     Width = 584
     Height = 447
@@ -314,11 +314,11 @@ object frmMstServicePrice: TfrmMstServicePrice
       Left = 4
       Top = 65
       Width = 576
-      Height = 378
+      Height = 374
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
-      ColCount = 14
+      ColCount = 16
       DefaultColWidth = 100
       DefaultRowHeight = 21
       DefaultDrawing = False
@@ -487,6 +487,8 @@ object frmMstServicePrice: TfrmMstServicePrice
         'Kode'
         'Nama'
         'Harga'
+        'H.Petshop'
+        'H.Breeder'
         'B.Tambahan'
         'Max.Disc (%)'
         'AnimalID'
@@ -512,6 +514,8 @@ object frmMstServicePrice: TfrmMstServicePrice
         49
         30
         40
+        100
+        100
         100
         100
         100)
@@ -716,7 +720,7 @@ object frmMstServicePrice: TfrmMstServicePrice
   object suiPanel2: TsuiPanel
     Left = 0
     Top = 0
-    Width = 173
+    Width = 165
     Height = 447
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -735,8 +739,8 @@ object frmMstServicePrice: TfrmMstServicePrice
     object grid: TAdvStringGrid
       Left = 4
       Top = 65
-      Width = 165
-      Height = 378
+      Width = 157
+      Height = 374
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
@@ -938,7 +942,7 @@ object frmMstServicePrice: TfrmMstServicePrice
     object ToolBar2: TToolBar
       Left = 4
       Top = 24
-      Width = 165
+      Width = 157
       Height = 41
       ButtonHeight = 36
       ButtonWidth = 45

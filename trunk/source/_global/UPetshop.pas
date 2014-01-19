@@ -709,7 +709,7 @@ class function TMstServicePrice.LoadFromDB: TMysqlResult;
 var sqL: string;
 begin
   sqL:=
-  'select a.animal_code,a.animal,p.service_price_id, p.service_id, a.animal_id,p.price,p.add_price,p.discount '+
+  'select a.animal_code,a.animal,p.service_price_id, p.service_id, a.animal_id,p.price,p.add_price,p.discount,p.price_petshop,p.price_breeder '+
   'from mst_animal a left join mst_service_price p  on a.animal_id = p.animal_id and p.service_id = '+FormatSQLNumber(GlobalFilter.Numeric1);
 //  ' left join mst_service s on s.service_id = p.service_id and ';
 
@@ -740,12 +740,14 @@ begin
     BeginSQL;
     for i:= 0 to FServiceArr.Count-1 do begin
       if (FServiceArr[i].ServicePriceID=0) then
-         sql := 'INSERT INTO mst_service_price(service_id,animal_id,price,add_price,discount,insert_log) '+
+         sql := 'INSERT INTO mst_service_price(service_id,animal_id,price,add_price,discount,price_petshop,price_breeder,insert_log) '+
                 ' VALUES('+FormatSQLNumber(FServiceArr[i].ServiceID)+','+
                 FormatSQLNumber(FServiceArr[i].AnimalId)+','+
                 FormatSQLNumber(FServiceArr[i].Price)+','+
                 FormatSQLNumber(FServiceArr[i].AddPrice)+','+
                 FormatSQLNumber(FServiceArr[i].Discount)+','+
+                FormatSQLNumber(FServiceArr[i].PricePetshop)+','+
+                FormatSQLNumber(FServiceArr[i].PriceBreeder)+','+
                 FormatSQLString(getSecurityLog)
                 +')'
       else
@@ -755,6 +757,8 @@ begin
                 ',add_price ='+FormatSQLNumber(FServiceArr[i].AddPrice)+
                 ',discount ='+FormatSQLNumber(FServiceArr[i].Discount)+
                 ',edit_log ='+FormatSQLString(getSecurityLog)+
+                 ',price_petshop ='+FormatSQLNumber(FServiceArr[i].PricePetshop)+
+                  ',price_breeder ='+FormatSQLNumber(FServiceArr[i].PriceBreeder)+
                 ' WHERE service_price_id ='+FormatSQLNumber(FServiceArr[i].ServicePriceID);
       ExecSQL(sql);
     end;
@@ -1116,8 +1120,14 @@ begin
   if GlobalFilter.RelasiID <> 0 then
     where:= where + ' and a.karyawan_id = '+FormatSQLNumber(GlobalFilter.RelasiID);
   
-  if GlobalFilter.SpecID <> 0 then
-    where:= where + ' and a.status_absen = '+FormatSQLNumber(GlobalFilter.SpecID);
+  if GlobalFilter.StatusID <> 0 then
+    where:= where + ' and a.status_absen = '+FormatSQLNumber(GlobalFilter.StatusID);
+
+  if GlobalPeriode.PeriodeAwal1 <> 0 then
+    where:= where + ' and a.tanggal '+FormatSQLOperator(GlobalPeriode.OpPeriodeAwal1)+FormatSQLDate(GlobalPeriode.PeriodeAwal1);
+  if GlobalPeriode.PeriodeAkhir1 <> 0 then
+    where:= where + ' and a.tanggal '+FormatSQLOperator(GlobalPeriode.OpPeriodeAkhir1)+FormatSQLDate(GlobalPeriode.PeriodeAkhir1);
+
 
   if where <> '' then  where:= ' where ' + copy(where, 5, length(where));
 

@@ -81,6 +81,13 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     Height = 6
     Shape = bsTopLine
   end
+  object Label4: TLabel
+    Left = 364
+    Top = 55
+    Width = 83
+    Height = 14
+    Caption = 'Jenis Member :'
+  end
   object txtCode: TAdvEdit
     Left = 80
     Top = 31
@@ -1114,8 +1121,20 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     TabOrder = 12
     OnClick = chkWajibDiscClick
   end
+  object cmbJenisMember: TComboBox
+    Left = 448
+    Top = 53
+    Width = 161
+    Height = 22
+    Style = csDropDownList
+    ItemHeight = 14
+    TabOrder = 13
+    Items.Strings = (
+      'Reguler'
+      'Sesama Petshop'
+      'Breeder')
+  end
   object WinXP1: TWinXP
-    Left = 344
-    Top = 32
+    Left = 336
   end
 end

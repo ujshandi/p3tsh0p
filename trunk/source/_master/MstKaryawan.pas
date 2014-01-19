@@ -84,6 +84,9 @@ begin
   if txtCode.Tag <> 0 then
     Result:= Relation.UpdateOnDB
   else Result:= Relation.InsertOnDB;
+
+  if (Result) then Inform('Data telah tersimpan')
+  else Alert('Data GAGAL disimpan');
   tbtSave.Enabled:= not Result;
   txtCode.Tag:= Relation.KaryawanId;
   txtCode.Text:= Relation.Nik;

@@ -112,7 +112,9 @@ const
   colHargaBeli = 8; //show wne input h.jual & discount
   colHargaJual = 9; //show when input disc
   colHarga    = 10;//utk input
-  colModId = 11;
+  colHargaPetshop = 11; //utk hjual sesama petshop
+  colHargaBreeder = 12; //utk hjual breeder
+  colModId = 13;
 
 
 {$R *.dfm}
@@ -179,11 +181,19 @@ begin
 
   grid.AutoSizeColumns(True, 4);
   grid.Cells[colHarga,0] := IfThen(Purpose=1,'Harga Beli',IfThen(Purpose=2, 'Harga Jual','Max.Disc(%)'));
+  grid.Cells[colHargaPetshop,0] := 'H.Petshop';
+  grid.Cells[colHargaBreeder,0] := 'H.Breeder';
   grid.ColWidths[colId]:= 0;
   grid.ColWidths[colModId]:= 0;
   if purpose = 1 then begin
     grid.ColWidths[colHargaBeli]:=0;
     grid.ColWidths[colHargaJual]:=0;
+    grid.ColWidths[colHargaPetshop]:=0;
+    grid.ColWidths[colHargaBreeder]:=0;
+  end;
+   if purpose = 3 then begin  //discount
+     grid.ColWidths[colHargaPetshop]:=0;
+    grid.ColWidths[colHargaBreeder]:=0;
   end;
   if purpose = 2 then begin
     grid.ColWidths[colHargaJual]:=0;
@@ -225,6 +235,8 @@ begin
         2 : begin
            grid.Cells[colHargaBeli,row]:= FloatToStrFmt(BufferToFloat(item.FieldValue(9))) ;
           grid.Cells[colHarga,row]:= FloatToStrFmt(BufferToFloat(item.FieldValue(10))) ;
+            grid.Cells[colHargaPetshop,row]:= FloatToStrFmt(BufferToFloat(item.FieldValue(12))) ;
+              grid.Cells[colHargaBreeder,row]:= FloatToStrFmt(BufferToFloat(item.FieldValue(13))) ;
         end;
         3 : begin
            grid.Cells[colHargaBeli,row]:= FloatToStrFmt(BufferToFloat(item.FieldValue(9))) ;
@@ -243,10 +255,14 @@ begin
                grid.Cells[colMerk,row] := IfThen(Purpose=1,'Per Tanggal','');
                grid.Cells[colStruk,row] := IfThen(Purpose=1,'Supplier', 'Per Tanggal');
                grid.Cells[colHarga,row] := 'Harga';
+                grid.Cells[colHargaPetshop,row] := 'H.Petshop';
+                 grid.Cells[colHargaBreeder,row] := 'H.Breeder';
                if Purpose=1 then
                   grid.Colors[colMerk,row]:= clSkyBlue;
                grid.Colors[colStruk,row]:= clSkyBlue;
                grid.Colors[colHarga,row]:= clSkyBlue;
+               grid.Colors[colHargaPetshop,row]:= clSkyBlue;
+               grid.Colors[colHargaBreeder,row]:= clSkyBlue;
                grid.AddRow;
                row := grid.RowCount-1;
             end;
@@ -258,10 +274,14 @@ begin
            else
              grid.Cells[colStruk,row] := FormatDateTime(ShortDateFormat,BufferToDateTime(detail.FieldValue(0)));
             grid.Cells[colHarga,row] := FloatToStrFmt(BufferToFloat(detail.FieldValue(1)));
+            grid.Cells[colHargaPetshop,row] := FloatToStrFmt(BufferToFloat(detail.FieldValue(2)));
+            grid.Cells[colHargaBreeder,row] := FloatToStrFmt(BufferToFloat(detail.FieldValue(3)));
             if Purpose=1 then
                   grid.Colors[colMerk,row]:= clSilver;
             grid.Colors[colStruk,row]:= clSilver;
             grid.Colors[colHarga,row]:= clSilver;
+            grid.Colors[colHargaPetshop,row]:= clSilver;
+            grid.Colors[colHargaBreeder,row]:= clSilver;
             detail.MoveNext;
          end;
 
@@ -284,10 +304,16 @@ begin
     if Purpose=1 then begin
        grid.ColWidths[colHargaBeli]:= 0;
        grid.ColWidths[colHargaJual]:=0;
+       grid.ColWidths[colHargaPetshop]:=0;
+      grid.ColWidths[colHargaBreeder]:=0;
     end;
     if purpose = 2 then begin
       grid.ColWidths[colHargaJual]:=0;
     end;
+    if purpose = 3 then begin  //discount
+     grid.ColWidths[colHargaPetshop]:=0;
+    grid.ColWidths[colHargaBreeder]:=0;
+  end;
 
   finally
     EndProgress;
@@ -310,7 +336,7 @@ end;
 procedure TfrmMstItemPriceList.gridGetAlignment(Sender: TObject; ARow,
   ACol: Integer; var HAlign: TAlignment; var VAlign: TVAlignment);
 begin
-  if (ACol in [colHarga,colHargaBeli,colHargaJual]) then HAlign:= taRightJustify
+  if (ACol in [colHarga,colHargaBeli,colHargaJual,colHargaPetshop,colHargaBreeder]) then HAlign:= taRightJustify
 end;
 
 procedure TfrmMstItemPriceList.FormClose(Sender: TObject;
@@ -412,7 +438,7 @@ procedure TfrmMstItemPriceList.gridCanEditCell(Sender: TObject; ARow,
   ACol: Integer; var CanEdit: Boolean);
 begin
   inherited;
-  CanEdit :=  (EditMode) and (ACol in [colHarga]);
+  CanEdit :=  (EditMode) and (ACol in [colHarga,colHargaPetshop,colHargaBreeder]);
 end;
 
 procedure TfrmMstItemPriceList.gridGetEditorType(Sender: TObject; ACol,
@@ -420,7 +446,7 @@ procedure TfrmMstItemPriceList.gridGetEditorType(Sender: TObject; ACol,
 begin
   inherited;
 
-  if (ARow>0) and (ACol in[colHarga]) then
+  if (ARow>0) and (ACol in[colHarga,colHargaPetshop,colHargaBreeder]) then
     AEditor := edPositiveNumeric;
 end;
 
@@ -428,7 +454,7 @@ procedure TfrmMstItemPriceList.gridGetCellColor(Sender: TObject; ARow,
   ACol: Integer; AState: TGridDrawState; ABrush: TBrush; AFont: TFont);
 begin
   inherited;
-   if (ARow>0) and (ACol in[colHarga]) and (rgModel.ItemIndex=0) then
+   if (ARow>0) and (ACol in[colHarga,colHargaPetshop,colHargaBreeder]) and (rgModel.ItemIndex=0) then
       ABrush.Color := clLime;
 end;
 
@@ -444,8 +470,11 @@ begin
         
         if Purpose = 1 then
             item[idx].BuyingPrice := StrFmtToFloatDef(grid.Cells[colHarga,i],0)
-         else
-           item[idx].SellingPrice := StrFmtToFloatDef(grid.Cells[colHarga,i],0)
+         else begin
+           item[idx].SellingPrice := StrFmtToFloatDef(grid.Cells[colHarga,i],0);
+           item[idx].PricePetshop := StrFmtToFloatDef(grid.Cells[colHargaPetshop,i],0);
+           item[idx].PriceBreeder := StrFmtToFloatDef(grid.Cells[colHargaBreeder,i],0);
+         end;
 
     end;
    Result := item.updatePrice(Purpose);
@@ -458,7 +487,7 @@ procedure TfrmMstItemPriceList.gridCellValidate(Sender: TObject; Col,
 begin
   inherited;
  case Col of
-      colHarga: //, colSDisp
+      colHarga,colHargaPetshop,colHargaBreeder: //, colSDisp
     begin
       Value:= FloatToStrFmt(StrToFloatDef(Value,0));
       grid.Ints[colModID, Row]:= 1;

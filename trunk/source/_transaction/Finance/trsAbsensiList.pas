@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Grids, BaseGrid, AdvGrid, StdCtrls, AdvEdit, ComCtrls, ToolWin,
-  ExtCtrls, strUtils, Math,UPetshop,
-  UMaster, WinXP, Menus, SUIImagePanel, UTransaction,
+  ExtCtrls, strUtils, Math,UPetshop,DateUtils,
+      UMaster, WinXP, Menus, SUIImagePanel, UTransaction,
   frmDockForm, Buttons, SUIButton;
 
 type
@@ -31,6 +31,11 @@ type
     ToolButton3: TToolButton;
     Label2: TLabel;
     cmbJabatan: TComboBox;
+    dtpAwal: TDateTimePicker;
+    dtpAkhir: TDateTimePicker;
+    Label1: TLabel;
+    Label3: TLabel;
+    cmbOpr: TComboBox;
 
     procedure gridGetAlignment(Sender: TObject; ARow, ACol: Integer;
       var HAlign: TAlignment; var VAlign: TVAlignment);
@@ -67,16 +72,17 @@ implementation
 uses UConstTool, MainMenu, Subroutines,
   MstCodeList, MstItem, UConst,
   mstItemListPrint, LookupData, uMysqlClient, MySQLConnector, MstService,
-  MstKaryawan, TrsAbsensi;
+  MstKaryawan, TrsAbsensi, trsAbsensiListPrint;
 
 const
   colNo      = 0;
-  colName    = 1;
-  colJabatan = 2;
-  colTgl = 3;
-  colStatus = 4;
-  colKeterangan = 5;
-  colId   = 6;
+  colNik     = 1;
+  colName    = 2;
+  colJabatan = 3;
+  colTgl = 4;
+  colStatus = 5;
+  colKeterangan = 6;
+  colId   = 7;
 
 
 {$R *.dfm}
@@ -100,9 +106,12 @@ end;
 
 procedure TfrmTrsAbsensiList.InitFilter;
 begin
+  dtpAwal.Date := StartOfTheMonth(ServerNow);
+  dtpAkhir.Date := ServerNow;
   GlobalPeriode.Reset;
   GlobalFilter.Reset;
   cmbJabatan.ItemIndex:=0;
+  cmbOpr.ItemIndex := 4;
   txtNama.Clear;
 end;
 
@@ -118,8 +127,11 @@ begin
   grid.Clear;
   ResetGrid(grid, 2, colId+2, 1, 1,-1);
   grid.Cells[colNo,0] :='No';
+  grid.Cells[colNik,0] :='NIK';
   grid.Cells[colName,0] :='Nama Karyawan';
   grid.Cells[colJabatan,0] :='Jabatan';
+  grid.Cells[colTgl,0] :='Summary';
+  grid.MergeCells(colTgl,0,3,1 );
   grid.AutoSizeColumns(True, 4);
   grid.ColWidths[colId]:= 0;
 
@@ -141,6 +153,7 @@ begin
   try
     StartProgress;
     InitGrid;
+    //InitFilter;
     SetFilter;
     item:= TMstKaryawan.LoadFromDB;
    // grid.RowCount:= IfThen(item.RecordCount > 0, item.RecordCount + 1, 2);
@@ -154,11 +167,13 @@ begin
       grid.Ints[colNo, row]:= i;//+txtLimit.Tag;
 
    //   grid.Ints[colId, i]:= BufferToInteger(item.FieldValue(0));
+      grid.Cells[colNik,   row]:= BufferToString(item.FieldValue(1));
       grid.Cells[colName,   row]:= BufferToString(item.FieldValue(2));
       grid.Cells[colJabatan,row]:= BufferToString(item.FieldValue(9));
 
    //0a.absen_id,1a.karyawan_id,2a.tanggal,3a.status_absen,4a.keterangan,5k.nama ,6m.mst_name
       GlobalFilter.RelasiID := BufferToInteger(item.FieldValue(0));
+      GlobalFilter.StatusID  := StrToInt(lsStatusAbsen.Names[cmbJabatan.itemIndex]);
       absen := TTrsAbsensi.LoadFromDB;
       resetListValue(summary);
       for j:= 0 to absen.RecordCount-1 do begin
@@ -172,17 +187,19 @@ begin
                grid.Cells[colTgl,row] := 'Tanggal';
                grid.Cells[colStatus,row] := 'Status';
                grid.Cells[colKeterangan,row] := 'Keterangan';
-
+               grid.Cells[colId,row] := '-1';
                grid.Colors[colTgl,row]:= clSkyBlue;
                grid.Colors[colStatus,row]:= clSkyBlue;
                grid.Colors[colKeterangan,row]:= clSkyBlue;
+
                grid.AddRow;
                row := grid.RowCount-1;
             end;
-              
+
               grid.Cells[colTgl,row] := FormatDateTime(ShortDateFormat,BufferToDateTime(absen.FieldValue(2)));
               grid.Cells[colStatus,row] :=BufferToString(absen.FieldValue(6));
               grid.Cells[colKeterangan,row] :=BufferToString(absen.FieldValue(4));
+              grid.Cells[colId,row] := IntToStr(BufferToInt64(absen.FieldValue(0)));
               idx := summary.IndexOfName(BufferToString(absen.FieldValue(3)));
               tmp := StrToIntDef(summary.Values[summary.Names[idx]],0)+1;
               summary.Values[summary.Names[idx]] := IntToStr(tmp);
@@ -201,10 +218,12 @@ begin
          end;
         tmpStr := 'Total : ';
         for j:=0 to summary.Count-1 do begin
-          tmpStr := tmpStr+ lsStatusAbsen.Values[lsStatusAbsen.Names[j+1]]+'= '+summary.Values[summary.Names[j]]+'; '
+          tmpStr := tmpStr+ lsStatusAbsen.Values[lsStatusAbsen.Names[j+1]]+'='+summary.Values[summary.Names[j]]+';  ';
         end;
-        grid.MergeCells(colTgl,row-absen.RecordCount-1,3,1);
-        grid.Cells[colTgl,row-absen.RecordCount-1] := tmpStr;
+
+        tmp := IfThen(absen.RecordCount>0, absen.RecordCount+1,0);
+        grid.MergeCells(colTgl,row-tmp,3,1);
+        grid.Cells[colTgl,row-tmp] := tmpStr;
         if absen.RecordCount>0 then
            grid.AddNode(row-absen.RecordCount-1,absen.RecordCount+2);
 
@@ -213,7 +232,7 @@ begin
       grid.AddRow;
       item.MoveNext;
     end;
-
+    grid.RemoveRows(grid.RowCount-1,1);
     item.destroy;
     grid.AutoSizeColumns(true, 2);
     grid.ColWidths[colID]:= 0;
@@ -227,9 +246,9 @@ end;
 
 procedure TfrmTrsAbsensiList.SetFilter;
 begin
-//  GlobalFilter.SpecID  := StrToInt(lsStatusAbsen.Names[cmbJabatan.itemIndex]);
+ 
   GlobalFilter.Name:= txtNama.Text;
-
+   GlobalPeriode.setPeriode(cmbOpr.ItemIndex-1, dtpAwal.Date, dtpAkhir.Date);
 end;
 
 procedure TfrmTrsAbsensiList.gridGetAlignment(Sender: TObject; ARow,
@@ -274,10 +293,10 @@ begin
   if not TSystemAccess.isCan(CAN_PRINT,AktiveControl.Tag) then exit;
   if MustRegister then exit;
   try
-    Application.CreateForm(TqrpItemList, qrpItemList);
-    qrpItemList.Executes(grid);
+    Application.CreateForm(TqrpAbsensiList, qrpAbsensiList);
+    qrpAbsensiList.Executes(grid);
   finally
-    qrpItemList.Destroy;
+    qrpAbsensiList.Destroy;
   end;
 end;
 
@@ -389,8 +408,8 @@ end;
 procedure TfrmTrsAbsensiList.ToolButton3Click(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_DELETE,AktiveControl.Tag) then exit;
-  if Confirmed('Hapus Hewan ?') then
-  if TMstAnimal.deleteOnDb(grid.Ints[colId, grid.Row]) then begin
+  if Confirmed('Hapus Data Absen ?') then
+  if TTrsAbsensi.deleteOnDb(StrToInt64Def(grid.Cells[colId, grid.Row],0)) then begin
      grid.ClearRows(grid.Row,1);
      if grid.RowCount > 2 then grid.RemoveRows(grid.Row,1);
   end;

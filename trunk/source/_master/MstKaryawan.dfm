@@ -4,7 +4,7 @@ object frmMstKaryawan: TfrmMstKaryawan
   ActiveControl = txtName
   BorderStyle = bsDialog
   Caption = 'Input Supplier'
-  ClientHeight = 326
+  ClientHeight = 267
   ClientWidth = 538
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
@@ -294,7 +294,7 @@ object frmMstKaryawan: TfrmMstKaryawan
   end
   object ToolBar1: TToolBar
     Left = 0
-    Top = 286
+    Top = 227
     Width = 538
     Height = 40
     Align = alBottom
