@@ -17,7 +17,7 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
   PixelsPerInch = 96
   TextHeight = 13
   object suiPanel1: TsuiPanel
-    Left = 768
+    Left = 760
     Top = 120
     Width = 0
     Height = 327
@@ -38,7 +38,7 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
       Left = 4
       Top = 24
       Width = 241
-      Height = 299
+      Height = 295
       Cursor = crDefault
       Align = alClient
       ColCount = 1
@@ -214,7 +214,7 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
   object suiPanel3: TsuiPanel
     Left = 0
     Top = 41
-    Width = 768
+    Width = 760
     Height = 79
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -237,6 +237,20 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
       Height = 13
       Alignment = taRightJustify
       Caption = 'Status Absen :'
+    end
+    object Label1: TLabel
+      Left = 271
+      Top = 53
+      Width = 81
+      Height = 13
+      Caption = 'Sampai Dengan :'
+    end
+    object Label3: TLabel
+      Left = 256
+      Top = 28
+      Width = 56
+      Height = 13
+      Caption = 'Tgl Absen :'
     end
     object txtNama: TAdvEdit
       Left = 80
@@ -298,11 +312,54 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
       ItemHeight = 13
       TabOrder = 1
     end
+    object dtpAwal: TDateTimePicker
+      Left = 355
+      Top = 26
+      Width = 80
+      Height = 21
+      CalAlignment = dtaLeft
+      Date = 39083.7426506366
+      Time = 39083.7426506366
+      DateFormat = dfShort
+      DateMode = dmComboBox
+      Kind = dtkDate
+      ParseInput = False
+      TabOrder = 2
+    end
+    object dtpAkhir: TDateTimePicker
+      Left = 355
+      Top = 50
+      Width = 80
+      Height = 21
+      CalAlignment = dtaLeft
+      Date = 39083.7426842477
+      Time = 39083.7426842477
+      DateFormat = dfShort
+      DateMode = dmComboBox
+      Kind = dtkDate
+      ParseInput = False
+      TabOrder = 3
+    end
+    object cmbOpr: TComboBox
+      Left = 310
+      Top = 26
+      Width = 43
+      Height = 21
+      Style = csDropDownList
+      ItemHeight = 13
+      TabOrder = 4
+      Items.Strings = (
+        ' '
+        '='
+        ' >='
+        ' <='
+        'Dari')
+    end
   end
   object suiPanel2: TsuiPanel
     Left = 0
     Top = 120
-    Width = 768
+    Width = 760
     Height = 327
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -321,8 +378,8 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
     object grid: TAdvStringGrid
       Left = 4
       Top = 24
-      Width = 760
-      Height = 299
+      Width = 752
+      Height = 295
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
@@ -531,7 +588,7 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 768
+    Width = 760
     Height = 41
     ButtonHeight = 36
     ButtonWidth = 60
@@ -611,7 +668,6 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
       Hint = 'Print Data [Ctrl+P]'
       Caption = 'Print'
       ImageIndex = 8
-      Visible = False
       OnClick = tbtPrintClick
     end
   end

@@ -14,7 +14,7 @@ const
     MANAGEMENT_VERSION = FALSE;
   {$ENDIF}
 
-  DATE_VERSION = 'v.21.03.11';
+  DATE_VERSION = 'v.19.01.14';
 
   MODUL_PATH = '\Software\Invisi\petshop';
 
@@ -84,6 +84,7 @@ const
   MST_TYPE_SERVICE   = 7;
   MST_TYPE_JABATAN   = 8;
   MST_TYPE_ABSEN     = 9;
+  
 
   JNS_MULTIPLY    = 1;
   JNS_DISCOUNT    = 2;
@@ -130,6 +131,10 @@ const
   PREFIX_OTC   = 'O';
 
   JENIS_JASA_MEDIS = 36;
+
+  JENIS_MEMBER_REGULER = 1;
+  JENIS_MEMBER_PETSHOP = 2;
+  JENIS_MEMBER_BREEDER = 3;
 
 
   CENTRAL_BOARD = 1;

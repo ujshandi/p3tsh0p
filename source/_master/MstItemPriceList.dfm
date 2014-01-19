@@ -17,7 +17,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   PixelsPerInch = 96
   TextHeight = 13
   object suiPanel1: TsuiPanel
-    Left = 768
+    Left = 760
     Top = 119
     Width = 0
     Height = 328
@@ -38,7 +38,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
       Left = 4
       Top = 24
       Width = 241
-      Height = 300
+      Height = 296
       Cursor = crDefault
       Align = alClient
       ColCount = 1
@@ -214,7 +214,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   object suiPanel3: TsuiPanel
     Left = 0
     Top = 41
-    Width = 768
+    Width = 760
     Height = 78
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -627,7 +627,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   object suiPanel2: TsuiPanel
     Left = 0
     Top = 119
-    Width = 768
+    Width = 760
     Height = 328
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -646,8 +646,8 @@ object frmMstItemPriceList: TfrmMstItemPriceList
     object grid: TAdvStringGrid
       Left = 4
       Top = 65
-      Width = 760
-      Height = 259
+      Width = 752
+      Height = 255
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
@@ -861,7 +861,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
     object pnlMarkup: TPanel
       Left = 4
       Top = 24
-      Width = 760
+      Width = 752
       Height = 41
       Align = alTop
       TabOrder = 1
@@ -931,7 +931,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 768
+    Width = 760
     Height = 41
     ButtonHeight = 36
     ButtonWidth = 60

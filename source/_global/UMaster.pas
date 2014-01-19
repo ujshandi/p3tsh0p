@@ -121,6 +121,7 @@ type
   public
     FRelationAnimal :  _MstRelationAnimal_Arr;
     FWajibDiscount : integer;
+    FJenisMember : Smallint;
     constructor Create;
     destructor Destroy;override;
     procedure Reset;override;
@@ -154,6 +155,7 @@ type
     class function getAnimalName(aRelationId:integer;Seq:integer):string;
 
     property WajibDiscount : integer read FWajibDiscount write FWajibDiscount;
+    property JenisMember : Smallint read FJenisMember write FJenisMember;
   end;
 
   TMstDokter = class(_MstDokter)
@@ -234,6 +236,7 @@ type
     FItemConversion: TMstItemConversionArr;
     FItemSeting: _MstItemSetting_Arr;
     FRak: _MstRakItem_Arr;
+
 //    SellingPrice, BuyingPrice : Double;
     constructor Create;
     destructor Destroy; override;
@@ -259,7 +262,8 @@ type
     class function GetSaldoAwal(AItemId, AStorageID: integer; vDate: TDate): Double;
     class function GetRakDesc(AItemId: integer): string;
     class function GetNextCode(Spec: integer): string;
-    class function updatePriceHistory(Purpose,aItemId:integer;aPrice:double;Supplier:string):boolean;
+    class function updatePriceHistory(Purpose,aItemId:integer;aPrice:double;Supplier:string;aPricePetshop:double;aPriceBreeder:double):boolean;
+
   end;
 
   TMstItemArr = class(_MstItem_Arr)
@@ -941,7 +945,7 @@ var buffer: TMysqlResult;
 begin
   buffer:= OpenSQL(
     'select relation_id, relation_type, relation_code, relation_name, address1, address2, '+
-    'post_code, city, phone1, phone2, due_date, current_debt, contact_person, npwp,discount,wajib_discount '+
+    'post_code, city, phone1, phone2, due_date, current_debt, contact_person, npwp,discount,wajib_discount,jenis_member '+
     'from mst_relation '+
     IfThen(FRelationId <> 0,
     'where relation_id = '+FormatSQLNumber(FRelationId),
@@ -968,6 +972,7 @@ begin
       FNPWP         := BufferToString(FieldValue(13));
       FDiscount     := BufferToFloat(FieldValue(14));
       FWajibDiscount := BufferToInteger(FieldValue(15));
+      FJenisMember  := BufferToInteger(FieldValue(16));
     end;
   buffer.Destroy;
 end;
@@ -1067,7 +1072,9 @@ begin
       'if(fax <> '''', concat(phone1, '';'', fax), phone1), '+
       'fax) as ''Phone/Fax'', '+
    'contact_person as ''Kontak Person'', '+
-   'current_debt as Saldo, current_point as Point '+
+    'case when jenis_member='+FormatSQLNumber(JENIS_MEMBER_BREEDER)+' then ''Breeder'' when jenis_member='+FormatSQLNumber(JENIS_MEMBER_PETSHOP)+' then ''Sesama Petshop'' else ''Reguler'' end as ''Jenis Member'' '+
+   ',current_debt as Saldo, current_point as Point '+
+
    'from mst_relation where relation_type = '+FormatSQLString(GlobalFilter.TipeID);
 
   if GlobalFilter.Name <> '' then
@@ -2108,12 +2115,13 @@ begin
   end;
 end;
 
-class function TMstItem.updatePriceHistory(Purpose,aItemId:integer;aPrice:double;Supplier:string): boolean;
+class function TMstItem.updatePriceHistory(Purpose,aItemId:integer;aPrice:double;Supplier:string;aPricePetshop:double;aPriceBreeder:double): boolean;
 var sql : string;
 begin
    sql := 'update mst_item set '+
               IfThen(purpose=1,' buying_price = '+FormatSQLNumber(aPrice),
-              ifThen(Purpose=2,' selling_price = '+FormatSQLNumber(aPrice),' discount = '+FormatSQLNumber(aPrice)))+
+              ifThen(Purpose=2,' selling_price = '+FormatSQLNumber(aPrice)+', price_petshop = '+FormatSQLNumber(aPricePetshop)+', price_breeder = '+FormatSQLNumber(aPriceBreeder)
+              ,' discount = '+FormatSQLNumber(aPrice)))+
               ' WHERE item_id = '+FormatSQLNumber(aItemId);
   ExecSQL(sql);
   if Purpose = 1 then // harga beli
@@ -2121,9 +2129,11 @@ begin
         ' values('+FormatSQLNumber(aItemId)+','+
           FormatSQLNumber(aPrice)+',now(),'+FormatSQLString(Supplier)+','+FormatSQLString(getSecurityLog)+')'
   else  if Purpose = 2 then 
-      sql:= 'insert into mst_selling_price_hist(item_id,price,end_date,insert_log) '+
+      sql:= 'insert into mst_selling_price_hist(item_id,price,price_petshop,price_breeder,end_date,insert_log) '+
         ' values('+FormatSQLNumber(aItemId)+','+
-          FormatSQLNumber(aPrice)+',now(),'+FormatSQLString(getSecurityLog)+')';
+          FormatSQLNumber(aPrice)+','+
+          FormatSQLNumber(aPricePetshop)+','+
+          FormatSQLNumber(aPriceBreeder)+',now(),'+FormatSQLString(getSecurityLog)+')';
 
 
   Result := ExecSQL(sql)=0;
@@ -2546,7 +2556,7 @@ begin
   ', merk,struk_name,round(i.current_stock), '+
   '(select mst_code from mst_master where mst_id = i.kemasan_id limit 1) as sat '+
 '  ,(select code_name from mst_code where code_id = i.specification) as jenis '+
-   ',buying_price,selling_price,discount '+
+   ',buying_price,selling_price,discount,price_petshop,price_breeder '+
     'from mst_item i,  point_maping p '+
   IfThen(GlobalFilter.Numeric2<>0, ', mst_rak_item r, mst_rak_maping rm ')+
   'where i.specification = p.code_id '+ filter;
@@ -2647,7 +2657,7 @@ begin
     sql := 'select end_date,price,supplier from mst_buying_price_hist where item_id ='+FormatSQLNumber(AItemId)+
       ' order by end_date desc '
   else
-    sql := 'select end_date,price from mst_selling_price_hist where item_id ='+FormatSQLNumber(AItemId)+
+    sql := 'select end_date,price,price_petshop,price_breeder from mst_selling_price_hist where item_id ='+FormatSQLNumber(AItemId)+
       ' order by end_date desc ';
   Result := OpenSQL(sql); 
 end;
@@ -2667,7 +2677,8 @@ begin
        ExecSQL(sql);}
 
 //       if purpose = 1 then
-         TMstItem.updatePriceHistory(purpose,Self[i].ItemID,IfThen(purpose=1,Self[i].BuyingPrice,Self[i].SellingPrice),'');
+         TMstItem.updatePriceHistory(purpose,Self[i].ItemID,IfThen(purpose=1,Self[i].BuyingPrice,Self[i].SellingPrice),'',
+          Self[i].PricePetshop,Self[i].PriceBreeder);
      end;
       Inform(MSG_SUCCESS_UPDATE);
       EndSQL;

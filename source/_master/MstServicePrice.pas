@@ -95,11 +95,13 @@ const
   colId      = 4;
 
   colPPrice = 3;
-  colPAdd = 4;
-  colPDisc =5;
-  colPAnimalId = 6;
-  colPModId = 7;
-  colPId = 8;
+  colPPricePetshop =4;
+  colPPriceBreeder =5;
+  colPAdd = 6;
+  colPDisc =7;
+  colPAnimalId = 8;
+  colPModId = 9;
+  colPId = 10;
 
 
 {$R *.dfm}
@@ -168,6 +170,9 @@ begin
       gridTarif.Cells[colPPrice,i] :=FloatToStrFmt(BufferToFloat(item.FieldValue(5)));
       gridTarif.Cells[colPAdd,i] :=FloatToStrFmt(BufferToFloat(item.FieldValue(6)));
       gridTarif.Cells[colPDisc,i] :=FloatToStrFmt(BufferToFloat(item.FieldValue(7)));
+
+      gridTarif.Cells[colPPricePetshop,i] :=FloatToStrFmt(BufferToFloat(item.FieldValue(8)));
+      gridTarif.Cells[colPPriceBreeder,i] :=FloatToStrFmt(BufferToFloat(item.FieldValue(9)));
       item.MoveNext;
     end;
 
@@ -411,14 +416,14 @@ procedure TfrmMstServicePrice.gridTarifCanEditCell(Sender: TObject; ARow,
   ACol: Integer; var CanEdit: Boolean);
 begin
   inherited;
-  CanEdit := (ACol in[colPPrice,colPDisc]) and EditMode;//,colPAdd
+  CanEdit := (ACol in[colPPrice,colPDisc,colPPricePetshop,colPPriceBreeder]) and EditMode;//,colPAdd
 end;
 
 procedure TfrmMstServicePrice.gridTarifGetEditorType(Sender: TObject; ACol,
   ARow: Integer; var AEditor: TEditorType);
 begin
   inherited;
-  if (ACol in[ColPPrice,colPAdd,colPDisc]) then
+  if (ACol in[ColPPrice,colPAdd,colPDisc,colPPricePetshop,colPPriceBreeder]) then
     AEditor := edPositiveNumeric;
 end;
 
@@ -434,7 +439,7 @@ begin
       tbtSave.Enabled:= True;
     end;
     }
-    colPPrice,colPAdd,colPDisc: //, colSDisp
+    colPPrice,colPAdd,colPDisc,colPPricePetshop,colPPriceBreeder: //, colSDisp
     begin
       Value:= FloatToStrFmt(StrToFloatDef(Value,0));
       gridTarif.Ints[colPModID, Row]:= 1;
@@ -459,18 +464,21 @@ begin
 end;
 
 function TfrmMstServicePrice.isSaved: boolean;
-var i: integer;
+var i,idx: integer;
 begin
   Result:= False;
 
   MstItem.reset;
   for i:= 1 to gridTarif.RowCount-1 do
-    if  (gridTarif.Ints[colPModID, i] <>0) then
-       MstItem.FServiceArr.Add(gridTarif.Ints[colPID, i],pnlTarif.Tag,
+    if  (gridTarif.Ints[colPModID, i] <>0) then  begin
+       idx:=MstItem.FServiceArr.Add(gridTarif.Ints[colPID, i],pnlTarif.Tag,
       roundCorrected(StrFmtToFloatDef(gridTarif.Cells[colPAnimalId, i],0)),
       roundCorrected(StrFmtToFloatDef(gridTarif.Cells[colPPrice, i],0)),
       roundCorrected(StrFmtToFloatDef(gridTarif.Cells[colPAdd, i],0)),
       '','',roundCorrected(StrFmtToFloatDef(gridTarif.Cells[colPDisc, i],0)));
+      MstItem.FServiceArr[idx].PricePetshop := roundCorrected(StrFmtToFloatDef(gridTarif.Cells[colPPricePetshop, i],0));
+      MstItem.FServiceArr[idx].PriceBreeder := roundCorrected(StrFmtToFloatDef(gridTarif.Cells[colPPriceBreeder, i],0));
+     end; 
               
   Result:= MstItem.saveToDb();
  // else Result:= MstItem.InsertOnDB;
@@ -490,7 +498,7 @@ procedure TfrmMstServicePrice.gridTarifGetAlignment(Sender: TObject; ARow,
   ACol: Integer; var HAlign: TAlignment; var VAlign: TVAlignment);
 begin
   inherited;
-  if (ACol in[colPPrice,colPAdd,colPDisc]) then  HAlign:= taRightJustify
+  if (ACol in[colPPrice,colPAdd,colPDisc,colPPricePetshop,colPPriceBreeder]) then  HAlign:= taRightJustify
 end;
 
 procedure TfrmMstServicePrice.InitGridExcel;

@@ -85,10 +85,13 @@ const
   colKota   = 5;
   colPhone  = 6;
   colKontak = 7;
-  colSaldo  = 8;
-  colPoint  = 9;
-  colOldVal = 10;
-  colOldPoint = 11;
+   colJenis = 8;
+  colSaldo  = 9;
+  colPoint  = 10;
+
+  colOldVal = 11;
+  colOldPoint = 12;
+
 
 {$R *.dfm}
 
@@ -142,11 +145,12 @@ begin
     grid.ColWidths[colKontak ]:= 100;
     grid.ColWidths[colSaldo  ]:= 0;
     grid.ColWidths[colPoint   ]:= 0;
+    grid.ColWidths[colJenis   ]:= 0;
     grid.ColWidths[colOldPoint]:=0;
     grid.ColWidths[colOldVal  ]:= 0;
     if Purpose = RELASI_TYPE_SUPPLIER
       then grid.ColWidths[colPoint]:= 0;
-
+    if Purpose=RELASI_TYPE_CUSTOMER then grid.ColWidths[colJenis   ]:= 70;
     SetFilter;
     relasi:= TMstRelationArr.LoadFromDB;
     grid.Clear;
@@ -196,7 +200,7 @@ procedure TfrmMstRelationList.gridGetAlignment(Sender: TObject; ARow,
   ACol: Integer; var HAlign: TAlignment; var VAlign: TVAlignment);
 begin
 
-  if (ACol > colKontak) then HAlign:= taRightJustify
+  if (ACol > colJenis) then HAlign:= taRightJustify
 end;
 
 procedure TfrmMstRelationList.tbtNewClick(Sender: TObject);

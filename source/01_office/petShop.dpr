@@ -33,7 +33,7 @@ uses
   UTransaction in '..\_global\UTransaction.pas',
   MstCode in '..\_master\MstCode.pas' {frmMstCode},
   MstCodeList in '..\_master\MstCodeList.pas' {frmMstCodeList},
-  MstItemPriceListPrint in '..\_master\MstItemPriceListPrint.pas' {qrpItemPriceList: TQuickRep},
+  trsAbsensiListPrint in '..\_transaction\Finance\trsAbsensiListPrint.pas' {qrpAbsensiList: TQuickRep},
   MstUnit in '..\_master\MstUnit.pas' {frmMstUnit},
   ReportItemMovementPrint in '..\_report\ReportItemMovementPrint.pas' {qrpReportItemMovement: TQuickRep},
   ReportItemMutasiPrint in '..\_report\ReportItemMutasiPrint.pas' {qrpReportItemMutasi: TQuickRep},
@@ -93,7 +93,8 @@ uses
   MstAnimalList in '..\_master\MstAnimalList.pas' {frmMstAnimalList},
   MstRelation in '..\_master\MstRelation.pas' {frmMstRelation},
   MstKaryawanList in '..\_master\MstKaryawanList.pas' {frmMstKaryawanList},
-  MstKaryawan in '..\_master\MstKaryawan.pas' {frmMstKaryawan};
+  MstKaryawan in '..\_master\MstKaryawan.pas' {frmMstKaryawan},
+  MstItemPriceListPrint in '..\_master\MstItemPriceListPrint.pas' {qrpItemPriceList: TQuickRep};
 
 {$R *.res}
 
@@ -103,7 +104,6 @@ begin
 
   Application.CreateForm(TfrmMainMenu, frmMainMenu);
   Application.CreateForm(TfrmLogin, frmLogin);
-
   frmLogin.Status('Prepare Application...');
   frmLogin.Status('Connecting database...');
   Application.CreateForm(TfrmBackupRestore, frmBackupRestore);

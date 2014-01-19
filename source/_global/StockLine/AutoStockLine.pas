@@ -1210,6 +1210,8 @@ type
     FExpireDate: TDate; //
     FKategori: integer; //
    FSellingPrice ,FBuyingPrice ,FAddPrice,FDiscount : double;
+    FPricePetshop : Double;
+    FPriceBreeder :  Double;
   public
     property Owner: TObject read FOwner;
     constructor Create(AOwner: TObject = nil);
@@ -1239,7 +1241,10 @@ type
     property SellingPrice : double read FSellingPrice write FSellingPrice;
     property BuyingPrice : Double read FBuyingPrice write FBuyingPrice;
     property AddPrice : Double read FAddPrice write FAddPrice;
-    property Discount : double read FDiscount write FDiscount; 
+    property Discount : double read FDiscount write FDiscount;
+    
+    property PricePetshop : double read FPricePetshop write FPricePetshop;
+    property PriceBreeder : Double read FPriceBreeder write FPriceBreeder;
     function SelectInDB(AItemID: integer): boolean; virtual;
     class function ExistInDB(AItemID: integer): integer; virtual;
   end;
@@ -2770,6 +2775,8 @@ type
     FInsertLog: string; //[0]
     FEditLog: string; //[0]
     FDiscount:real;
+    FPricePetshop:real;
+    FPriceBreeder:real;
   public
     property Owner: TObject read FOwner;
     constructor Create(AOwner: TObject = nil);
@@ -2786,6 +2793,8 @@ type
     property InsertLog: string  read FInsertLog write FInsertLog;
     property EditLog: string  read FEditLog write FEditLog;
     property Discount:real read FDiscount write FDiscount;
+    property PricePetshop:real read FPricePetshop write FPricePetshop;
+    property PriceBreeder:real read FPriceBreeder write FPriceBreeder;
   end;
 
 
