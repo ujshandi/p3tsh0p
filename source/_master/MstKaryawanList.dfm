@@ -347,7 +347,7 @@ object frmMstKaryawanList: TfrmMstKaryawanList
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
-      ColCount = 14
+      ColCount = 16
       DefaultColWidth = 100
       DefaultRowHeight = 21
       DefaultDrawing = False
@@ -515,6 +515,8 @@ object frmMstKaryawanList: TfrmMstKaryawanList
         'Alamat'
         'Jabatan'
         'Tgl.Lahir'
+        'Tgl.Masuk'
+        'Nama Ortu'
         'Telp1'
         'Telp2'
         'Status')
@@ -538,6 +540,8 @@ object frmMstKaryawanList: TfrmMstKaryawanList
         49
         30
         40
+        100
+        100
         100
         100
         100)

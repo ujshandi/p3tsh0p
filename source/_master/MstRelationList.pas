@@ -155,7 +155,7 @@ begin
     relasi:= TMstRelationArr.LoadFromDB;
     grid.Clear;
     grid.RowCount:= IfThen(relasi.RecordCount > 0, relasi.RecordCount + 1, 2);
-    grid.ColCount:= 12;
+    grid.ColCount:= 13;
 
     grid.FixedRows:= 1;
     for i:= 0 to relasi.FieldsCount-1 do begin
@@ -267,11 +267,11 @@ end;
 procedure TfrmMstRelationList.gridRowChanging(Sender: TObject; OldRow,
   NewRow: Integer; var Allow: Boolean);
 begin
-  if OldRow <= grid.RowCount-1 then
+{  if OldRow <= grid.RowCount-1 then
   grid.RowHeights[OldRow]:= grid.DefaultRowHeight;
   grid.AutoSizeRow(NewRow);
   if grid.RowHeights[NewRow] < grid.DefaultRowHeight then
-    grid.RowHeights[NewRow]:= grid.DefaultRowHeight;
+    grid.RowHeights[NewRow]:= grid.DefaultRowHeight;}
 end;
 
 procedure TfrmMstRelationList.gridClickCell(Sender: TObject; ARow,

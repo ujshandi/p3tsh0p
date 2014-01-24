@@ -123,6 +123,8 @@ type
     FTelp1 : string;
     FTelp2 : string;
     FDisabledDate : TDate;
+    FTglMasuk : TDate;
+    FOrtu : string;
     private
 
     public
@@ -148,6 +150,8 @@ type
       property Telp1 :string read FTelp1 write FTelp1;
       property Telp2 :string read FTelp2 write FTelp2;
       property DisabledDate :TDate read FDisabledDate write FDisabledDate;
+      property TglMasuk :TDate read FTglMasuk write FTglMasuk;
+      property Ortu:string read FOrtu write FOrtu;
   end;
 
   TTrsAbsensi = class(TObject)
@@ -927,13 +931,15 @@ begin
 //    FServiceCode:= GetNextCode;
 
     ExecSQL(
-    'insert into mst_karyawan (nik,nama,alamat,jabatan,tgl_lahir,tlp1,tlp2) '+
+    'insert into mst_karyawan (nik,nama,ortu,alamat,jabatan,tgl_lahir,tgl_masuk,tlp1,tlp2) '+
     'values ('+
       FormatSQLString(FNik)+','+
       FormatSQLString(FNama)+','+
+      FormatSQLString(FOrtu)+','+
       FormatSQLString(FAlamat)+','+
       FormatSQLNumber(FJabatan)+','+
       FormatSQLDate(FTglLahir)+','+
+      FormatSQLDate(FTglMasuk)+','+
       FormatSQLString(FTelp1)+','+
       FormatSQLString(FTelp2)+')');
 
@@ -959,7 +965,7 @@ class function TMstKaryawan.LoadFromDB: TMysqlResult;
 var sqL,where: string;
 begin
   sqL:=
-  'select karyawan_id,nik, nama,k.alamat,jabatan,tgl_lahir,tlp1,tlp2,disabled_date,mst_name '+
+  'select karyawan_id,nik, nama,k.alamat,jabatan,tgl_lahir,tlp1,tlp2,disabled_date,mst_name,k.tgl_masuk,k.ortu '+
   'from mst_karyawan k left join mst_master m on k.jabatan = m.mst_id';
   where := '';
   if GlobalFilter.StatusID = 1 then where:= where + ' and disabled_date is null '
@@ -981,9 +987,11 @@ procedure TMstKaryawan.Reset;
 begin
     FKaryawanId := 0;
     FNama := '';
+    FOrtu := '';
     FAlamat := '';
     FJabatan :=-1;
     FTglLahir := Now;
+    FTglMasuk := Now;
     FTelp1 := '';
     FTelp2 := '';
     FNik := '';
@@ -994,7 +1002,7 @@ function TMstKaryawan.SelectInDB: boolean;
 var buffer: TMysqlResult;
 begin
   buffer:= OpenSQL(
-  'select karyawan_id,nama,alamat,jabatan,tgl_lahir,tlp1,tlp2,disabled_date,nik '+
+  'select karyawan_id,nama,alamat,jabatan,tgl_lahir,tlp1,tlp2,disabled_date,nik,tgl_masuk,ortu '+
   'from mst_karyawan '+
     'where karyawan_id = '+FormatSQLNumber(FKaryawanId));
 
@@ -1009,8 +1017,10 @@ begin
       FTglLahir   := BufferToDateTime(FieldValue(4));
       FTelp1     := BufferToString(FieldValue(5));
       FTelp2     := BufferToString(FieldValue(6));
-      FTglLahir   := BufferToDateTime(FieldValue(7));
+      FDisabledDate   := BufferToDateTime(FieldValue(7));
       FNik := BufferToString(FieldValue(8));
+      FOrtu := BufferToString(FieldValue(10));
+      FTglMasuk   := BufferToDateTime(FieldValue(9));
 
     end;
   buffer.Destroy;
@@ -1028,9 +1038,11 @@ begin
     'update mst_karyawan set '+
     ' nik= '+FormatSQLString(FNik)+','+
     ' nama= '+FormatSQLString(FNama)+','+
+    ' ortu= '+FormatSQLString(FOrtu)+','+
     ' alamat= '+FormatSQLString(FAlamat)+','+
     ' jabatan= '+FormatSQLNumber(FJabatan)+','+
     ' tgl_lahir= '+FormatSQLDate(FTglLahir)+','+
+    ' tgl_masuk= '+FormatSQLDate(FTglMasuk)+','+
     ' tlp1= '+FormatSQLString(FTelp1)+','+
     ' tlp2= '+FormatSQLString(FTelp2)+
     ' where karyawan_id= '+FormatSQLNumber(FKaryawanId));

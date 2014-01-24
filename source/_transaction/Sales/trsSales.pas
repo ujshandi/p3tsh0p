@@ -384,8 +384,18 @@ begin
           asgSales.Ints[colItemId,   vRow]:= MstItem.ItemId;
           asgSales.Ints[colIsPaket,  vRow]:= MstItem.Konsinyasi;
           asgSales.Cells[colUnit,    vRow]:= MstItem.FItemConversion[0].MstMaster.MstCode;
-          asgSales.Cells[colHarga,   vRow]:= FloatToStrFmt(MstItem.SellingPrice);
-          asgSales.Cells[colHrgDisplay,   vRow]:= FloatToStrFmt(MstItem.SellingPrice);
+          if (lblPasien.Tag = JENIS_MEMBER_PETSHOP) then begin
+            asgSales.Cells[colHarga,   vRow]:= FloatToStrFmt(MstItem.PricePetshop);
+            asgSales.Cells[colHrgDisplay,   vRow]:= FloatToStrFmt(MstItem.PricePetshop);
+          end
+          else if (lblPasien.Tag = JENIS_MEMBER_BREEDER) then begin
+            asgSales.Cells[colHarga,   vRow]:= FloatToStrFmt(MstItem.PriceBreeder);
+            asgSales.Cells[colHrgDisplay,   vRow]:= FloatToStrFmt(MstItem.PriceBreeder);
+          end
+          else begin
+            asgSales.Cells[colHarga,   vRow]:= FloatToStrFmt(MstItem.SellingPrice);
+            asgSales.Cells[colHrgDisplay,   vRow]:= FloatToStrFmt(MstItem.SellingPrice);
+          end;
           asgSales.Cells[colDisc,   vRow]:= FloatToStrFmt(MstItem.Discount);
           asgSales.Cells[colDiscRp,   vRow]:= FloatToStrFmt(0);//MstItem.SellingPrice);
           asgSales.Cells[colQty,     vRow]:= FloatToStrFmt(AQty);
@@ -472,6 +482,7 @@ begin
 
   txtPasien.Clear;
   txtPasien.Tag:= 0;
+  lblPasien.Tag:= 0;
   lblPasien.Caption:='';
   txtDokter.Clear;
   txtDokter.Tag:= 0;
@@ -1886,7 +1897,7 @@ begin
               getAnimal(txtPasien.Tag);
           end;
     vk_F11 : NewPasien;
-    VK_TAB:
+    VK_TAB,VK_RETURN:
     begin
       if txtPasien.Modified then
         if not getPasien(0, txtPasien.Text) then LookPasien;
@@ -1901,6 +1912,7 @@ begin
   buffer:= TMstRelation.Create();
   buffer.RelationID:= ID;
   buffer.RelationCode:= Kode;
+  buffer.Barcode := Kode;
   lblPasien.Caption:= '';
   lblDiscCust.Caption := '0';
   lblFreeInfo.Caption := '';
@@ -1927,10 +1939,11 @@ begin
           txtPasien.SetFocus;
      end
      else begin
-
+        Result := True;
         txtPasien.Text:= buffer.RelationCode;
         txtPasien.Tag:= buffer.RelationID;
         lblPasien.Caption:= buffer.RelationName + #31#10 + buffer.Address1;
+        lblPasien.Tag := buffer.JenisMember;
         lblDiscCust.Caption := FloatToStrFmt(buffer.Discount);
         chkWajib.Checked := buffer.WajibDiscount=1;
         LoadDataService(buffer.RelationID);
@@ -1946,7 +1959,8 @@ begin
      end;
   end;
  // else Alert(MSG_NO_DATA_FOUND);
-  buffer.Destroy;
+
+  FreeAndNil(buffer);
 end;
 
 function TfrmTrsSales.getDokter(ID: integer; Kode: string): boolean;

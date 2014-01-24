@@ -122,6 +122,7 @@ type
     FRelationAnimal :  _MstRelationAnimal_Arr;
     FWajibDiscount : integer;
     FJenisMember : Smallint;
+    FBarcode : string;
     constructor Create;
     destructor Destroy;override;
     procedure Reset;override;
@@ -156,6 +157,7 @@ type
 
     property WajibDiscount : integer read FWajibDiscount write FWajibDiscount;
     property JenisMember : Smallint read FJenisMember write FJenisMember;
+    property Barcode : string read FBarcode write FBarcode;
   end;
 
   TMstDokter = class(_MstDokter)
@@ -794,7 +796,7 @@ begin
   Result:= ExecTransaction(
     'insert into mst_relation '+
       '(relation_type, relation_code, relation_name, address1, address2, post_code, '+
-       'city, phone1, phone2, contact_person, npwp,discount,wajib_discount, due_date) '+
+       'city, phone1, phone2, contact_person, npwp,discount,wajib_discount,barcode, due_date) '+
     'values ('+
       FormatSQLNumber(FRelationType)+','+
       FormatSQLString(FRelationCode)+','+
@@ -809,6 +811,7 @@ begin
       FormatSQLString(FNPWP)+','+
       IfThen(FRelationType=RELASI_TYPE_CUSTOMER,FormatSQLNumber(FDiscount),'0')+','+
       IfThen(FRelationType=RELASI_TYPE_CUSTOMER,FormatSQLNumber(FWajibDiscount),'0')+','+
+      FormatSQLString(FBarcode)+','+
       FormatSQLNumber(FDueDate)+')');
       if Result then begin
         FRelationID:= getIntegerFromSQL('select relation_id from mst_relation where relation_code ='+FormatSQLString(FRelationCode));
@@ -877,6 +880,8 @@ begin
   inherited;
   FRelationAnimal.Clear;
   FWajibDiscount := 0;
+  FBarcode := '';
+  FJenisMember := 0;
 end;
 
 function TMstRelation.saveAnimal: boolean;
@@ -945,12 +950,12 @@ var buffer: TMysqlResult;
 begin
   buffer:= OpenSQL(
     'select relation_id, relation_type, relation_code, relation_name, address1, address2, '+
-    'post_code, city, phone1, phone2, due_date, current_debt, contact_person, npwp,discount,wajib_discount,jenis_member '+
+    'post_code, city, phone1, phone2, due_date, current_debt, contact_person, npwp,discount,wajib_discount,jenis_member,barcode '+
     'from mst_relation '+
     IfThen(FRelationId <> 0,
     'where relation_id = '+FormatSQLNumber(FRelationId),
-    'where relation_code = '+FormatSQLString(FRelationCode))
-    );
+    'where ((relation_code = '+FormatSQLString(FRelationCode)+') or (barcode = '+FormatSQLString(FBarcode)+ '))'
+    ));
 
   result:= buffer.RecordCount > 0;
   Self.Reset;
@@ -973,6 +978,7 @@ begin
       FDiscount     := BufferToFloat(FieldValue(14));
       FWajibDiscount := BufferToInteger(FieldValue(15));
       FJenisMember  := BufferToInteger(FieldValue(16));
+      FBarcode  := BufferToString(FieldValue(17));
     end;
   buffer.Destroy;
 end;
@@ -1009,6 +1015,8 @@ begin
       ' phone2= '+FormatSQLString(FPhone2)+','+
       ' npwp= '+FormatSQLString(FNPWP)+','+
       ' contact_person = '+FormatSQLString(FContactPerson)+','+
+      ' barcode = '+FormatSQLString(FBarcode)+','+
+      ' jenis_member = '+FormatSQLNumber(FJenisMember)+','+
       IfThen(FRelationType=RELASI_TYPE_CUSTOMER,' discount = '+FormatSQLNumber(FDiscount)+',')+
       IfThen(FRelationType=RELASI_TYPE_CUSTOMER,' wajib_discount = '+FormatSQLNumber(FWajibDiscount)+',')+
       ' due_Date= '+FormatSQLNumber(FDueDate)+
@@ -1955,12 +1963,12 @@ begin
   case FKonsinyasi of
     -1://belum ketauan paket ato bukan
       sqL:=
-      'select item_id, item_name, barcode, struk_name, avg_price, 0 as paket,selling_price,0 as add_price,current_stock,discount,buying_price,-1 as animal_id '+
+      'select item_id, item_name, barcode, struk_name, avg_price, 0 as paket,selling_price,0 as add_price,current_stock,discount,buying_price,-1 as animal_id,price_petshop,price_breeder '+
       'from mst_item '+
       'where ((barcode = '+FormatSQLString(FBarcode)+ ') or (item_code = '+FormatSQLString(FBarcode)+'))'+
       ' union all '+
      'select s.service_id as item_id, concat(service_name,'' '',animal) as item_name, service_code, concat(service_name,'' '',animal) as struk_name, 0 as avg_price, 1 as paket '+
-      ' ,price, add_price,0 as current_stock,discount as discount,0 as buying_price,p.animal_id ' +
+      ' ,price, add_price,0 as current_stock,discount as discount,0 as buying_price,p.animal_id,price_petshop,price_breeder ' +
       'from mst_service s left join mst_service_price p on s.service_id=p.service_id '+
       ' left join mst_animal a on a.animal_id = p.animal_id '+
       'where s.service_code = '+FormatSQLString(FBarcode)+' and p.animal_id in ('+(FMerk)+')';
@@ -1968,14 +1976,14 @@ begin
 
      0://bukan paket
       sqL:=
-      'select item_id, item_name, barcode, struk_name, avg_price, 0 as paket,selling_price,0 as add_price,current_stock,discount,buying_price,-1 as animal_id '+
+      'select item_id, item_name, barcode, struk_name, avg_price, 0 as paket,selling_price,0 as add_price,current_stock,discount,buying_price,-1 as animal_id,price_petshop,price_breeder '+
       'from mst_item '+
       'where item_id = '+FormatSQLNumber(FItemId);
 
      1:// servuice
       sqL:=
       'select s.service_id as item_id, concat(service_name,'' '',animal) as item_name, service_code, concat(service_name,'' '',animal) as struk_name, 0 as avg_price, 1 as paket '+
-      ' ,price, add_price,0 as current_stock,discount as discount,0 as buying_price,p.animal_id ' +
+      ' ,price, add_price,0 as current_stock,discount as discount,0 as buying_price,p.animal_id,price_petshop,price_breeder ' +
       'from mst_service s left join mst_service_price p on s.service_id=p.service_id '+
       ' left join mst_animal a on a.animal_id = p.animal_id '+
       'where s.service_id = '+FormatSQLNumber(FItemId)+' and p.animal_id in ('+(FMerk)+')';
@@ -1998,6 +2006,8 @@ begin
       FDiscount := BufferToFloat(FieldValue(9));
       FBuyingPrice := BufferToFloat(FieldValue(10));
       FVendorID := BufferToInteger(FieldValue(11));//animal_id
+      FPricePetshop := BufferToFloat(FieldValue(12));
+      FPriceBreeder := BufferToFloat(FieldValue(13));
       FItemConversion.Clear;
       FItemConversion.Add;
      { if FKonsinyasi = 0 then begin

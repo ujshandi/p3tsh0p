@@ -82,11 +82,31 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     Shape = bsTopLine
   end
   object Label4: TLabel
-    Left = 364
-    Top = 55
-    Width = 83
+    Left = 402
+    Top = 31
+    Width = 82
     Height = 14
     Caption = 'Jenis Member :'
+  end
+  object Bevel4: TBevel
+    Left = 430
+    Top = 16
+    Width = 309
+    Height = 6
+    Shape = bsTopLine
+  end
+  object Label5: TLabel
+    Left = 383
+    Top = 8
+    Width = 44
+    Height = 14
+    Caption = 'Member'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = [fsItalic]
+    ParentFont = False
   end
   object txtCode: TAdvEdit
     Left = 80
@@ -237,7 +257,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 2
+    TabOrder = 4
     Text = 'txtAddress'
     Transparent = False
     Visible = True
@@ -288,7 +308,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 4
+    TabOrder = 6
     Text = 'Surabaya'
     Transparent = False
     Visible = True
@@ -339,7 +359,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 6
+    TabOrder = 8
     Text = '085 220 097 850'
     Transparent = False
     Visible = True
@@ -390,7 +410,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 7
+    TabOrder = 9
     Text = 'txtHp'
     Transparent = False
     Visible = True
@@ -412,7 +432,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     PopupMenu = frmMainMenu.MenuShortCut
     ShowCaptions = True
     ShowHint = True
-    TabOrder = 10
+    TabOrder = 12
     Transparent = True
     object tbtNew: TToolButton
       Tag = -10
@@ -478,7 +498,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 3
+    TabOrder = 5
     Text = 'Alamat 2:'
     Transparent = False
     Visible = True
@@ -529,7 +549,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 5
+    TabOrder = 7
     Text = 'txtPostCode'
     Transparent = False
     Visible = True
@@ -580,7 +600,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 8
+    TabOrder = 10
     Text = 'txtCotact'
     Transparent = False
     Visible = True
@@ -594,7 +614,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     ActivePage = TabSheet1
     Align = alBottom
     TabIndex = 0
-    TabOrder = 11
+    TabOrder = 13
     object TabSheet1: TTabSheet
       Caption = 'Hewan Piaraan'
       object Panel1: TPanel
@@ -1106,7 +1126,7 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 9
+    TabOrder = 11
     Text = 'txtCotact'
     Transparent = False
     Visible = True
@@ -1118,23 +1138,75 @@ object frmMstRelationAnimal: TfrmMstRelationAnimal
     Width = 145
     Height = 17
     Caption = 'VIP Discount'
-    TabOrder = 12
+    TabOrder = 14
     OnClick = chkWajibDiscClick
   end
   object cmbJenisMember: TComboBox
-    Left = 448
-    Top = 53
+    Left = 488
+    Top = 29
     Width = 161
     Height = 22
     Style = csDropDownList
     ItemHeight = 14
-    TabOrder = 13
+    TabOrder = 2
     Items.Strings = (
       'Reguler'
       'Sesama Petshop'
       'Breeder')
   end
+  object txtBarcode: TAdvEdit
+    Left = 488
+    Top = 55
+    Width = 238
+    Height = 22
+    AutoFocus = False
+    EditAlign = eaLeft
+    EditType = etString
+    ErrorColor = clRed
+    ErrorFontColor = clWhite
+    ExcelStyleDecimalSeparator = False
+    Flat = False
+    FlatLineColor = clBlack
+    FlatParentColor = True
+    FocusAlign = eaDefault
+    FocusBorder = False
+    FocusColor = clWindow
+    FocusFontColor = clWindowText
+    FocusLabel = False
+    FocusWidthInc = 0
+    ModifiedColor = clHighlight
+    DisabledColor = clSilver
+    URLColor = clBlue
+    ReturnIsTab = True
+    LengthLimit = 0
+    TabOnFullLength = False
+    Precision = 0
+    LabelCaption = 'Barcode :'
+    LabelPosition = lpLeftTop
+    LabelMargin = 4
+    LabelTransparent = False
+    LabelAlwaysEnabled = False
+    LabelFont.Charset = ANSI_CHARSET
+    LabelFont.Color = clWindowText
+    LabelFont.Height = -11
+    LabelFont.Name = 'Tahoma'
+    LabelFont.Style = []
+    Persistence.Enable = False
+    Persistence.Location = plInifile
+    Color = clWindow
+    Enabled = True
+    HintShowLargeText = False
+    OleDropTarget = False
+    OleDropSource = False
+    Signed = False
+    TabOrder = 3
+    Text = 'txtName'
+    Transparent = False
+    Visible = True
+    OnChange = txtCodeChange
+  end
   object WinXP1: TWinXP
-    Left = 336
+    Left = 304
+    Top = 24
   end
 end

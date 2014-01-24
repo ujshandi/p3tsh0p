@@ -1138,7 +1138,7 @@ object frmTrsSales: TfrmTrsSales
         OemConvert = False
         FixedFooters = 0
         FixedRightCols = 0
-        FixedColWidth = 1469
+        FixedColWidth = 1513
         FixedRowHeight = 26
         FixedFont.Charset = ANSI_CHARSET
         FixedFont.Color = clWindowText
@@ -1182,29 +1182,29 @@ object frmTrsSales: TfrmTrsSales
         BackGround.Cells = bcNormal
         Filter = <>
         ColWidths = (
+          1513
+          1765
+          124
+          1103
+          1268
+          1480
+          1278
+          1293
           1469
-          1714
-          120
-          1071
-          1231
-          1437
-          1241
-          1256
-          1426
           12
           12
           13
           13
           14
-          1469
-          1469
-          1469
-          1469
-          606
-          606
-          606
-          606
-          389)
+          1513
+          1513
+          1513
+          1513
+          624
+          624
+          624
+          624
+          401)
         RowHeights = (
           26
           26)
@@ -1684,7 +1684,7 @@ object frmTrsSales: TfrmTrsSales
         OemConvert = False
         FixedFooters = 0
         FixedRightCols = 0
-        FixedColWidth = 1469
+        FixedColWidth = 1513
         FixedRowHeight = 26
         FixedFont.Charset = ANSI_CHARSET
         FixedFont.Color = clWindowText
@@ -1727,29 +1727,29 @@ object frmTrsSales: TfrmTrsSales
         BackGround.Cells = bcNormal
         Filter = <>
         ColWidths = (
+          1513
+          1765
+          124
+          1103
+          1268
+          1480
+          1278
+          1293
           1469
-          1714
-          120
-          1071
-          1231
-          1437
-          1241
-          1256
-          1426
           12
           12
           13
           13
           14
-          1469
-          1469
-          1469
-          1469
-          606
-          606
-          606
-          606
-          389)
+          1513
+          1513
+          1513
+          1513
+          624
+          624
+          624
+          624
+          401)
         RowHeights = (
           26
           26)

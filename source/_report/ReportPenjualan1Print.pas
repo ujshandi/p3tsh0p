@@ -2,7 +2,7 @@ unit ReportPenjualan1Print;
 
 interface
 
-uses Windows, SysUtils, Messages, Classes, Graphics, Controls,
+uses Windows, SysUtils, Messages, Classes, Graphics, Controls,math,strUtils,
   StdCtrls, ExtCtrls, Forms, QuickRpt, QRCtrls, AdvGrid;
 
 type
@@ -40,12 +40,12 @@ type
     QRLabel11: TQRLabel;
     qrlCaraBayar: TQRLabel;
     QRLabel13: TQRLabel;
-    QRLabel5: TQRLabel;
+    qrlHBrgPokok: TQRLabel;
     QRLabel8: TQRLabel;
-    QRLabel12: TQRLabel;
-    Pokok: TQRLabel;
+    qrlHBProfit: TQRLabel;
+    qrlHHewanPokok: TQRLabel;
     Jual: TQRLabel;
-    QRLabel16: TQRLabel;
+    qrlHHewanProfit: TQRLabel;
     qrlHewanPokok: TQRLabel;
     qrlHewan: TQRLabel;
     qrlHewanProfit: TQRLabel;
@@ -83,9 +83,10 @@ type
     procedure QuickRepNeedData(Sender: TObject; var MoreData: Boolean);
   private
     i: integer;
+    _purpose : integer;
     Grid: TAdvStringGrid;
   public
-    procedure Executes(AGrid: TAdvStringGrid);
+    procedure Executes(AGrid: TAdvStringGrid;purpose:integer);
   end;
 
 var
@@ -119,22 +120,30 @@ const
 
 { TqrpReportPenjualan1 }
 
-procedure TqrpReportPenjualan1.Executes(AGrid: TAdvStringGrid);
+procedure TqrpReportPenjualan1.Executes(AGrid: TAdvStringGrid;purpose:integer);
 begin
   Grid:= AGrid;
   qrlCompanyName.Caption   := CompanyProfile.FCompanyName;
   qrlCompanyAddress.Caption:= CompanyProfile.FAddress;
   qrlCompanyContact.Caption:= CompanyProfile.FTelp1;
   qrlPeriode.Caption:= CaptionPeriode(GlobalPeriode.OpPeriodeAwal1, GlobalPeriode.PeriodeAwal1, GlobalPeriode.PeriodeAkhir1);
-
-  i:= 3;
+  qrlHBrgPokok.Enabled := purpose=1;//owner
+  qrlHBProfit.Enabled := purpose=1;//owner
+  qrlHHewanPokok.Enabled := purpose=1;//owner
+  qrlHHewanProfit.Enabled := purpose=1;//owner
+  qrlBarangPokok.Enabled := purpose=1;//owner
+  qrlBarangProfit.Enabled := purpose=1;//owner
+  qrlHewanPokok.Enabled := purpose=1;//owner
+  qrlHewanProfit.Enabled := purpose=1;//owner
+  _purpose := purpose;
+  i:= IfThen(_purpose=1,3,2);
   PreviewModal;
 end;
 
 procedure TqrpReportPenjualan1.QuickRepBeforePrint(Sender: TCustomQuickRep;
   var PrintReport: Boolean);
 begin
-  i:= 3;
+  i:= IfThen(_purpose=1,3,2);
 end;
 
 procedure TqrpReportPenjualan1.QuickRepNeedData(Sender: TObject;
@@ -159,19 +168,19 @@ begin
     qrlCaraBayar.Caption := '';
 
     qrlTgl.Caption:= Grid.Cells[colTgl, i];
-    qrlBarang.Caption:= Grid.Cells[colJualBarang, i];
+    qrlBarang.Caption:= IfThen(_purpose=1, Grid.Cells[colJualBarang, i],Grid.Cells[colJualBarangPokok,i]);
     qrlBarangPokok.Caption:= Grid.Cells[colJualBarangPokok, i];
     qrlBarangProfit.Caption:= Grid.Cells[colJualBarangProfit, i];
     qrlHewanPokok.Caption:= Grid.Cells[colJualHewanPokok, i];
-    qrlHewan.Caption:= Grid.Cells[colJualHewan, i];
+    qrlHewan.Caption:=  IfThen(_purpose=1, Grid.Cells[colJualHewan, i],Grid.Cells[colJualHewanPokok-2, i]);
     qrlHewanProfit.Caption:= Grid.Cells[colJualHewanProfit, i];
-    qrlDisc.Caption:= Grid.Cells[colDisc, i];
-    qrlNet.Caption:= Grid.Cells[colNet, i];
+    qrlDisc.Caption:= IfThen(_purpose=1, Grid.Cells[colDisc, i], Grid.Cells[colDisc-4, i]);
+    qrlNet.Caption:= IfThen(_purpose=1, Grid.Cells[colNet, i], Grid.Cells[colNet-4, i]);
     qrlProfit.Caption:= Grid.Cells[colProfit, i];
-    qrlCust.Caption:= Grid.Cells[colCust, i];
+    qrlCust.Caption:= IfThen(_purpose=1, Grid.Cells[colCust, i],Grid.Cells[colCust-4, i]);
     qrlCaraBayar.Caption:= Grid.Cells[colCaraBayar, i];
-    qrlHewan.Caption:= Grid.Cells[colJualHewan, i];
-    qrlJasa.Caption:= Grid.Cells[colJualJasa, i];
+   // qrlHewan.Caption:= Grid.Cells[colJualHewan, i];
+    qrlJasa.Caption:= IfThen(_purpose=1, Grid.Cells[colJualJasa, i],Grid.Cells[colJualJasa-4, i]);
     Inc(i);
   end;
 end;

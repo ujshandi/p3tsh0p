@@ -17,7 +17,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   PixelsPerInch = 96
   TextHeight = 13
   object suiPanel1: TsuiPanel
-    Left = 760
+    Left = 768
     Top = 119
     Width = 0
     Height = 328
@@ -38,7 +38,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
       Left = 4
       Top = 24
       Width = 241
-      Height = 296
+      Height = 300
       Cursor = crDefault
       Align = alClient
       ColCount = 1
@@ -214,7 +214,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   object suiPanel3: TsuiPanel
     Left = 0
     Top = 41
-    Width = 760
+    Width = 768
     Height = 78
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -627,7 +627,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   object suiPanel2: TsuiPanel
     Left = 0
     Top = 119
-    Width = 760
+    Width = 768
     Height = 328
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -645,9 +645,9 @@ object frmMstItemPriceList: TfrmMstItemPriceList
     PopupMenu = frmMainMenu.MenuShortCut
     object grid: TAdvStringGrid
       Left = 4
-      Top = 65
-      Width = 752
-      Height = 255
+      Top = 73
+      Width = 760
+      Height = 251
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
@@ -861,13 +861,13 @@ object frmMstItemPriceList: TfrmMstItemPriceList
     object pnlMarkup: TPanel
       Left = 4
       Top = 24
-      Width = 752
-      Height = 41
+      Width = 760
+      Height = 49
       Align = alTop
       TabOrder = 1
       object txtMarkup: TAdvEdit
-        Left = 84
-        Top = 9
+        Left = 10
+        Top = 20
         Width = 78
         Height = 21
         AutoFocus = False
@@ -894,7 +894,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
         Precision = 0
         Suffix = ' %'
         LabelCaption = 'Markup Harga :'
-        LabelPosition = lpLeftTop
+        LabelPosition = lpTopLeft
         LabelMargin = 2
         LabelTransparent = False
         LabelAlwaysEnabled = False
@@ -918,20 +918,124 @@ object frmMstItemPriceList: TfrmMstItemPriceList
         OnKeyPress = txtMarkupKeyPress
       end
       object Proses: TButton
-        Left = 168
-        Top = 8
+        Left = 310
+        Top = 17
         Width = 75
         Height = 25
         Caption = 'Proses'
-        TabOrder = 1
+        TabOrder = 3
         OnClick = ProsesClick
+      end
+      object txtMarkupPetshop: TAdvEdit
+        Left = 99
+        Top = 20
+        Width = 78
+        Height = 21
+        AutoFocus = False
+        EditAlign = eaLeft
+        EditType = etString
+        ErrorColor = clRed
+        ErrorFontColor = clWhite
+        ExcelStyleDecimalSeparator = False
+        Flat = False
+        FlatLineColor = clBlack
+        FlatParentColor = True
+        FocusAlign = eaDefault
+        FocusBorder = False
+        FocusColor = clWindow
+        FocusFontColor = clWindowText
+        FocusLabel = False
+        FocusWidthInc = 0
+        ModifiedColor = clHighlight
+        DisabledColor = clSilver
+        URLColor = clBlue
+        ReturnIsTab = False
+        LengthLimit = 0
+        TabOnFullLength = False
+        Precision = 0
+        Suffix = ' %'
+        LabelCaption = 'Markup H.Petshop :'
+        LabelPosition = lpTopLeft
+        LabelMargin = 2
+        LabelTransparent = False
+        LabelAlwaysEnabled = False
+        LabelFont.Charset = ANSI_CHARSET
+        LabelFont.Color = clWindowText
+        LabelFont.Height = -11
+        LabelFont.Name = 'Tahoma'
+        LabelFont.Style = []
+        Persistence.Enable = False
+        Persistence.Location = plInifile
+        Color = clWindow
+        Enabled = True
+        HintShowLargeText = False
+        OleDropTarget = False
+        OleDropSource = False
+        Signed = False
+        TabOrder = 1
+        Text = 'txtMerk'
+        Transparent = False
+        Visible = True
+        OnKeyPress = txtMarkupKeyPress
+      end
+      object txtMarkupBreeder: TAdvEdit
+        Left = 210
+        Top = 20
+        Width = 78
+        Height = 21
+        AutoFocus = False
+        EditAlign = eaLeft
+        EditType = etString
+        ErrorColor = clRed
+        ErrorFontColor = clWhite
+        ExcelStyleDecimalSeparator = False
+        Flat = False
+        FlatLineColor = clBlack
+        FlatParentColor = True
+        FocusAlign = eaDefault
+        FocusBorder = False
+        FocusColor = clWindow
+        FocusFontColor = clWindowText
+        FocusLabel = False
+        FocusWidthInc = 0
+        ModifiedColor = clHighlight
+        DisabledColor = clSilver
+        URLColor = clBlue
+        ReturnIsTab = False
+        LengthLimit = 0
+        TabOnFullLength = False
+        Precision = 0
+        Suffix = ' %'
+        LabelCaption = 'Markup H.Breeder :'
+        LabelPosition = lpTopLeft
+        LabelMargin = 2
+        LabelTransparent = False
+        LabelAlwaysEnabled = False
+        LabelFont.Charset = ANSI_CHARSET
+        LabelFont.Color = clWindowText
+        LabelFont.Height = -11
+        LabelFont.Name = 'Tahoma'
+        LabelFont.Style = []
+        Persistence.Enable = False
+        Persistence.Location = plInifile
+        Color = clWindow
+        Enabled = True
+        HintShowLargeText = False
+        OleDropTarget = False
+        OleDropSource = False
+        Signed = False
+        TabOrder = 2
+        Text = 'txtMerk'
+        Transparent = False
+        Visible = True
+        OnKeyPress = txtMarkupKeyPress
       end
     end
   end
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 760
+    Width = 768
     Height = 41
     ButtonHeight = 36
     ButtonWidth = 60
