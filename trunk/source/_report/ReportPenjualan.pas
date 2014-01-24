@@ -402,7 +402,7 @@ begin
     InitGridHistori;
     grandTotal := 0;grandTunai :=0; grandNonTunai :=0;TotalPokok := 0;grandTotalPokok:=0;
     item:= TReport.LoadTglJualHistori;
-   {0trans_num, 1item_name, 2barcode, 3price, 4quantity, 5mst_code,
+   {0trans_num, 1barcode,2item_name,  3price, 4quantity, 5mst_code,
     6disc, 7disc_val, 8amount, 9trans_date, 10subtotal, 11disc_mst,
     12disc_val_mst, 13tax, 14total..... 18transtype,19cara_bayar,20d.price_purchase }
     for i:= 1 to item.RecordCount do begin
@@ -427,8 +427,8 @@ begin
   colSubtotalPokok= 8;
   colSubtotal= 9;
   colRowID   = 10;}
-      grid.Cells[colCode,row]:= item.FieldValue(2) ;
-      grid.Cells[colStuk,row]:=  item.FieldValue(1);
+      grid.Cells[colCode,row]:= item.FieldValue(1) ;
+      grid.Cells[colStuk,row]:=  item.FieldValue(2);
 
       grid.Cells[colQty,row]:=
             FloatToStrFmtNull(BufferToFloat(item.FieldValue(4))) + ' '+item.FieldValue(5);
@@ -494,11 +494,13 @@ begin
         grid.Cells[colStuk, grid.RowCount-1]:= item.FieldValue(17);
         grid.Cells[colDiscRp,grid.RowCount-1]:= 'Total:';
         grid.Cells[colSubtotal,grid.RowCount-1]:= FloatToStrFmtNull(IfThen(BufferToInteger(item.FieldValue(18))=SALES_TYPE_RETUR,-1,1)* BufferToFloat(item.FieldValue(14)));
-         grid.AddRow;
-      //  grid.Cells[colCode, grid.RowCount-1]:= 'Opr.: ';
-      //  grid.Cells[colStuk, grid.RowCount-1]:= item.FieldValue(17);
-        grid.Cells[colDiscRp,grid.RowCount-1]:= 'Total Pokok:';
-        grid.Cells[colSubtotal,grid.RowCount-1]:= FloatToStrFmtNull(IfThen(BufferToInteger(item.FieldValue(18))=SALES_TYPE_RETUR,-1,1)* TotalPokok);
+        if (purpose=1) then begin
+           grid.AddRow;
+        //  grid.Cells[colCode, grid.RowCount-1]:= 'Opr.: ';
+        //  grid.Cells[colStuk, grid.RowCount-1]:= item.FieldValue(17);
+          grid.Cells[colDiscRp,grid.RowCount-1]:= 'Total Pokok:';
+          grid.Cells[colSubtotal,grid.RowCount-1]:= FloatToStrFmtNull(IfThen(BufferToInteger(item.FieldValue(18))=SALES_TYPE_RETUR,-1,1)* TotalPokok);
+        end;
         grid.AddRow;
         grandTotal :=grandTotal + IfThen(BufferToInteger(item.FieldValue(18))=SALES_TYPE_RETUR,-1,1)*BufferToFloat(item.FieldValue(14));
         grandTotalPokok := grandTotalPokok + TotalPokok;
@@ -523,13 +525,16 @@ begin
      grid.AddRow;
     grid.Cells[colDiscRp,grid.RowCount-1]:= 'Grand Total:';
     grid.Cells[colSubtotal,grid.RowCount-1]:= FloatToStrFmtNull(grandTotal);
-     grid.AddRow;
-    grid.Cells[colDiscRp,grid.RowCount-1]:= 'Grand Total Pokok:';
-    grid.Cells[colSubtotal,grid.RowCount-1]:= FloatToStrFmtNull(grandTotalPokok);
-     grid.AddRow;
-    grid.Cells[colDiscRp,grid.RowCount-1]:= 'Profit:';
-    grid.Cells[colSubtotal,grid.RowCount-1]:= FloatToStrFmtNull(grandTotal-grandTotalPokok);
-    grid.ColWidths[colDiscPrc] := 0;
+    if (purpose=1) then begin
+      grid.AddRow;
+      grid.Cells[colDiscRp,grid.RowCount-1]:= 'Grand Total Pokok:';
+      grid.Cells[colSubtotal,grid.RowCount-1]:= FloatToStrFmtNull(grandTotalPokok);
+
+      grid.AddRow;
+      grid.Cells[colDiscRp,grid.RowCount-1]:= 'Profit:';
+      grid.Cells[colSubtotal,grid.RowCount-1]:= FloatToStrFmtNull(grandTotal-grandTotalPokok);
+      grid.ColWidths[colDiscPrc] := 0;
+    end;
     item.destroy;
   finally
     EndProgress;
@@ -561,12 +566,12 @@ begin
 
   grid.ColWidths[colStuk]:= 150;
   grid.ColWidths[colCode]:= 95;
-  grid.ColWidths[colHargaPokok]:= 70;
+  grid.ColWidths[colHargaPokok]:=  IfThen(purpose=1,70,0);
   grid.ColWidths[colHarga]:= 70;
   grid.ColWidths[colQty]:= 90;
   grid.ColWidths[colDiscPrc]:= 80;
   grid.ColWidths[colDiscRp]:= 80;
-  grid.ColWidths[colSubtotalPokok]:= 90;
+  grid.ColWidths[colSubtotalPokok]:= IfThen(purpose=1,90,0);
   grid.ColWidths[colSubtotal]:= 90;
   grid.ColWidths[colNo]:= 18;
   grid.ColWidths[colRowID]:= 0;
@@ -585,7 +590,7 @@ begin
 
     try
       Application.CreateForm(TqrpReportPenjualan1, qrpReportPenjualan1);
-      qrpReportPenjualan1.Executes(grid);
+      qrpReportPenjualan1.Executes(grid,purpose);
     finally
       qrpReportPenjualan1.Destroy;
     end;
@@ -593,7 +598,7 @@ begin
  end else begin
     try
       Application.CreateForm(TqrpReportPenjualan2, qrpReportPenjualan2);
-      qrpReportPenjualan2.Executes(grid);
+      qrpReportPenjualan2.Executes(grid,purpose);
     finally
       qrpReportPenjualan2.Destroy;
     end;

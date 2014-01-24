@@ -78,10 +78,12 @@ const
   colAlamat = 3;
   colJabatan = 4;
   colTglLahir = 5;
-  colTelp1 = 6;
-  colTelp2 = 7;
-  colDisabled   = 8;
-  colId      = 9;
+  colTglMasuk = 6;
+  colOrtu = 7;
+  colTelp1 = 8;
+  colTelp2 = 9;
+  colDisabled   = 10;
+  colId      = 11;
 
 
 {$R *.dfm}
@@ -146,11 +148,13 @@ begin
       grid.Cells[colName,   i]:= BufferToString(item.FieldValue(2));
       grid.Cells[colAlamat,i]:= BufferToString(item.FieldValue(3));
 //      grid.Cells[colJabatan,i]:= BufferTo(item.FieldValue(3));
-      grid.Cells[colTglLahir,i]:= BufferToString(item.FieldValue(5));
+      grid.Cells[colTglLahir,i]:= FormatDateTime(ShortDateFormat,BufferToDateTime(item.FieldValue(5)));
       grid.Cells[colTelp1,i]:= BufferToString(item.FieldValue(6));
       grid.Cells[colTelp2,i]:= BufferToString(item.FieldValue(7));
       grid.Cells[colDisabled,i]:= IfThen(BufferToString(item.FieldValue(8))='','Aktif','Tidak Aktif');
       grid.Cells[colJabatan,i]:= BufferToString(item.FieldValue(9));
+      grid.Cells[colOrtu,   i]:= BufferToString(item.FieldValue(11));
+      grid.Cells[colTglMasuk,i]:= FormatDateTime(ShortDateFormat,BufferToDateTime(item.FieldValue(10)));
 
       item.MoveNext;
     end;

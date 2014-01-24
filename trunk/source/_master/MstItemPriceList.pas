@@ -48,6 +48,8 @@ type
     Proses: TButton;
     Label2: TLabel;
     cmbKategori: TComboBox;
+    txtMarkupPetshop: TAdvEdit;
+    txtMarkupBreeder: TAdvEdit;
 
     procedure gridGetAlignment(Sender: TObject; ARow, ACol: Integer;
       var HAlign: TAlignment; var VAlign: TVAlignment);
@@ -155,6 +157,8 @@ end;
 procedure TfrmMstItemPriceList.InitForm;
 begin
   txtMarkup.Text := '0';
+  txtMarkupPetshop.Text := '0';
+  txtMarkupBreeder.Text := '0';
   rgModel.ItemIndex:=0;
   rgModelClick(nil);
   rgModel.Visible := Purpose <> 3;
@@ -424,6 +428,9 @@ begin
   inherited;
   EditMode := (tbtDetail.Caption = 'Edit');
   pnlMarkup.Visible := EditMode and (Purpose in [2,3]);
+  txtMarkupPetshop.Visible := (Purpose in [2]);
+  txtMarkupBreeder.Visible := (Purpose in [2]);
+  Proses.Left := IfThen(Purpose=2,310,100);
   if EditMode then begin
     tbtDetail.Caption := 'Save';
   end
@@ -504,15 +511,21 @@ begin
 end;
 
 procedure TfrmMstItemPriceList.ProsesClick(Sender: TObject);
-var i:integer;markup : Real;hJual,hBeli:Double;
+var i:integer;markup,markupPetshop,markupBreeder : Real;hJual,hBeli:Double;
 begin
   if not TSystemAccess.isCan(CAN_EDIT,AktiveControl.Tag) then exit;
    markup := StrFmtToFloatDef(txtMarkup.Text,0);
+   markupPetshop := StrFmtToFloatDef(txtMarkupPetshop.Text,0);
+   markupBreeder := StrFmtToFloatDef(txtMarkupBreeder.Text,0);
    for i:= 1 to grid.RowCount-1 do begin
       if Purpose=2 then begin //harga jual
         hBeli := StrFmtToFloatDef(grid.Cells[colHargaBeli,i],0);
         hJual := ((markup / 100) * hBeli) + hBeli;
         grid.cells[colHarga,i] := FloatToStrFmt(hJual);
+        hJual := ((markupPetshop / 100) * hBeli) + hBeli;
+        grid.cells[colHargaPetshop,i] := FloatToStrFmt(hJual);
+        hJual := ((markupBreeder / 100) * hBeli) + hBeli;
+        grid.cells[colHargaBreeder,i] := FloatToStrFmt(hJual);
 
       end
       else grid.cells[colHarga,i] := FloatToStrFmt(markup);
@@ -530,3 +543,5 @@ begin
 end;
 
 end.
+
+

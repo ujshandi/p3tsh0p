@@ -44,6 +44,9 @@ type
     chkWajibDisc: TCheckBox;
     Label4: TLabel;
     cmbJenisMember: TComboBox;
+    Bevel4: TBevel;
+    Label5: TLabel;
+    txtBarcode: TAdvEdit;
     procedure tbtNewClick(Sender: TObject);
     procedure tbtSaveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -143,6 +146,7 @@ begin
   Relation.RelationId:= txtCode.Tag;
   Relation.RelationType:= Purpose;
   Relation.RelationName:= txtName.Text;
+  Relation.Barcode:= txtBarcode.Text;
   Relation.Address1:= txtAddress.Text;
   Relation.Address2:= txtAddress2.Text;
   Relation.PostCode:= txtPostCode.Text;
@@ -177,6 +181,7 @@ begin
   txtCode.Text:=        Relation.RelationCode;
   txtCode.Tag:=         Relation.RelationId;
   txtName.Text:=        Relation.RelationName;
+  txtBarcode.Text:=        Relation.Barcode;
   txtAddress.Text:=     Relation.Address1;
   txtAddress2.Text:=    Relation.Address2;
   txtPostCode.Text:=    Relation.PostCode;
@@ -199,6 +204,7 @@ begin
   PageControl1.ActivePageIndex := 0;
   txtCode.Clear;
   txtName.Clear;
+  txtBarcode.Clear;
   txtAddress.Clear;
   txtAddress2.Clear;
   txtPostCode.Clear;

@@ -33,6 +33,10 @@ type
     QRLabel5: TQRLabel;
     QRLabel8: TQRLabel;
     QRSysData2: TQRSysData;
+    qrlHeadSubTotalPokok: TQRLabel;
+    qrlSubtotalPokok: TQRLabel;
+    qrlHeadHargaPokok: TQRLabel;
+    qrlHargaPokok: TQRLabel;
     procedure QuickRepBeforePrint(Sender: TCustomQuickRep;
       var PrintReport: Boolean);
     procedure QuickRepNeedData(Sender: TObject; var MoreData: Boolean);
@@ -40,7 +44,7 @@ type
     i: integer;
     Grid: TAdvStringGrid;
   public
-    procedure Executes(AGrid: TAdvStringGrid);
+    procedure Executes(AGrid: TAdvStringGrid;purpose:integer=0);
   end;
 
 var
@@ -51,26 +55,40 @@ implementation
 uses Subroutines;
 
 const
-  colCode    = 1;
+{  colCode    = 1;
   colStuk    = 2;
   colHarga   = 3;
   colQty     = 4;
   colDiscPrc = 5;
   colDiscRp  = 6;
   colSubtotal= 7;
-  colRowID   = 8;
+  colRowID   = 8;  }
+
+  colCode    = 1;
+  colStuk    = 2;
+  colHargaPokok = 3;
+  colHarga   = 4;
+  colQty     = 5;
+  colDiscPrc = 6;
+  colDiscRp  = 7;
+  colSubtotalPokok= 8;
+  colSubtotal= 9;
+  colRowID   = 10;
 {$R *.DFM}
 
 { TqrpReportPenjualan1 }
 
-procedure TqrpReportPenjualan2.Executes(AGrid: TAdvStringGrid);
+procedure TqrpReportPenjualan2.Executes(AGrid: TAdvStringGrid;purpose:integer);
 begin
   Grid:= AGrid;
   qrlCompanyName.Caption   := CompanyProfile.FCompanyName;
   qrlCompanyAddress.Caption:= CompanyProfile.FAddress;
   qrlCompanyContact.Caption:= CompanyProfile.FTelp1;
   qrlPeriode.Caption:= CaptionPeriode(GlobalPeriode.OpPeriodeAwal1, GlobalPeriode.PeriodeAwal1, GlobalPeriode.PeriodeAkhir1);
-
+  qrlHeadSubTotalPokok.Enabled := purpose=1; //owner
+  qrlHeadHargaPokok.Enabled := purpose=1; //owner
+  qrlSubtotalPokok.Enabled := purpose=1; //owner
+  qrlHargaPokok.Enabled := purpose=1; //owner
   i:= 1;
   PreviewModal;
 end;
@@ -93,6 +111,8 @@ begin
     qrlQty.Caption:= '';
     qrlDisc.Caption:= '';
     qrlSubtotal.Caption:= '';
+    qrlSubtotalPokok.Caption:= '';
+    qrlHargaPokok.Caption:= '';
 
     qrlKode.Caption:= Grid.Cells[colCode, i];
 
@@ -106,11 +126,14 @@ begin
         qrlSubtotal.font.Style := [fsBold];
     end;
     qrlHarga.Caption:= Grid.Cells[colHarga, i];
+    qrlHargaPokok.Caption:= Grid.Cells[colHargaPokok, i];
     qrlQty.Caption:= Grid.Cells[colQty, i];
     qrlDisc.Caption:= Grid.Cells[colDiscRp, i];
     qrlSubtotal.Caption:= Grid.Cells[colSubtotal, i];
+    qrlSubtotalPokok.Caption:= Grid.Cells[colSubtotalPokok, i];
     Inc(i);
   end;
 end;
 
 end.
+

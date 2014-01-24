@@ -22,6 +22,9 @@ type
     cmbJabatan: TComboBox;
     dtpTglLahir: TDateTimePicker;
     Label2: TLabel;
+    dtpTglMasuk: TDateTimePicker;
+    Label3: TLabel;
+    txtOrtu: TAdvEdit;
     procedure tbtNewClick(Sender: TObject);
     procedure tbtSaveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -80,7 +83,9 @@ begin
   Relation.Telp1:= txtPhone.Text;
   Relation.Telp2:= txtHp.Text;
   Relation.Alamat := txtAddress.Text;
+  Relation.Ortu := txtOrtu.Text;
   Relation.TglLahir := dtpTglLahir.Date;
+  Relation.TglMasuk := dtpTglMasuk.Date;
   if txtCode.Tag <> 0 then
     Result:= Relation.UpdateOnDB
   else Result:= Relation.InsertOnDB;
@@ -109,6 +114,8 @@ begin
   txtAddress.Text:=     Relation.Alamat;
   txtPhone.Text:=       Relation.Telp1;
   txtHp.Text:=          Relation.Telp2;
+  dtpTglLahir.DateTime := Relation.TglLahir;
+  dtpTglMasuk.DateTime := Relation.TglMasuk;
   cmbJabatan.ItemIndex := lsJabatan.IndexOfName(IntToStr(Relation.Jabatan));
 end;
 
@@ -116,11 +123,14 @@ procedure TfrmMstKaryawan.ResetData;
 begin
   txtCode.Clear;
   txtName.Clear;
+  txtOrtu.Clear;
   txtAddress.Clear;
   txtPhone.Clear;
   txtHp.Clear;
   txtCode.Tag:= 0;
   tbtSave.Enabled:= True;
+  dtpTglLahir.Date := Now;
+  dtpTglMasuk.Date := Now;
   txtCode.Text:= Relation.GetNextCode(cmbJabatan.Tag);
 end;
 

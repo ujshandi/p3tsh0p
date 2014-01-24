@@ -35,6 +35,13 @@ object frmMstKaryawan: TfrmMstKaryawan
     Height = 14
     Caption = 'Tgl.lahir :'
   end
+  object Label3: TLabel
+    Left = 257
+    Top = 136
+    Width = 62
+    Height = 14
+    Caption = 'Tgl.Masuk :'
+  end
   object txtCode: TAdvEdit
     Left = 80
     Top = 31
@@ -192,7 +199,7 @@ object frmMstKaryawan: TfrmMstKaryawan
   end
   object txtPhone: TAdvEdit
     Left = 80
-    Top = 159
+    Top = 185
     Width = 135
     Height = 22
     AutoFocus = False
@@ -235,7 +242,7 @@ object frmMstKaryawan: TfrmMstKaryawan
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 3
+    TabOrder = 7
     Text = '085 220 097 850'
     Transparent = False
     Visible = True
@@ -243,7 +250,7 @@ object frmMstKaryawan: TfrmMstKaryawan
   end
   object txtHp: TAdvEdit
     Left = 226
-    Top = 159
+    Top = 185
     Width = 135
     Height = 22
     AutoFocus = False
@@ -286,7 +293,7 @@ object frmMstKaryawan: TfrmMstKaryawan
     OleDropTarget = False
     OleDropSource = False
     Signed = False
-    TabOrder = 4
+    TabOrder = 8
     Text = 'txtHp'
     Transparent = False
     Visible = True
@@ -308,7 +315,7 @@ object frmMstKaryawan: TfrmMstKaryawan
     PopupMenu = frmMainMenu.MenuShortCut
     ShowCaptions = True
     ShowHint = True
-    TabOrder = 5
+    TabOrder = 9
     Transparent = True
     object tbtNew: TToolButton
       Tag = -10
@@ -336,12 +343,12 @@ object frmMstKaryawan: TfrmMstKaryawan
     Height = 22
     Style = csDropDownList
     ItemHeight = 14
-    TabOrder = 6
+    TabOrder = 3
   end
   object dtpTglLahir: TDateTimePicker
     Left = 80
     Top = 132
-    Width = 186
+    Width = 145
     Height = 22
     CalAlignment = dtaLeft
     Date = 41551.6693185764
@@ -350,7 +357,72 @@ object frmMstKaryawan: TfrmMstKaryawan
     DateMode = dmComboBox
     Kind = dtkDate
     ParseInput = False
-    TabOrder = 7
+    TabOrder = 4
+  end
+  object dtpTglMasuk: TDateTimePicker
+    Left = 328
+    Top = 132
+    Width = 155
+    Height = 22
+    CalAlignment = dtaLeft
+    Date = 41551.6693185764
+    Time = 41551.6693185764
+    DateFormat = dfShort
+    DateMode = dmComboBox
+    Kind = dtkDate
+    ParseInput = False
+    TabOrder = 5
+  end
+  object txtOrtu: TAdvEdit
+    Left = 80
+    Top = 159
+    Width = 280
+    Height = 22
+    AutoFocus = False
+    EditAlign = eaLeft
+    EditType = etString
+    ErrorColor = clRed
+    ErrorFontColor = clWhite
+    ExcelStyleDecimalSeparator = False
+    Flat = False
+    FlatLineColor = clBlack
+    FlatParentColor = True
+    FocusAlign = eaDefault
+    FocusBorder = False
+    FocusColor = clWindow
+    FocusFontColor = clWindowText
+    FocusLabel = False
+    FocusWidthInc = 0
+    ModifiedColor = clHighlight
+    DisabledColor = clSilver
+    URLColor = clBlue
+    ReturnIsTab = True
+    LengthLimit = 0
+    TabOnFullLength = False
+    Precision = 0
+    LabelCaption = 'Orang Tua :'
+    LabelPosition = lpLeftTop
+    LabelMargin = 4
+    LabelTransparent = False
+    LabelAlwaysEnabled = False
+    LabelFont.Charset = ANSI_CHARSET
+    LabelFont.Color = clWindowText
+    LabelFont.Height = -11
+    LabelFont.Name = 'Tahoma'
+    LabelFont.Style = []
+    Persistence.Enable = False
+    Persistence.Location = plInifile
+    Color = clWindow
+    Enabled = True
+    HintShowLargeText = False
+    OleDropTarget = False
+    OleDropSource = False
+    Signed = False
+    TabOrder = 6
+    Text = 'txtName'
+    Transparent = False
+    Visible = True
+    OnChange = txtCodeChange
   end
   object WinXP1: TWinXP
     Left = 344

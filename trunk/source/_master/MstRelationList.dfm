@@ -20,7 +20,7 @@ object frmMstRelationList: TfrmMstRelationList
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 680
+    Width = 688
     Height = 41
     ButtonHeight = 36
     ButtonWidth = 62
@@ -106,7 +106,7 @@ object frmMstRelationList: TfrmMstRelationList
   object suiPanel2: TsuiPanel
     Left = 0
     Top = 115
-    Width = 680
+    Width = 688
     Height = 331
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -120,12 +120,12 @@ object frmMstRelationList: TfrmMstRelationList
     object grid: TAdvStringGrid
       Left = 4
       Top = 24
-      Width = 672
-      Height = 299
+      Width = 680
+      Height = 303
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
-      ColCount = 13
+      ColCount = 14
       Ctl3D = False
       DefaultRowHeight = 21
       DefaultDrawing = False
@@ -312,13 +312,14 @@ object frmMstRelationList: TfrmMstRelationList
         64
         64
         64
+        64
         64)
     end
   end
   object suiPanel1: TsuiPanel
     Left = 0
     Top = 41
-    Width = 680
+    Width = 688
     Height = 74
     UIStyle = DeepBlue
     BorderColor = clBlack
