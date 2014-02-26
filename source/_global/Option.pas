@@ -83,6 +83,12 @@ type
     txtSerialBaud: TAdvEdit;
     btnBranch: TButton;
     btnEmpty: TButton;
+    StaticText3: TStaticText;
+    Bevel5: TBevel;
+    dtpMasuk: TDateTimePicker;
+    Label7: TLabel;
+    Label16: TLabel;
+    dtpPulang: TDateTimePicker;
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
@@ -204,6 +210,8 @@ begin
   txtPostCode.Text  := CompanyProfile.FPostCode;
   txtTax.Text  := CompanyProfile.FNpwp;
   mmInfo.Text     := CompanyProfile.FInfo;
+  dtpMasuk.Time := CompanyProfile.FJamMasuk;
+  dtpPulang.Time := CompanyProfile.FJamPulang;
   txtSerialNumber.Tag:= StrToInt(BoolToStr(mxProtector1.IsRegistered));
   btnRegister.Enabled:= (txtSerialNumber.Tag = 0) and (txtSerialNumber.Text <> '') and (PageControl1.ActivePageIndex=0);
 
@@ -235,6 +243,8 @@ begin
   CompanyProfile.FCurrentBranch := txtBranch.Tag;
   CompanyProfile.FNpwp:= txtTax.Text;
   CompanyProfile.FPostCode:= txtPostCode.Text;
+  CompanyProfile.FJamMasuk := dtpMasuk.Time;
+  CompanyProfile.FJamPulang := dtpPulang.Time;
   Result:= CompanyProfile.InsertInDb;
   btnRegister.Enabled:= not mxProtector1.IsRegistered;
   btnSave.Enabled := not Result;

@@ -160,6 +160,8 @@ type
     FTanggal : TDate;
     FStatusAbsen : Smallint;
     FKeterangan : string;
+    FJamMasuk : TTime;
+    FJamKeluar :TTime;
   private
   public
       constructor create;
@@ -178,7 +180,8 @@ type
       property Tanggal : TDate read FTanggal write FTanggal;
       property StatusAbsen : Smallint  read FStatusAbsen write FStatusAbsen;
       property Keterangan : string read FKeterangan write FKeterangan;
-
+      property JamMasuk : TTime read FJamMasuk write FJamMasuk;
+      property JamKeluar : TTime read FJamKeluar write FJamKeluar;
   end;
 
   TMstServicePrice = class(_MstServicePrice)
@@ -1092,10 +1095,12 @@ begin
 //    FServiceCode:= GetNextCode;
 
     ExecSQL(
-    'insert into trs_absen(karyawan_id,tanggal, status_absen,keterangan) '+
+    'insert into trs_absen(karyawan_id,tanggal,jam_masuk, jam_pulang, status_absen,keterangan) '+
     'values ('+
       FormatSQLNumber(FKaryawan.FKaryawanId)+','+
       FormatSQLDate(FTanggal)+','+
+      FormatSQLTime2(FJamMasuk)+','+
+      FormatSQLTime2(FJamKeluar)+','+
       FormatSQLNumber(FStatusAbsen)+','+
       FormatSQLString(FKeterangan)+')');
 
@@ -1122,7 +1127,7 @@ class function TTrsAbsensi.LoadFromDB: TMysqlResult;
 var sqL,where: string;
 begin
   sqL:=
-  'select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama ,m.mst_name '+//
+  'select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama ,m.mst_name,a.jam_masuk, a.jam_pulang '+//
   'from trs_absen a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id '+
   ' inner join mst_master m on m.mst_id = a.status_absen ';
   where := '';
@@ -1155,14 +1160,15 @@ begin
   FStatusAbsen := 0;
   FKaryawan.Reset;
   FKeterangan := '';
-
+  FJamMasuk := 0;
+  FJamKeluar := 0;
 end;
 
 function TTrsAbsensi.SelectInDB: boolean;
 var buffer: TMysqlResult;
 begin
   buffer:= OpenSQL(
-  'select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama '+//,m.mst_name
+  'select a.absen_id,a.karyawan_id,a.tanggal,a.status_absen,a.keterangan,k.nama,a.jam_masuk,a.jam_pulang '+//,m.mst_name
   'from trs_absen a inner join mst_karyawan k on a.karyawan_id = k.karyawan_id '+
 //  ' inner join mst_master m on m.mst_id = a.mst_id '+
     ' where a.absen_id = '+FormatSQLNumber(FAbsenId));
@@ -1177,6 +1183,8 @@ begin
       FStatusAbsen := BufferToInteger(FieldValue(3));
       FKeterangan   := BufferToString(FieldValue(4));
       FKaryawan.FNama     := BufferToString(FieldValue(5));
+      FJamMasuk := BufferToTime(FieldValue(6));
+      FJamKeluar := BufferToTime(FieldValue(7));
     end;
   buffer.Destroy;
 
@@ -1193,6 +1201,8 @@ begin
     'update trs_absen set '+
     ' karyawan_id= '+FormatSQLNumber(FKaryawan.FKaryawanId)+','+
     ' tanggal= '+FormatSQLDate(FTanggal)+','+
+    ' jam_masuk='+FormatSQLTime2(FJamMasuk)+','+
+    ' jam_pulang='+FormatSQLTime2(FJamKeluar)+','+
     ' status_absen= '+FormatSQLNumber(FStatusAbsen)+','+
     ' keterangan= '+FormatSQLString(FKeterangan)+
     ' where absen_id= '+FormatSQLNumber(FAbsenId));

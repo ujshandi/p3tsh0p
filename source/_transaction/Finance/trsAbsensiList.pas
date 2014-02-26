@@ -81,8 +81,10 @@ const
   colJabatan = 3;
   colTgl = 4;
   colStatus = 5;
-  colKeterangan = 6;
-  colId   = 7;
+  colMasuk = 6;
+  colPulang = 7;
+  colKeterangan = 8;
+  colId   = 9;
 
 
 {$R *.dfm}
@@ -131,7 +133,7 @@ begin
   grid.Cells[colName,0] :='Nama Karyawan';
   grid.Cells[colJabatan,0] :='Jabatan';
   grid.Cells[colTgl,0] :='Summary';
-  grid.MergeCells(colTgl,0,3,1 );
+  grid.MergeCells(colTgl,0,5,1 );
   grid.AutoSizeColumns(True, 4);
   grid.ColWidths[colId]:= 0;
 
@@ -153,6 +155,7 @@ begin
   try
     StartProgress;
     InitGrid;
+
     //InitFilter;
     SetFilter;
     item:= TMstKaryawan.LoadFromDB;
@@ -171,7 +174,7 @@ begin
       grid.Cells[colName,   row]:= BufferToString(item.FieldValue(2));
       grid.Cells[colJabatan,row]:= BufferToString(item.FieldValue(9));
 
-   //0a.absen_id,1a.karyawan_id,2a.tanggal,3a.status_absen,4a.keterangan,5k.nama ,6m.mst_name
+   //0a.absen_id,1a.karyawan_id,2a.tanggal,3a.status_absen,4a.keterangan,5k.nama ,6m.mst_name  , 7masuk,8pulang
       GlobalFilter.RelasiID := BufferToInteger(item.FieldValue(0));
       GlobalFilter.StatusID  := StrToInt(lsStatusAbsen.Names[cmbJabatan.itemIndex]);
       absen := TTrsAbsensi.LoadFromDB;
@@ -187,17 +190,28 @@ begin
                grid.Cells[colTgl,row] := 'Tanggal';
                grid.Cells[colStatus,row] := 'Status';
                grid.Cells[colKeterangan,row] := 'Keterangan';
-               grid.Cells[colId,row] := '-1';
+               grid.Cells[colMasuk,row] := 'Jam Masuk';
+               grid.Cells[colPulang,row] := 'Jam Pulang';
+               grid.Cells[colId,row] := '';
                grid.Colors[colTgl,row]:= clSkyBlue;
                grid.Colors[colStatus,row]:= clSkyBlue;
                grid.Colors[colKeterangan,row]:= clSkyBlue;
+               grid.Colors[colMasuk,row]:= clSkyBlue;
+               grid.Colors[colPulang,row]:= clSkyBlue;
 
                grid.AddRow;
                row := grid.RowCount-1;
             end;
 
               grid.Cells[colTgl,row] := FormatDateTime(ShortDateFormat,BufferToDateTime(absen.FieldValue(2)));
+              grid.Cells[colMasuk,row] := FormatDateTime(ShortTimeFormat,BufferToTime(absen.FieldValue(7)));
+              grid.Cells[colPulang,row] := FormatDateTime(ShortTimeFormat,BufferToTime(absen.FieldValue(8)));
               grid.Cells[colStatus,row] :=BufferToString(absen.FieldValue(6));
+              if (grid.Cells[colStatus,row]='Hadir') then begin
+                if (BufferToTime(absen.FieldValue(7))>CompanyProfile.FJamMasuk) then begin
+                    grid.Cells[colStatus,row] := grid.Cells[colStatus,row]+' [TELAT]';
+                end;
+              end;
               grid.Cells[colKeterangan,row] :=BufferToString(absen.FieldValue(4));
               grid.Cells[colId,row] := IntToStr(BufferToInt64(absen.FieldValue(0)));
               idx := summary.IndexOfName(BufferToString(absen.FieldValue(3)));
@@ -214,6 +228,8 @@ begin
             grid.Colors[colTgl,row]:= clSilver;
             grid.Colors[colStatus,row]:= clSilver;
             grid.Colors[colKeterangan,row]:= clSilver;
+            grid.Colors[colMasuk,row]:= clSilver;
+            grid.Colors[colPulang,row]:= clSilver;
             absen.MoveNext;
          end;
         tmpStr := 'Total : ';
@@ -222,7 +238,7 @@ begin
         end;
 
         tmp := IfThen(absen.RecordCount>0, absen.RecordCount+1,0);
-        grid.MergeCells(colTgl,row-tmp,3,1);
+        grid.MergeCells(colTgl,row-tmp,5,1);
         grid.Cells[colTgl,row-tmp] := tmpStr;
         if absen.RecordCount>0 then
            grid.AddNode(row-absen.RecordCount-1,absen.RecordCount+2);
@@ -267,7 +283,11 @@ end;
 procedure TfrmTrsAbsensiList.tbtDetailClick(Sender: TObject);
 begin
   if not TSystemAccess.isCan(CAN_EDIT,AktiveControl.Tag) then exit;
-  frmTrsAbsensi.Execute(StrToIntDef(grid.Cells[colId, grid.Row],0));
+  if (grid.Cells[colId, grid.Row]='') then begin
+      Alert('Data Absen belum dipilih');
+      exit;
+  end;
+  frmTrsAbsensi.Execute(StrToInt64Def(grid.Cells[colId, grid.Row],0));
 end;
 
 procedure TfrmTrsAbsensiList.FormClose(Sender: TObject;

@@ -21,6 +21,10 @@ type
     Label3: TLabel;
     mmKeterangan: TMemo;
     Button1: TButton;
+    Label4: TLabel;
+    dtpMasuk: TDateTimePicker;
+    Label5: TLabel;
+    dtpPulang: TDateTimePicker;
     procedure tbtNewClick(Sender: TObject);
     procedure tbtSaveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -28,6 +32,7 @@ type
     procedure txtCodeChange(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure cmbStatusAbsenChange(Sender: TObject);
   private
     Absensi: TTrsAbsensi;
     lsStatusAbsen:TStringList;
@@ -55,7 +60,7 @@ uses UConstTool, Subroutines, MainMenu, UConst, LookupData;
 
 procedure TfrmTrsAbsensi.InitForm;
 begin
-  Self.Caption:= 'Data Karyawan';
+  Self.Caption:= 'Data Absensi Karyawan';
   
   ResetData;
 end;
@@ -68,6 +73,8 @@ begin
   Absensi.StatusAbsen:= StrToInt(lsStatusAbsen.Names[cmbStatusAbsen.itemIndex]);
   Absensi.Tanggal:= dtpTglAbsen.Date;
   Absensi.Keterangan:= mmKeterangan.Text;
+  Absensi.JamMasuk :=  dtpMasuk.Time;
+  Absensi.JamKeluar :=  dtpPulang.Time;
   if V_ID <> 0 then
     Result:= Absensi.UpdateOnDB
   else Result:= Absensi.InsertOnDB;
@@ -92,6 +99,9 @@ begin
   mmKeterangan.Text:=     Absensi.Keterangan;
   dtpTglAbsen.DateTime:=       Absensi.Tanggal;
   cmbStatusAbsen.ItemIndex := lsStatusAbsen.IndexOfName(IntToStr(Absensi.StatusAbsen));
+  cmbStatusAbsenChange(self);
+  dtpMasuk.Time := Absensi.JamMasuk;
+  dtpPulang.Time := Absensi.JamKeluar;
 end;
 
 procedure TfrmTrsAbsensi.ResetData;
@@ -103,6 +113,10 @@ begin
   tbtSave.Enabled:= True;
   dtpTglAbsen.Date := Now;
   cmbStatusAbsen.ItemIndex := -1;
+  dtpPulang.Time := 0;
+  dtpMasuk.Time := 0;
+  dtpMasuk.Enabled := False;
+  dtpPulang.Enabled := False;
 end;
 
 procedure TfrmTrsAbsensi.tbtNewClick(Sender: TObject);
@@ -154,7 +168,8 @@ begin
 //  Absensi.AbsensiType:= vPurpose;
 
   InitForm;
-  if vRelasiId <> 0 then LoadData;
+  V_ID := vRelasiId;
+  if V_ID <> 0 then LoadData;
   Run(Self);//
 
 end;
@@ -167,6 +182,17 @@ begin
     txtName.Tag := ID;
     txtName.Text:= TMstKaryawan.getName(ID);
   end;
+
+end;
+
+
+
+
+procedure TfrmTrsAbsensi.cmbStatusAbsenChange(Sender: TObject);
+begin
+  dtpMasuk.Enabled := cmbStatusAbsen.Text = 'Hadir';
+  dtpPulang.Enabled := cmbStatusAbsen.Text = 'Hadir';
+
 
 end;
 

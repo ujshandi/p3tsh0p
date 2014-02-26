@@ -614,6 +614,8 @@ type
     FUserId: string; //[500]
     FSerialNumber: string; //[500]
     FCurrentBranch : integer;
+    FJamMasuk : TTime;
+    FJamPulang : TTime;
     function InsertInDb:boolean;
     function SelectInDB:boolean;
   end;
@@ -4395,13 +4397,15 @@ begin
         'post_code = '+FormatSQLString(FPostCode)+', '+
         'info = '+FormatSQLString(FInfo)+', '+
         'user_id = '+FormatSQLString(FUserId)+', '+
+        ' jam_masuk='+FormatSQLTime2(FJamMasuk)+','+
+      ' jam_pulang='+FormatSQLTime2(FJamPulang)+','+
         'current_branch='+FormatSQLNumber(FCurrentBranch)+','+
         'serial_number = '+FormatSQLString(FSerialNumber))
 
     else
       ExecSQL(
       'insert into mst_company (company_name, address, telp1, telp2, fax, city, '+
-        'branch, info, user_id, npwp, post_code,current_branch, serial_number) '+
+        'branch, info, user_id, npwp, post_code,current_branch,jam_masuk, jam_pulang, serial_number) '+
       'values ('+
         FormatSQLString(FCompanyName)+', '+
         FormatSQLString(FAddress)+', '+
@@ -4415,6 +4419,8 @@ begin
         FormatSQLString(FNpwp)+', '+
         FormatSQLString(FPostCode)+', '+
         FormatSQLNumber(FCurrentBranch)+','+
+        FormatSQLTime2(FJamMasuk)+','+
+        FormatSQLTime2(FJamPulang)+','+
         FormatSQLString(FSerialNumber)+') ');
 
     Result:= true;
@@ -4428,7 +4434,7 @@ function TMstCompany.SelectInDB:boolean;
 var buffer:TMysqlResult; vsql:string;
 begin
   vsql := 'select company_name, address, telp1, telp2, fax, city, branch, info, user_id, serial_number,current_branch '+
-    'from mst_company';
+    ' ,jam_masuk, jam_pulang from mst_company';
   buffer:= OpenSQL(vsql);
   Result := buffer.RecordCount>0;
   if buffer.RecordCount > 0 then begin
@@ -4443,6 +4449,8 @@ begin
     FUserId:= BufferToString(buffer.FieldValue(8));
     FSerialNumber:= BufferToString(buffer.FieldValue(9));
     FCurrentBranch := BufferToInteger(buffer.FieldValue(10));
+    FJamMasuk := BufferToTime(buffer.FieldValue(11));
+    FJamPulang := BufferToTime(buffer.FieldValue(12));
   end;
   buffer.Destroy;
 end;
