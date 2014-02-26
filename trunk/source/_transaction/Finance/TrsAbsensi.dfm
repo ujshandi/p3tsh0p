@@ -4,8 +4,8 @@ object frmTrsAbsensi: TfrmTrsAbsensi
   ActiveControl = txtName
   BorderStyle = bsDialog
   Caption = 'Input Supplier'
-  ClientHeight = 243
-  ClientWidth = 466
+  ClientHeight = 274
+  ClientWidth = 431
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -38,11 +38,25 @@ object frmTrsAbsensi: TfrmTrsAbsensi
   end
   object Label3: TLabel
     Left = 9
-    Top = 108
+    Top = 136
     Width = 71
     Height = 14
     Alignment = taRightJustify
     Caption = 'Keterangan :'
+  end
+  object Label4: TLabel
+    Left = 14
+    Top = 112
+    Width = 66
+    Height = 14
+    Caption = 'Jam Masuk :'
+  end
+  object Label5: TLabel
+    Left = 182
+    Top = 112
+    Width = 69
+    Height = 14
+    Caption = 'Jam Pulang :'
   end
   object txtName: TAdvEdit
     Left = 85
@@ -98,8 +112,8 @@ object frmTrsAbsensi: TfrmTrsAbsensi
   end
   object ToolBar1: TToolBar
     Left = 0
-    Top = 203
-    Width = 466
+    Top = 234
+    Width = 431
     Height = 40
     Align = alBottom
     ButtonHeight = 37
@@ -141,16 +155,18 @@ object frmTrsAbsensi: TfrmTrsAbsensi
     Style = csDropDownList
     ItemHeight = 14
     TabOrder = 2
+    OnChange = cmbStatusAbsenChange
   end
   object dtpTglAbsen: TDateTimePicker
     Left = 85
     Top = 28
-    Width = 186
+    Width = 276
     Height = 22
     CalAlignment = dtaLeft
     Date = 41551.6693185764
+    Format = 'dddd, dd MMMM yyyy'
     Time = 41551.6693185764
-    DateFormat = dfShort
+    DateFormat = dfLong
     DateMode = dmComboBox
     Kind = dtkDate
     ParseInput = False
@@ -158,7 +174,7 @@ object frmTrsAbsensi: TfrmTrsAbsensi
   end
   object mmKeterangan: TMemo
     Left = 86
-    Top = 110
+    Top = 138
     Width = 283
     Height = 75
     Lines.Strings = (
@@ -173,6 +189,36 @@ object frmTrsAbsensi: TfrmTrsAbsensi
     Caption = '...'
     TabOrder = 5
     OnClick = Button1Click
+  end
+  object dtpMasuk: TDateTimePicker
+    Left = 85
+    Top = 108
+    Width = 84
+    Height = 22
+    CalAlignment = dtaLeft
+    Date = 41551.6693185764
+    Format = 'HH:MM'
+    Time = 41551.6693185764
+    DateFormat = dfShort
+    DateMode = dmUpDown
+    Kind = dtkTime
+    ParseInput = False
+    TabOrder = 6
+  end
+  object dtpPulang: TDateTimePicker
+    Left = 253
+    Top = 108
+    Width = 84
+    Height = 22
+    CalAlignment = dtaLeft
+    Date = 41551.6693185764
+    Format = 'HH:mm'
+    Time = 41551.6693185764
+    DateFormat = dfShort
+    DateMode = dmComboBox
+    Kind = dtkTime
+    ParseInput = False
+    TabOrder = 7
   end
   object WinXP1: TWinXP
     Left = 360

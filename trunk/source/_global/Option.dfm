@@ -3,7 +3,7 @@ object frmOption: TfrmOption
   Top = 191
   BorderStyle = bsDialog
   Caption = 'Option'
-  ClientHeight = 351
+  ClientHeight = 416
   ClientWidth = 455
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object frmOption: TfrmOption
   TextHeight = 13
   object btnSave: TButton
     Left = 297
-    Top = 324
+    Top = 380
     Width = 75
     Height = 25
     Caption = '&Apply'
@@ -28,7 +28,7 @@ object frmOption: TfrmOption
   end
   object btnCancel: TButton
     Left = 377
-    Top = 324
+    Top = 380
     Width = 75
     Height = 25
     Caption = '&Cancel'
@@ -39,9 +39,9 @@ object frmOption: TfrmOption
     Left = 3
     Top = 8
     Width = 450
-    Height = 312
-    ActivePage = TabSheet4
-    TabIndex = 2
+    Height = 361
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 2
     OnChange = PageControl1Change
     object TabSheet1: TTabSheet
@@ -50,7 +50,7 @@ object frmOption: TfrmOption
         Left = 1
         Top = 8
         Width = 438
-        Height = 271
+        Height = 265
       end
       object Label1: TLabel
         Left = 10
@@ -128,6 +128,26 @@ object frmOption: TfrmOption
         Width = 36
         Height = 13
         Caption = 'NPWP :'
+      end
+      object Bevel5: TBevel
+        Left = 3
+        Top = 291
+        Width = 250
+        Height = 37
+      end
+      object Label7: TLabel
+        Left = 14
+        Top = 310
+        Width = 37
+        Height = 13
+        Caption = 'Masuk :'
+      end
+      object Label16: TLabel
+        Left = 132
+        Top = 310
+        Width = 39
+        Height = 13
+        Caption = 'Pulang :'
       end
       object txtName: TAdvEdit
         Left = 94
@@ -689,6 +709,46 @@ object frmOption: TfrmOption
         TabOrder = 15
         OnClick = btnBranchClick
       end
+      object StaticText3: TStaticText
+        Left = 8
+        Top = 284
+        Width = 115
+        Height = 17
+        AutoSize = False
+        BorderStyle = sbsSingle
+        Caption = 'Jam Kerja'
+        TabOrder = 16
+      end
+      object dtpMasuk: TDateTimePicker
+        Left = 53
+        Top = 306
+        Width = 75
+        Height = 22
+        CalAlignment = dtaLeft
+        Date = 41551.6693185764
+        Format = 'HH:MM'
+        Time = 41551.6693185764
+        DateFormat = dfShort
+        DateMode = dmUpDown
+        Kind = dtkTime
+        ParseInput = False
+        TabOrder = 17
+      end
+      object dtpPulang: TDateTimePicker
+        Left = 174
+        Top = 306
+        Width = 75
+        Height = 22
+        CalAlignment = dtaLeft
+        Date = 41551.6693185764
+        Format = 'HH:mm'
+        Time = 41551.6693185764
+        DateFormat = dfShort
+        DateMode = dmComboBox
+        Kind = dtkTime
+        ParseInput = False
+        TabOrder = 18
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'Database'
@@ -929,7 +989,7 @@ object frmOption: TfrmOption
       ImageIndex = 4
       DesignSize = (
         442
-        284)
+        333)
       object Bevel4: TBevel
         Left = 3
         Top = 14
@@ -1494,7 +1554,7 @@ object frmOption: TfrmOption
   end
   object btnEmpty: TButton
     Left = 10
-    Top = 321
+    Top = 377
     Width = 127
     Height = 25
     Caption = 'Kosongkan Transaksi'
