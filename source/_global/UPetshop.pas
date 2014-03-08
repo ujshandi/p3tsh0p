@@ -168,6 +168,7 @@ type
       destructor destroy;
       function InsertOnDB: boolean;
       function UpdateOnDB: boolean;
+      function setJamPulang:boolean;
       function SelectInDB: boolean;
       function isExistInDb(karyawanId: integer;Tanggal:Tdate): boolean;
       procedure Reset;
@@ -1188,6 +1189,27 @@ begin
     end;
   buffer.Destroy;
 
+
+end;
+
+function TTrsAbsensi.setJamPulang: boolean;
+begin
+  try
+    BeginSQL;
+   // FKode:= GetNextCode;
+
+    ExecSQL(
+    'update trs_absen set '+
+    ' jam_pulang='+FormatSQLTime2(FJamKeluar)+
+    ' where absen_id= '+FormatSQLNumber(FAbsenId));
+
+    EndSQL;
+    Result:= True;
+  except
+    UndoSQL;
+    Result:= False;
+    Alert(MSG_UNSUCCESS_UPDATE);
+  end;
 
 end;
 

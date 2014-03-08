@@ -248,7 +248,7 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
     object Label3: TLabel
       Left = 256
       Top = 28
-      Width = 56
+      Width = 54
       Height = 13
       Caption = 'Tgl Absen :'
     end
@@ -424,6 +424,7 @@ object frmTrsAbsensiList: TfrmTrsAbsensiList
       OnGetAlignment = gridGetAlignment
       OnRowChanging = gridRowChanging
       OnDblClickCell = gridDblClickCell
+      OnButtonClick = gridButtonClick
       DragDropSettings.OleAcceptFiles = True
       DragDropSettings.OleAcceptText = True
       SortSettings.AutoColumnMerge = False
