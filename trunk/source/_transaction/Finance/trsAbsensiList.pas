@@ -52,6 +52,7 @@ type
       AState: TGridDrawState; ABrush: TBrush; AFont: TFont);
     procedure gridDblClickCell(Sender: TObject; ARow, ACol: Integer);
     procedure ToolButton3Click(Sender: TObject);
+    procedure gridButtonClick(Sender: TObject; ACol, ARow: Integer);
 
   private
     lsStatusAbsen:TStringList;
@@ -205,8 +206,12 @@ begin
 
               grid.Cells[colTgl,row] := FormatDateTime(ShortDateFormat,BufferToDateTime(absen.FieldValue(2)));
               grid.Cells[colMasuk,row] := FormatDateTime(ShortTimeFormat,BufferToTime(absen.FieldValue(7)));
-              grid.Cells[colPulang,row] := FormatDateTime(ShortTimeFormat,BufferToTime(absen.FieldValue(8)));
               grid.Cells[colStatus,row] :=BufferToString(absen.FieldValue(6));
+              if ((BufferToTime(absen.FieldValue(8))=0) and (grid.Cells[colStatus,row]='Hadir')) then
+                grid.AddButton(colPulang,row,100,20,'Set Jam Pulang',haCenter,vaCenter)
+              else
+                grid.Cells[colPulang,row] := FormatDateTime(ShortTimeFormat,BufferToTime(absen.FieldValue(8)));
+
               if (grid.Cells[colStatus,row]='Hadir') then begin
                 if (BufferToTime(absen.FieldValue(7))>CompanyProfile.FJamMasuk) then begin
                     grid.Cells[colStatus,row] := grid.Cells[colStatus,row]+' [TELAT]';
@@ -432,6 +437,30 @@ begin
   if TTrsAbsensi.deleteOnDb(StrToInt64Def(grid.Cells[colId, grid.Row],0)) then begin
      grid.ClearRows(grid.Row,1);
      if grid.RowCount > 2 then grid.RemoveRows(grid.Row,1);
+  end;
+
+end;
+
+procedure TfrmTrsAbsensiList.gridButtonClick(Sender: TObject; ACol,
+  ARow: Integer);
+  var Absensi : TTrsAbsensi;
+
+begin
+  inherited;
+  if not TSystemAccess.isCan(CAN_EDIT,AktiveControl.Tag) then begin
+    Alert('Maaf anda tidak memiliki hak akses untuk fungsi ini');
+    exit;
+  end;
+  if Confirmed('Jam pulang untuk karyawan ini akan di set, lanjutkan?') then begin
+    Absensi := TTrsAbsensi.create;
+    Absensi.FAbsenId := StrToInt64Def(grid.cells[colId,ARow],0);
+
+    Absensi.JamKeluar :=now;
+    if (Absensi.setJamPulang()) then begin
+      Alert('Jam Pulang sudah di set');
+      LoadData;
+    end;
+    Absensi.destroy;
   end;
 
 end;

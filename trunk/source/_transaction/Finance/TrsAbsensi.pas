@@ -102,6 +102,8 @@ begin
   cmbStatusAbsenChange(self);
   dtpMasuk.Time := Absensi.JamMasuk;
   dtpPulang.Time := Absensi.JamKeluar;
+  Button1.Enabled := False;
+  dtpTglAbsen.Enabled := False;
 end;
 
 procedure TfrmTrsAbsensi.ResetData;
@@ -114,9 +116,11 @@ begin
   dtpTglAbsen.Date := Now;
   cmbStatusAbsen.ItemIndex := -1;
   dtpPulang.Time := 0;
-  dtpMasuk.Time := 0;
+  dtpMasuk.DateTime := now;
   dtpMasuk.Enabled := False;
   dtpPulang.Enabled := False;
+  Button1.Enabled := True;
+   dtpTglAbsen.Enabled := True;
 end;
 
 procedure TfrmTrsAbsensi.tbtNewClick(Sender: TObject);
@@ -190,8 +194,9 @@ end;
 
 procedure TfrmTrsAbsensi.cmbStatusAbsenChange(Sender: TObject);
 begin
-  dtpMasuk.Enabled := cmbStatusAbsen.Text = 'Hadir';
-  dtpPulang.Enabled := cmbStatusAbsen.Text = 'Hadir';
+  //dtpMasuk.Enabled := cmbStatusAbsen.Text = 'Hadir';
+  //dtpPulang.Enabled := cmbStatusAbsen.Text = 'Hadir';
+  
 
 
 end;
