@@ -142,10 +142,11 @@ begin
   //grid.AutoSizeColumns(TRUE, 4);
   grid.ColWidths[0]:= 0;
   grid.ColWidths[1]:= 0;
-  grid.ColWidths[2]:= 80;
-  grid.ColWidths[3]:= 100;
-//  grid.ColWidths[5]:= 0;
-  grid.ColWidths[5]:= 60;
+  grid.ColWidths[2]:= 50;
+  grid.ColWidths[3]:= 50;
+  grid.ColWidths[4]:= 350;
+  grid.ColWidths[5]:= 0;//stok dihide
+//  grid.ColWidths[5]:= 60;
   grid.ColWidths[6]:= 40;
   grid.ColWidths[grid.ColCount-1]:= 0; //is paket
   grid.ColWidths[grid.ColCount-2]:= 0; //is paket
