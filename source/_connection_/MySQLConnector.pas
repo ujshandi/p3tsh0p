@@ -33,6 +33,9 @@ uses
   procedure ShowErrorss;
   function GetComputerNetName: string;
 
+
+  function doUpdate():boolean;
+
 type
   TSQLOperator = (soGreaterThan, soGreaterThanEqualsTo,soEquals,soLessThan, soLessThanEqualsTo);
   TBooleanOperator = (boTrue,boFalse,boNone);
@@ -754,6 +757,22 @@ uses uMysqlCT, DatabaseConnection, UConstTool, UConst;
   function ConnetedToDB: boolean;
   begin
     Result:= MySQLClient.ping;
+  end;
+
+
+
+  function doUpdate():boolean;
+  var sql : string;i:integer;
+  begin
+     sql := ' CREATE TABLE IF NOT EXISTS version_control (id smallint primary key ,pos varchar(20), cashier varchar(20));';
+     ExecSQL(sql);
+     i :=  getIntegerFromSQL('SELECT COUNT(*) from version_control');
+     if (i=0) then
+        ExecSQL('insert into version_control (1,'+FormatSQLString(DATE_VERSION)+','+FormatSQLString(DATE_VERSION)+')')
+     else begin
+        
+     end;
+
   end;
 { TPeriode }
 

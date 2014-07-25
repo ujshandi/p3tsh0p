@@ -155,7 +155,7 @@ object frmLovFlat: TfrmLovFlat
     Navigation.CopyHTMLTagsToClipboard = True
     Navigation.HomeEndKey = heFirstLastColumn
     ColumnSize.Stretch = True
-    ColumnSize.StretchColumn = 4
+    ColumnSize.StretchColumn = 3
     ColumnSize.Location = clRegistry
     CellNode.Color = clSilver
     CellNode.NodeColor = clBlack
