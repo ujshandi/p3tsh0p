@@ -50,6 +50,9 @@ type
     cmbKategori: TComboBox;
     txtMarkupPetshop: TAdvEdit;
     txtMarkupBreeder: TAdvEdit;
+    chkReg: TCheckBox;
+    chkPetshop: TCheckBox;
+    chkBreeder: TCheckBox;
 
     procedure gridGetAlignment(Sender: TObject; ARow, ACol: Integer;
       var HAlign: TAlignment; var VAlign: TVAlignment);
@@ -430,7 +433,10 @@ begin
   pnlMarkup.Visible := EditMode and (Purpose in [2,3]);
   txtMarkupPetshop.Visible := (Purpose in [2]);
   txtMarkupBreeder.Visible := (Purpose in [2]);
-  Proses.Left := IfThen(Purpose=2,310,100);
+  chkReg.Visible := (Purpose in [2]);
+  chkPetshop.Visible := (Purpose in [2]);
+  chkBreeder.Visible := (Purpose in [2]);
+  Proses.Left := IfThen(Purpose=2,360,100);
   if EditMode then begin
     tbtDetail.Caption := 'Save';
   end
@@ -521,11 +527,11 @@ begin
       if Purpose=2 then begin //harga jual
         hBeli := StrFmtToFloatDef(grid.Cells[colHargaBeli,i],0);
         hJual := ((markup / 100) * hBeli) + hBeli;
-        grid.cells[colHarga,i] := FloatToStrFmt(hJual);
+        if (chkReg.Checked) then grid.cells[colHarga,i] := FloatToStrFmt(hJual);
         hJual := ((markupPetshop / 100) * hBeli) + hBeli;
-        grid.cells[colHargaPetshop,i] := FloatToStrFmt(hJual);
+        if (chkPetshop.Checked) then grid.cells[colHargaPetshop,i] := FloatToStrFmt(hJual);
         hJual := ((markupBreeder / 100) * hBeli) + hBeli;
-        grid.cells[colHargaBreeder,i] := FloatToStrFmt(hJual);
+        if (chkBreeder.Checked) then grid.cells[colHargaBreeder,i] := FloatToStrFmt(hJual);
 
       end
       else grid.cells[colHarga,i] := FloatToStrFmt(markup);
