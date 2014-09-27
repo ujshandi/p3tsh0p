@@ -14,7 +14,7 @@ const
     MANAGEMENT_VERSION = FALSE;
   {$ENDIF}
 
-  DATE_VERSION = 'v.25.07.14';
+  DATE_VERSION = 'v.27.09.14';
 
   MODUL_PATH = '\Software\Invisi\petshop';
 

@@ -17,10 +17,10 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   PixelsPerInch = 96
   TextHeight = 13
   object suiPanel1: TsuiPanel
-    Left = 768
+    Left = 760
     Top = 119
     Width = 0
-    Height = 328
+    Height = 324
     UIStyle = DeepBlue
     BorderColor = clBlack
     Font.Charset = ANSI_CHARSET
@@ -38,7 +38,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
       Left = 4
       Top = 24
       Width = 241
-      Height = 300
+      Height = 296
       Cursor = crDefault
       Align = alClient
       ColCount = 1
@@ -214,7 +214,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   object suiPanel3: TsuiPanel
     Left = 0
     Top = 41
-    Width = 768
+    Width = 760
     Height = 78
     UIStyle = DeepBlue
     BorderColor = clBlack
@@ -627,8 +627,8 @@ object frmMstItemPriceList: TfrmMstItemPriceList
   object suiPanel2: TsuiPanel
     Left = 0
     Top = 119
-    Width = 768
-    Height = 328
+    Width = 760
+    Height = 324
     UIStyle = DeepBlue
     BorderColor = clBlack
     Font.Charset = ANSI_CHARSET
@@ -646,8 +646,8 @@ object frmMstItemPriceList: TfrmMstItemPriceList
     object grid: TAdvStringGrid
       Left = 4
       Top = 73
-      Width = 760
-      Height = 251
+      Width = 752
+      Height = 247
       Cursor = crDefault
       Align = alClient
       BorderStyle = bsNone
@@ -850,7 +850,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
         40
         100
         100
-        232)
+        238)
       RowHeights = (
         21
         21
@@ -861,12 +861,12 @@ object frmMstItemPriceList: TfrmMstItemPriceList
     object pnlMarkup: TPanel
       Left = 4
       Top = 24
-      Width = 760
+      Width = 752
       Height = 49
       Align = alTop
       TabOrder = 1
       object txtMarkup: TAdvEdit
-        Left = 10
+        Left = 20
         Top = 20
         Width = 78
         Height = 21
@@ -918,7 +918,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
         OnKeyPress = txtMarkupKeyPress
       end
       object Proses: TButton
-        Left = 310
+        Left = 360
         Top = 17
         Width = 75
         Height = 25
@@ -927,7 +927,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
         OnClick = ProsesClick
       end
       object txtMarkupPetshop: TAdvEdit
-        Left = 99
+        Left = 127
         Top = 20
         Width = 78
         Height = 21
@@ -979,7 +979,7 @@ object frmMstItemPriceList: TfrmMstItemPriceList
         OnKeyPress = txtMarkupKeyPress
       end
       object txtMarkupBreeder: TAdvEdit
-        Left = 210
+        Left = 251
         Top = 20
         Width = 78
         Height = 21
@@ -1030,12 +1030,33 @@ object frmMstItemPriceList: TfrmMstItemPriceList
         Visible = True
         OnKeyPress = txtMarkupKeyPress
       end
+      object chkReg: TCheckBox
+        Left = 3
+        Top = 21
+        Width = 16
+        Height = 17
+        TabOrder = 4
+      end
+      object chkPetshop: TCheckBox
+        Left = 107
+        Top = 21
+        Width = 16
+        Height = 17
+        TabOrder = 5
+      end
+      object chkBreeder: TCheckBox
+        Left = 232
+        Top = 21
+        Width = 16
+        Height = 17
+        TabOrder = 6
+      end
     end
   end
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 768
+    Width = 760
     Height = 41
     ButtonHeight = 36
     ButtonWidth = 60

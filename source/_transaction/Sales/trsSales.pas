@@ -86,6 +86,7 @@ type
     lblFreeInfo: TLabel;
     chkAnimal: TCheckListBox;
     Label22: TLabel;
+    imgLogoDc: TImage;
     procedure txtSubtotalValueValidate(Sender: TObject; value: String;
       var IsValid: Boolean);
     procedure txtSubtotalEnter(Sender: TObject);
@@ -2538,7 +2539,7 @@ begin
   '13t.pasien_id, 14t.dokter_id, 15tipe_racikan,16 id_paket, 17now()}
 
   //header;
-   printBitmap(imgLogo.Picture.Bitmap,
+   printBitmap(imgLogoDc.Picture.Bitmap,
       Bold('    FAKTUR PENJUALAN & JASA'),RAWPrinter1,value);
  { value.Append(
     FixWidth(' ', 5, taLeftJustify)+
