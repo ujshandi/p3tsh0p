@@ -1,5 +1,6 @@
 unit MainMenu;
   {DEFINE DEBUG}
+  {$DEFINE DC}
 interface
 
 uses
@@ -287,7 +288,11 @@ procedure InitializeApplication;
 begin
   Application.Name     := 'cashier';
   Application.HelpFile := 'petshopCashier.chm';
+  {$IFDEF DC}
+  Application.Title    := 'Cashier DC '+DATE_VERSION;
+  {$ELSE}
   Application.Title    := 'Cashier '+DATE_VERSION;
+    {$ENDIF}
 end;
 
 procedure FinalizeApplication;
