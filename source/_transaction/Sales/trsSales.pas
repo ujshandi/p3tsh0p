@@ -1,5 +1,5 @@
 unit trsSales;
-
+{$DEFINE DC}
 interface
 
 uses
@@ -2539,8 +2539,13 @@ begin
   '13t.pasien_id, 14t.dokter_id, 15tipe_racikan,16 id_paket, 17now()}
 
   //header;
+  {$IFDEF DC}
    printBitmap(imgLogoDc.Picture.Bitmap,
+      Bold('    FAKTUR PENJUALAN'),RAWPrinter1,value);
+   {$ELSE}
+      printBitmap(imgLogo.Picture.Bitmap,
       Bold('    FAKTUR PENJUALAN & JASA'),RAWPrinter1,value);
+   {$ENDIF}
  { value.Append(
     FixWidth(' ', 5, taLeftJustify)+
     FixWidth(CompanyProfile.FCompanyName, PAPER_WIDTH-5, taLeftJustify));}
